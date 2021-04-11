@@ -6,7 +6,7 @@ const TROOP_TYPE_SPEARMAN = {
 	"attack_damage" : 8.0,
 	"hit_point" : 80.0,
 	"range_attack" : 60,
-	"attack_speed" : 1.0,
+	"attack_speed" : 2.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"max_speed" : 130.0,
@@ -16,9 +16,9 @@ const TROOP_TYPE_SPEARMAN = {
 }
 const TROOP_TYPE_SWORDMAN = {
 	"attack_damage" : 10.0,
-	"hit_point" : 140.0,
+	"hit_point" : 120.0,
 	"range_attack" : 20,
-	"attack_speed" : 1.5,
+	"attack_speed" : 2.5,
 	"side" : "",
 	"color" : Color(Color.red),
 	"max_speed" : 110.0,
@@ -30,10 +30,10 @@ const TROOP_TYPE_AXEMAN = {
 	"attack_damage" : 12.0,
 	"hit_point" : 40.0,
 	"range_attack" : 20,
-	"attack_speed" : 0.3,
+	"attack_speed" : 1.3,
 	"side" : "",
 	"color" : Color(Color.red),
-	"max_speed" : 160.0,
+	"max_speed" : 140.0,
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/axe.png"
@@ -41,9 +41,11 @@ const TROOP_TYPE_AXEMAN = {
 
 # const
 const combats_sound = [
-	preload("res://asset/sound/stab1.wav"),
-	preload("res://asset/sound/stab2.wav"),
-	preload("res://asset/sound/stab3.wav")
+	preload("res://asset/sound/fight1.wav"),
+	preload("res://asset/sound/fight2.wav"),
+	preload("res://asset/sound/fight3.wav"),
+	preload("res://asset/sound/fight4.wav"),
+	preload("res://asset/sound/fight5.wav")
 ]
 
 signal on_troop_dead()

@@ -1,18 +1,28 @@
 extends Node2D
 
 onready var _squad_panel = $CanvasLayer/VBoxContainer/HBoxContainer2/ScrollContainer/HBoxContainer
+onready var _top_bar = $CanvasLayer/VBoxContainer/HBoxContainer
 
+onready var _armies_bar = {
+	"red" : $CanvasLayer/VBoxContainer/HBoxContainer/left_bar,
+	"blue" : $CanvasLayer/VBoxContainer/HBoxContainer/right_bar
+}
 var _squad_in_command = []
 var _selected_squad = []
-
-var _amount_food = 0
-var _amount_wood = 0
-var _amount_ore = 0
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
+
+
+func _on_game_army_ready(side, color, total_troop):
+	_armies_bar[side].max_value = total_troop
+	_armies_bar[side].value = total_troop
+	_armies_bar[side].self_modulate = color
+
+func _on_squad_troop_dead(side,troop_left):
+	var army_hp = _armies_bar[side]
+	_armies_bar[side].value = max(0,army_hp.value - 1)
 
 func _on_Control_gui_input(event):
 	
@@ -57,24 +67,4 @@ func _on_squad_icon_click(squad):
 		_selected_squad.erase(squad)
 	else:
 		_selected_squad.append(squad)
-
-func _on_resource_collected(type, amount):
-	match type:
-		Resources.RESOURCES_TYPE_FOOD:
-			_amount_food += amount
-			$CanvasLayer/VBoxContainer/HBoxContainer/HBoxContainer/Label.text = kFormatter(_amount_food)
-		Resources.RESOURCES_TYPE_WOOD:
-			_amount_wood += amount
-			$CanvasLayer/VBoxContainer/HBoxContainer/HBoxContainer2/Label2.text = kFormatter(_amount_wood)
-		Resources.RESOURCES_TYPE_MINERAL:
-			_amount_ore += amount
-			$CanvasLayer/VBoxContainer/HBoxContainer/HBoxContainer3/Label3.text = kFormatter(_amount_ore)
-
-func kFormatter(num):
-	if abs(num) > 999:
-		return str(sign(num) * stepify((abs(num)/1000),1)) + 'k'
-	else:
-		return str(sign(num)*abs(num))
-
-
 

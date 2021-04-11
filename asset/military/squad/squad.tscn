@@ -12,7 +12,7 @@ resource_name = "squad_idle"
 loop = true
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 49.8754, 81.1762 )
+extents = Vector2( 31.2908, 93.9267 )
 
 [sub_resource type="CircleShape2D" id=4]
 radius = 85.3006
@@ -42,7 +42,7 @@ anims/squad_selected = ExtResource( 3 )
 [node name="area_click" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="area_click"]
-position = Vector2( -1.61673, -128.93 )
+position = Vector2( -0.672851, -114.772 )
 shape = SubResource( 3 )
 
 [node name="regroup_time" type="Timer" parent="."]
@@ -53,6 +53,8 @@ autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 4 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
 [node name="timer_reset_target" type="Timer" parent="."]
 autostart = true
