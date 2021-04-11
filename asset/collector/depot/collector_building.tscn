@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://asset/collector/depot/collector_building.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 55.6789, 46.9794 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 76.4523
+
+[node name="collector_building" type="StaticBody2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 8.49487 )
+shape = SubResource( 1 )
+
+[node name="worker_spawn_position" type="Position2D" parent="."]
+position = Vector2( 171.967, 32.7961 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 0, -0.471954 )
+shape = SubResource( 2 )
+
+[node name="worker_spawn_time" type="Timer" parent="."]
+autostart = true
+
+[node name="worker_holder" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="timeout" from="worker_spawn_time" to="." method="_on_worker_spawn_time_timeout"]

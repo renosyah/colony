@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://asset/military/troop/animation_troop_attack.tres" type="Animation" id=1]
+[ext_resource path="res://asset/military/troop/troop.gd" type="Script" id=4]
+[ext_resource path="res://asset/military/troop/animation_troop_walking.tres" type="Animation" id=5]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 8.03472
+height = 8.52314
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 38.8514
+
+[node name="troop" type="KinematicBody2D"]
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+one_way_collision = true
+
+[node name="body" type="Sprite" parent="."]
+self_modulate = Color( 0.988235, 0.0117647, 0.0117647, 1 )
+position = Vector2( 1.15623, -1.864 )
+
+[node name="head" type="Sprite" parent="body"]
+position = Vector2( 0, -19.0273 )
+
+[node name="weapon" type="Sprite" parent="body"]
+position = Vector2( 18.1474, 3.53113 )
+rotation = 0.48895
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+
+[node name="attack_delay" type="Timer" parent="."]
+wait_time = 1.6
+one_shot = true
+
+[node name="target_refresh" type="Timer" parent="."]
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/troop_attack = ExtResource( 1 )
+anims/troop_walking = ExtResource( 5 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="timeout" from="target_refresh" to="." method="_on_target_refresh_timeout"]
