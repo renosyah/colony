@@ -5,37 +5,38 @@ onready var game_ui = $game_ui
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var my_pos = [Vector2(300, 200.0),Vector2(450, 200.0),Vector2(600, 200.0)]
-	var enemy_pos = [Vector2(300, 600.0),Vector2(450, 600.0),Vector2(600, 600.0)]
+	var enemy_pos = [Vector2(300, 400.0),Vector2(450, 400.0),Vector2(600, 400.0)]
+	var squad_types = [Squad.SQUAD_TYPE_SPEARMAN,Squad.SQUAD_TYPE_SWORDMAN,Squad.SQUAD_TYPE_AXEMAN]
+	
+	var post_troop = 0
 	for pos in my_pos:
-		spawn_squad(pos)
+		spawn_squad(pos,squad_types[post_troop])
+		post_troop += 1
 		
-	var pos_at = 0
+	var post_troop2 = 0
 	for pos in enemy_pos:
-		spawn_enemy_squad(pos, my_pos[pos_at])
-		pos_at += 1
+		spawn_enemy_squad(pos,squad_types[post_troop2])
+		post_troop2 += 1
+		
 	#spawn_resources()
 	#spawn_depot()
 
-func spawn_squad(pos):
+func spawn_squad(pos,squad_type):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()
 	squad.position = pos
 	squad.connect("on_squad_ready",game_ui,"_on_squad_on_squad_ready")
 	squad.connect("on_squad_dead",game_ui,"_on_squad_on_squad_dead")
-	squad.data = Squad.SQUAD_TYPE_SWORDMAN
-	squad.data.troop_amount = 15
+	squad.data = squad_type.duplicate()
 	squad.data.side = "red"
 	squad.data.color = Color(Color.red)
 	add_child(squad)
 	
-func spawn_enemy_squad(pos,move_pos):
+func spawn_enemy_squad(pos,squad_type):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()
 	squad.position = pos
-	squad.data = Squad.SQUAD_TYPE_SPEARMAN
-	squad.data.troop_amount = 15
+	squad.data = squad_type.duplicate()
 	squad.data.side = "blue"
 	squad.data.color = Color(Color.blue)
-	squad.is_move = true
-	squad.waypoint = move_pos
 	add_child(squad)
 	
 	

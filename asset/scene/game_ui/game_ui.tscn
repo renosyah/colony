@@ -118,8 +118,7 @@ self_modulate = Color( 1, 1, 1, 0.215686 )
 margin_top = 486.0
 margin_right = 1024.0
 margin_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 9
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
 margin_left = 7.0

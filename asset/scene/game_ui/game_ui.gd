@@ -20,6 +20,7 @@ func _on_Control_gui_input(event):
 	
 	if (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_pressed():
 		var click_pos = get_canvas_transform().affine_inverse().xform(event.position)
+		click_pos.y += 100.0
 		move_all_selected_squad(click_pos)
  
 func move_all_selected_squad(pos):
