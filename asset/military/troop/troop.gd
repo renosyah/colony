@@ -4,39 +4,54 @@ class_name Troop
 # data troop class
 const TROOP_TYPE_SPEARMAN = {
 	"attack_damage" : 8.0,
-	"hit_point" : 80.0,
+	"hit_point" : 60.0,
+	"armor" : 3.0,
 	"range_attack" : 60,
 	"attack_speed" : 2.0,
+	"max_speed" : 130.0,
 	"side" : "",
 	"color" : Color(Color.red),
-	"max_speed" : 130.0,
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/spear.png"
+	"weapon_sprite":"res://asset/military/weapon/spear.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
 }
 const TROOP_TYPE_SWORDMAN = {
 	"attack_damage" : 10.0,
-	"hit_point" : 120.0,
+	"hit_point" : 80.0,
+	"armor" : 5.0,
 	"range_attack" : 20,
 	"attack_speed" : 2.5,
+	"max_speed" : 120.0,
 	"side" : "",
 	"color" : Color(Color.red),
-	"max_speed" : 110.0,
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/sword.png"
+	"weapon_sprite":"res://asset/military/weapon/sword.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
 }
 const TROOP_TYPE_AXEMAN = {
 	"attack_damage" : 12.0,
-	"hit_point" : 40.0,
+	"hit_point" : 70.0,
+	"armor" : 0.5,
 	"range_attack" : 20,
 	"attack_speed" : 1.3,
+	"max_speed" : 140.0,
 	"side" : "",
 	"color" : Color(Color.red),
-	"max_speed" : 140.0,
-	"body_sprite" : "res://asset/military/uniform/light_armor.png",
-	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/axe.png"
+	"body_sprite" : "res://asset/military/uniform/no_armor.png",
+	"head_sprite" : "res://asset/military/uniform/wolf_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/axe.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
 }
 
 # const
@@ -62,10 +77,12 @@ onready var _audio = $AudioStreamPlayer2D
 var target : KinematicBody2D = null
 var rally_point = null
 var range_folowing_distance = 5.0
+var folowing_speed = 80.0
 
 var data = {
 	"attack_damage" : 4.0,
 	"hit_point" : 80.0,
+	"armor" : 80.0,
 	"range_attack" : 50,
 	"attack_speed" : 1.0,
 	"side" : "",
@@ -73,7 +90,11 @@ var data = {
 	"max_speed" : 150.0,
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/empty_weapon.png"
+	"weapon_sprite":"res://asset/military/weapon/empty_weapon.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0,
+	}
 }
 
 func _ready():
@@ -81,16 +102,19 @@ func _ready():
 	_head.texture = load(data.head_sprite)
 	_body.texture = load(data.body_sprite)
 	_weapon.texture = load(data.weapon_sprite)
+	
+func set_bonus(bon):
+	data.bonus = bon
 
 func _physics_process(delta):
 	var velocity = Vector2.ZERO
 	if rally_point:
 		var direction = (rally_point - global_position).normalized()
 		var distance_to_rally_point = global_position.distance_to(rally_point)
- 
+			
 		if distance_to_rally_point > range_folowing_distance:
 			_animation.play("troop_walking")
-			velocity = direction * data.max_speed * delta
+			velocity = direction * folowing_speed * delta
 			
 			
 	if is_instance_valid(target):
@@ -102,12 +126,12 @@ func _physics_process(delta):
 		else:
 			_body.scale.x = -1
 			
-		if distance_to_target > data.range_attack:
+		if distance_to_target > data.range_attack and distance_to_target < data.range_attack + 100.0:
 			_animation.play("troop_walking")
 			velocity = direction * data.max_speed * delta
 
 		if _attack_delay.is_stopped() and distance_to_target <= data.range_attack:
-			target.take_damage(data.attack_damage)
+			target.take_damage(data.attack_damage + data.bonus.attack_damage)
 			play_hit_sound()
 			_animation.play("troop_attack")
 			_attack_delay.wait_time = data.attack_speed
@@ -118,7 +142,7 @@ func _physics_process(delta):
 	move_and_collide(velocity)
 
 func take_damage(dmg):
-	data.hit_point -= dmg
+	data.hit_point -= (dmg - (data.armor + data.bonus.armor))
 	if data.hit_point <= 0:
 		emit_signal("on_troop_dead")
 		queue_free()

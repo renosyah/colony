@@ -35,3 +35,4 @@ anims/troop_attack = ExtResource( 1 )
 anims/troop_walking = ExtResource( 5 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+volume_db = -15.0

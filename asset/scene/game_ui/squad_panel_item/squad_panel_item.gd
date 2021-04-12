@@ -30,12 +30,19 @@ func _ready():
 func _on_squad_troop_dead(side,troop_left):
 	_label.text = str(troop_left)
 
-func _on_squad_panel_icon_gui_input(event):
-	if event is InputEventScreenTouch or (event is InputEventMouseButton and event.is_pressed()):
-		_on_squad_click()
-		
+func _on_squad_panel_icon_pressed():
+	_on_squad_click()
+ 
 func _on_squad_click():
 	emit_signal("on_squad_icon_click", squad)
 	is_selected = !is_selected
 	_selected_indicator.visible = is_selected
 	squad.set_selected(is_selected)
+
+func select_current_squad(_is_select):
+	is_selected = _is_select
+	_selected_indicator.visible = is_selected
+	squad.set_selected(is_selected)
+	
+	
+

@@ -47,12 +47,20 @@ const dead_sound = [
 	preload("res://asset/sound/maledeath4.wav"),
 ]
 
+enum {
+	SQUAD_FORMATION_STANDAR,
+	SQUAD_FORMATION_SPREAD,
+	SQUAD_FORMATION_COMPACT
+}
+
 signal on_squad_ready(squad)
 signal on_squad_click()
 signal on_squad_dead(squad)
 signal on_squad_troop_dead(side,troop_left)
 
+
 onready var rng = RandomNumberGenerator.new()
+onready var _formation = preload("res://asset/military/formation/formation.gd").new()
 onready var _animation = $AnimationPlayer
 onready var _troop_holder = $troop_holder
 onready var _banner = $banner
@@ -62,7 +70,9 @@ onready var _audio = $AudioStreamPlayer2D
 var targets = []
 var is_move = false
 var waypoint = Vector2.ZERO
+var formations
 var min_area_waypoint = 5.0
+var current_formation = SQUAD_FORMATION_STANDAR
 
 var data = {
 	"name" : "",
@@ -81,6 +91,7 @@ func _ready():
 	_banner.texture = load(data.banner_sprite)
 	_banner.self_modulate = data.color
 	spawn_full_squad()
+	change_formation(SQUAD_FORMATION_STANDAR)
 	emit_signal("on_squad_ready",self)
 	
 	
@@ -92,10 +103,14 @@ func _physics_process(_delta):
 		
 		if distance_to_waypoint > min_area_waypoint:
 			velocity = direction * data.max_speed * _delta
-			
+		
 		update_troop_position(velocity != Vector2.ZERO)
-			
+		
 		move_and_collide(velocity)
+
+func move_squad_to(pos):
+	is_move = true
+	waypoint = pos
 
 func set_selected(is_selected):
 	if is_selected:
@@ -105,45 +120,61 @@ func set_selected(is_selected):
 		_animation.seek(0.0)
 		_animation.stop()
 		
+func change_formation(formation):
+	is_move = false
+	current_formation = formation
+	update_troop_position(true)
+	update_troop_formation_bonus(formation)
+
+func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int):
+	match current_formation:
+		SQUAD_FORMATION_STANDAR:
+			return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
+		SQUAD_FORMATION_SPREAD:
+			return _formation.get_formation_box(waypoint_position,number_of_unit,30)
+		SQUAD_FORMATION_COMPACT:
+			return _formation.get_formation_box(waypoint_position,number_of_unit, 15)
+			
+	return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
+
 func spawn_full_squad():
-	var number_of_unit = data.troop_amount
-	var square_side_size = round(sqrt(number_of_unit))
-	var space_between_units = data.formation_space
-	var unit_pos = Vector2.ZERO - space_between_units * Vector2(square_side_size/2,square_side_size/2)
-	
+	var cur_formation = _formation.get_formation_box(Vector2.ZERO ,data.troop_amount ,data.formation_space)
+	var idx = 0
 	for i in data.troop_amount:
 		var troop = preload("res://asset/military/troop/troop.tscn").instance()
 		troop.data = data.troop_data.duplicate()
 		troop.data.side = data.side
 		troop.data.color = data.color
 		troop.connect("on_troop_dead", self , "_on_troop_dead")
-		troop.position = unit_pos
+		troop.position = cur_formation[idx].position
 		_troop_holder.add_child(troop)
-		
-		unit_pos.x += space_between_units
-		if unit_pos.x > (Vector2.ZERO.x + square_side_size * space_between_units / 2):
-			unit_pos.y += space_between_units
-			unit_pos.x = Vector2.ZERO.x - space_between_units * square_side_size / 2
+		idx += 1
+
+func update_troop_formation_bonus(formation):
+	for child in _troop_holder.get_children():
+		match current_formation:
+			SQUAD_FORMATION_STANDAR:
+				child.set_bonus(Formation.FORMATION_BOX_BONUS)
+			SQUAD_FORMATION_SPREAD:
+				child.set_bonus(Formation.FORMATION_DELTA_BONUS)
+			SQUAD_FORMATION_COMPACT:
+				child.set_bonus(Formation.FORMATION_CIRCLE_BONUS)
 
 func update_troop_position(is_set):
-	var number_of_unit =  (_troop_holder.get_children().size() - 1)
-	var square_side_size = round(sqrt(number_of_unit))
-	var space_between_units = data.formation_space
-	var unit_pos = position - space_between_units * Vector2(square_side_size/2,square_side_size/2)
-	
+	var cur_formation = _get_formation(position,data.troop_amount,data.formation_space)
+	var idx = 0
 	for child in _troop_holder.get_children():
+		child.rally_point = null
 		if is_set:
-			child.rally_point = unit_pos
-		else:
-			child.rally_point = null
-		
-		unit_pos.x += space_between_units
-		if unit_pos.x > (position.x + square_side_size * space_between_units / 2):
-			unit_pos.y += space_between_units
-			unit_pos.x = position.x - space_between_units * square_side_size / 2
+			child.rally_point = cur_formation[idx].position
+		idx += 1
 
 func update_troop_target():
 	rng.randomize()
+	for target in targets:
+		if !is_instance_valid(target):
+			targets.erase(target)
+	
 	for child in _troop_holder.get_children():
 		if targets.size() <= 0:
 			child.target = null
@@ -155,6 +186,10 @@ func _on_Area2D_body_entered(body):
 		targets.append(body)
 		update_troop_target()
 
+func _on_Area2D_body_exited(body):
+	if body is Troop:
+		targets.erase(body)
+	
 func _on_timer_reset_target_timeout():
 	update_troop_target()
 	
@@ -174,3 +209,5 @@ func play_dead_sound():
 	rng.randomize()
 	_audio.stream = dead_sound[rng.randf_range(0,dead_sound.size())]
 	_audio.play()
+
+

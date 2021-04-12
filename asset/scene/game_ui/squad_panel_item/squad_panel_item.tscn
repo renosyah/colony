@@ -5,13 +5,10 @@
 [ext_resource path="res://asset/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=3]
 [ext_resource path="res://asset/ui/icons/squad_icon/icon_empty.png" type="Texture" id=4]
 
-[node name="squad_panel_icon" type="PanelContainer"]
+[node name="squad_panel_icon" type="Button"]
 self_modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -960.0
-margin_bottom = -442.0
+rect_min_size = Vector2( 64, 158 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -22,6 +19,9 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 57.0
 margin_bottom = 151.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
 show_behind_parent = true
@@ -43,8 +43,8 @@ valign = 1
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.764706 )
-margin_right = 64.0
-margin_bottom = 158.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 texture = ExtResource( 4 )
 expand = true
-[connection signal="gui_input" from="." to="." method="_on_squad_panel_icon_gui_input"]
+[connection signal="pressed" from="." to="." method="_on_squad_panel_icon_pressed"]

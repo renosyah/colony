@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://asset/collector/depot/collector_building.gd"
 }, {
+"base": "Node",
+"class": "Formation",
+"language": "GDScript",
+"path": "res://asset/military/formation/formation.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Resources",
 "language": "GDScript",
@@ -23,6 +28,11 @@ _global_script_classes=[ {
 "class": "Squad",
 "language": "GDScript",
 "path": "res://asset/military/squad/squad.gd"
+}, {
+"base": "PanelContainer",
+"class": "SquadPanelDetail",
+"language": "GDScript",
+"path": "res://asset/scene/game_ui/squad_panel_detail/squad_panel_detail.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Troop",
@@ -36,8 +46,10 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "CollectorBuilding": "",
+"Formation": "",
 "Resources": "",
 "Squad": "",
+"SquadPanelDetail": "",
 "Troop": "",
 "Worker": ""
 }
