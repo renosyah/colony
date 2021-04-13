@@ -35,7 +35,7 @@ func _on_arrow_body_entered(body):
 		return
 	if body.data.side == side:
 		return
-	body.take_damage(attack_damage)
+	body.take_projectile_damage(attack_damage)
 	queue_free()
 
 

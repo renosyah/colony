@@ -107,7 +107,7 @@ const TROOP_TYPE_CROSSBOWMAN = {
 	"attack_damage" : 11.0,
 	"hit_point" : 80.0,
 	"armor" : 3.0,
-	"range_attack" : 190,
+	"range_attack" : 280,
 	"attack_speed" : 8.0,
 	"max_speed" : 60.0,
 	"side" : "",
@@ -121,6 +121,26 @@ const TROOP_TYPE_CROSSBOWMAN = {
 		"armor" : 0
 	}
 }
+const TROOP_TYPE_ARCHER_CAVALRY = {
+	"class" : CLASS_RANGE,
+	"attack_damage" : 2.0,
+	"hit_point" : 120.0,
+	"armor" : 1.0,
+	"range_attack" : 240,
+	"attack_speed" : 2.0,
+	"max_speed" : 230.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
+	"head_sprite" : "res://asset/military/uniform/cap_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/bow.png",
+	"mount_sprite":"res://asset/military/mount/horse.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
+}
+
 # const
 const combats_sound = [
 	preload("res://asset/sound/fight1.wav"),
@@ -129,6 +149,11 @@ const combats_sound = [
 	preload("res://asset/sound/fight4.wav"),
 	preload("res://asset/sound/fight5.wav")
 ]
+const stabs_sound = [
+	preload("res://asset/sound/stab1.wav"),
+	preload("res://asset/sound/stab2.wav")
+]
+
 const attack_melee_animations = [
 	"troop_attack",
 	"troop_attack_2",
@@ -206,7 +231,7 @@ func _physics_process(delta):
 			_animation.play("troop_walking")
 			velocity = direction * data.max_speed * delta
 			
-	if is_instance_valid(target):
+	elif is_instance_valid(target):
 		direction = (target.global_position - global_position).normalized()
 		distance_to_target = global_position.distance_to(target.global_position)
 
@@ -250,12 +275,19 @@ func shoot(dir):
 	projectile.sprite = preload("res://asset/military/projectile/arrow/arrow.png")
 	projectile.lauching(global_position, dir)
 	add_child(projectile)
-	
-	_audio.stream = preload("res://asset/sound/arrow_fly.wav")
+
+func take_projectile_damage(dmg):
+	rng.randomize()
+	_audio.stream = stabs_sound[rng.randf_range(0,stabs_sound.size())]
 	_audio.play()
+	take_damage(dmg)
 	
 func take_damage(dmg):
-	data.hit_point -= (dmg - (data.armor + data.bonus.armor))
+	var _dmg = (dmg - (data.armor + data.bonus.armor))
+	if _dmg < 0:
+		_dmg = 1
+		
+	data.hit_point -= _dmg
 	if data.hit_point <= 0:
 		emit_signal("on_troop_dead")
 		queue_free()

@@ -35,11 +35,7 @@ var data = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_squad_attack_bar.self_modulate = Color(Color.green)
-	_squad_hp_bar.self_modulate = Color(Color.green)
-	_squad_armor_bar.self_modulate = Color(Color.green)
-	_squad_range_bar.self_modulate = Color(Color.green)
-	_squad_speed_bar.self_modulate = Color(Color.green)
+	pass
 
 func show_stats(_data):
 	data = _data

@@ -3,7 +3,7 @@ class_name Squad
 
 # data troop squad class
 const SQUAD_TYPE_SPEARMAN  = {
-	"name" : "Spearman Squad",
+	"name" : "Spearman",
 	"description" : "Spearman Squad : medium, cheap, weak",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_spearman.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_spearman.png",
@@ -15,7 +15,7 @@ const SQUAD_TYPE_SPEARMAN  = {
 	"troop_data" : Troop.TROOP_TYPE_SPEARMAN
 }
 const SQUAD_TYPE_SWORDMAN  = {
-	"name" : "Swordman Squad",
+	"name" : "Swordman",
 	"description" : "Swordman Squad : slow, expensive, strong",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_swordman.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_swordman.png",
@@ -27,7 +27,7 @@ const SQUAD_TYPE_SWORDMAN  = {
 	"troop_data" : Troop.TROOP_TYPE_SWORDMAN
 }
 const SQUAD_TYPE_AXEMAN  = {
-	"name" : "Axeman Squad",
+	"name" : "Axeman",
 	"description" : "Axeman Squad : fast, expensive, weak",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_axeman.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_axeman.png",
@@ -39,7 +39,7 @@ const SQUAD_TYPE_AXEMAN  = {
 	"troop_data" : Troop.TROOP_TYPE_AXEMAN
 }
 const SQUAD_TYPE_LIGHT_CAVALRY = {
-	"name" : "Light Cavalry Squad",
+	"name" : "Light Cavalry",
 	"description" : "Light Cavalry : fast, expensive, medium",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_light_cavalry.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_light_cavalry.png",
@@ -51,7 +51,7 @@ const SQUAD_TYPE_LIGHT_CAVALRY = {
 	"troop_data" : Troop.TROOP_TYPE_LIGHT_CAVALRY
 }
 const SQUAD_TYPE_ARCHER = {
-	"name" : "Archer Squad",
+	"name" : "Archer",
 	"description" : "Archer Squad : basic range unit",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_archer.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_archer.png",
@@ -63,7 +63,7 @@ const SQUAD_TYPE_ARCHER = {
 	"troop_data" : Troop.TROOP_TYPE_ARCHER
 }
 const SQUAD_TYPE_CROSSBOWMAN = {
-	"name" : "Crossbowman Squad",
+	"name" : "Crossbowman",
 	"description" : "Crossbowman Squad : advance range unit",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_crossbowman.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_crossbowman.png",
@@ -74,6 +74,19 @@ const SQUAD_TYPE_CROSSBOWMAN = {
 	"max_speed" : 80.0,
 	"troop_data" : Troop.TROOP_TYPE_CROSSBOWMAN
 }
+const SQUAD_TYPE_ARCHER_CAVALRY = {
+	"name" : "Archer Cavalry",
+	"description" : "Archer Cavalry : mounted range unit",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_archer_cavalry.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_archer_cavalry.png",
+	"troop_amount" : 15,
+	"formation_space" : 35,
+	"side" : "",
+	"color" : Color(Color.white),
+	"max_speed" : 180.0,
+	"troop_data" : Troop.TROOP_TYPE_ARCHER_CAVALRY
+}
+
 # const
 const dead_sound = [
 	preload("res://asset/sound/maledeath1.wav"),
@@ -130,8 +143,8 @@ func _ready():
 	change_formation(SQUAD_FORMATION_STANDAR)
 	emit_signal("on_squad_ready",self)
 	if data.troop_data["class"] == Troop.CLASS_RANGE:
-		_field_of_view_area.scale.x = 1.5
-		_field_of_view_area.scale.y = 1.5
+		_field_of_view_area.scale.x = 1.8
+		_field_of_view_area.scale.y = 1.8
 	
 func _physics_process(_delta):
 	if is_move:
