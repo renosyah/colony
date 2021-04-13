@@ -18,7 +18,7 @@ offset = Vector2( -35, -3 )
 shape = SubResource( 1 )
 
 [node name="life_time" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 1.2
 autostart = true
 [connection signal="body_entered" from="." to="." method="_on_arrow_body_entered"]
 [connection signal="timeout" from="life_time" to="." method="_on_time_out_timeout"]

@@ -15,7 +15,7 @@ loop = true
 extents = Vector2( 31.2908, 63.419 )
 
 [sub_resource type="CircleShape2D" id=4]
-radius = 193.258
+radius = 187.07
 
 [node name="squad" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -57,7 +57,11 @@ shape = SubResource( 4 )
 
 [node name="timer_reset_target" type="Timer" parent="."]
 autostart = true
+
+[node name="timer_target_damage" type="Timer" parent="."]
+autostart = true
 [connection signal="input_event" from="area_click" to="." method="_on_area_click_input_event"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
 [connection signal="timeout" from="timer_reset_target" to="." method="_on_timer_reset_target_timeout"]
+[connection signal="timeout" from="timer_target_damage" to="." method="_on_timer_target_damage_timeout"]

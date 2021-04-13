@@ -1,7 +1,6 @@
 extends Area2D
 
-var attack_damage: = 15.0
-var speed = 600.0
+var speed = 400.0
 var sprite = preload("res://asset/military/projectile/empty.png")
 
 var direction = Vector2.ZERO
@@ -35,7 +34,6 @@ func _on_arrow_body_entered(body):
 		return
 	if body.data.side == side:
 		return
-	body.take_projectile_damage(attack_damage)
 	queue_free()
 
 

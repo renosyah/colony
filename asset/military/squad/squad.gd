@@ -94,6 +94,13 @@ const dead_sound = [
 	preload("res://asset/sound/maledeath3.wav"),
 	preload("res://asset/sound/maledeath4.wav"),
 ]
+const combats_sound = [
+	preload("res://asset/sound/fight1.wav"),
+	preload("res://asset/sound/fight2.wav"),
+	preload("res://asset/sound/fight3.wav"),
+	preload("res://asset/sound/fight4.wav"),
+	preload("res://asset/sound/fight5.wav")
+]
 
 enum {
 	SQUAD_FORMATION_STANDAR,
@@ -115,6 +122,7 @@ onready var _banner = $banner
 onready var _field_of_view = $Area2D
 onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
+onready var _timer_target_damage = $timer_target_damage
 
 var targets = []
 var is_move = false
@@ -142,9 +150,10 @@ func _ready():
 	spawn_full_squad()
 	change_formation(SQUAD_FORMATION_STANDAR)
 	emit_signal("on_squad_ready",self)
+	_timer_target_damage.wait_time = data.troop_data.attack_speed
 	if data.troop_data["class"] == Troop.CLASS_RANGE:
-		_field_of_view_area.scale.x = 1.8
-		_field_of_view_area.scale.y = 1.8
+		_field_of_view_area.scale.x = 2.3
+		_field_of_view_area.scale.y = 2.3
 	
 func _physics_process(_delta):
 	if is_move:
@@ -163,9 +172,9 @@ func _physics_process(_delta):
 func move_squad_to(pos):
 	is_move = true
 	waypoint = pos
-	update_troop_faccing_direction()
 	_field_of_view.monitorable = false
 	_field_of_view.monitorable = true
+	update_troop_facing_direction()
 
 func set_selected(is_selected):
 	if is_selected:
@@ -192,6 +201,7 @@ func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_betw
 			
 	return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
 
+
 func spawn_full_squad():
 	var cur_formation = _formation.get_formation_box(Vector2.ZERO ,data.troop_amount ,data.formation_space)
 	var idx = 0
@@ -204,6 +214,7 @@ func spawn_full_squad():
 		troop.position = cur_formation[idx].position
 		_troop_holder.add_child(troop)
 		idx += 1
+
 
 func update_troop_formation_bonus(formation):
 	for child in _troop_holder.get_children():
@@ -219,40 +230,60 @@ func update_troop_position():
 	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
 	var idx = 0
 	for child in _troop_holder.get_children():
-		child.rally_point = cur_formation[idx].position
+		child.is_rally_point = true
+		child.target = cur_formation[idx].position
 		idx += 1
 		
 
-func update_troop_faccing_direction():
+func update_troop_facing_direction():
 	for child in _troop_holder.get_children():
 		child.set_facing_direction((waypoint - global_position).normalized())
 		
 
+
+
 func update_troop_target():
 	rng.randomize()
 	for child in _troop_holder.get_children():
-		child.rally_point = null
-		if targets.size() <= 0:
-			child.target = null
-		else:
-			child.target = targets[rng.randf_range(0,targets.size())]
+		child.target = null
+		if !targets.empty():
+			child.is_rally_point = false
+			child.target = targets[rng.randf_range(0,targets.size())].global_position
 	
+func set_random_target_damage():
+	if !targets.empty():
+		if data.troop_data.class == Troop.CLASS_MELEE:
+			_play_figting_sound()
+				
+		for child in _troop_holder.get_children():
+			var target = targets[rng.randf_range(0,targets.size())]
+			target.take_damage(data.troop_data.attack_damage + data.troop_data.bonus.attack_damage)
+
+
 func _on_Area2D_body_entered(body):
 	if body is Troop and body.data.side != data.side:
 		targets.append(body)
-		update_troop_target()
 
 func _on_Area2D_body_exited(body):
 	if body is Troop:
 		targets.erase(body)
 	
+	
 func _on_timer_reset_target_timeout():
 	update_troop_target()
+	_disband_squad()
 	
+	
+func _on_timer_target_damage_timeout():
+	set_random_target_damage()
+		
 func _on_troop_dead():
 	emit_signal("on_squad_troop_dead",data.side, (_troop_holder.get_children().size() - 1))
-	play_dead_sound()
-	if _troop_holder.get_children().size() <= 1:
+	_play_dead_sound()
+	_disband_squad()
+
+func _disband_squad():
+	if _troop_holder.get_children().empty():
 		emit_signal("on_squad_dead",self)
 		queue_free()
 
@@ -261,9 +292,12 @@ func _on_area_click_input_event(viewport, event, shape_idx):
 	if event is InputEventScreenTouch or (event is InputEventMouseButton and event.is_pressed()):
 		emit_signal("on_squad_click")
 
-func play_dead_sound():
+func _play_dead_sound():
 	rng.randomize()
 	_audio.stream = dead_sound[rng.randf_range(0,dead_sound.size())]
 	_audio.play()
 
-
+func _play_figting_sound():
+	rng.randomize()
+	_audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
+	_audio.play()
