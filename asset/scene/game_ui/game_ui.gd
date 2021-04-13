@@ -29,10 +29,10 @@ func _on_squad_troop_dead(side,troop_left):
 	_armies_bar[side].value = max(0,army_hp.value - 1)
 	
 	# battle result
-	if army_hp.value <= 5 and side == "red":
+	if _armies_bar["blue"].value > 0 and _armies_bar["red"].value <= 0:
 		_dialog_result_text.text = "you lose"
 		_dialog_result.visible = true
-	elif  army_hp.value <= 5 and side == "blue":
+	if _armies_bar["blue"].value <= 0 and _armies_bar["red"].value > 0:
 		_dialog_result_text.text = "you win"
 		_dialog_result.visible = true
 		

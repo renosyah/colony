@@ -15,7 +15,7 @@ loop = true
 extents = Vector2( 31.2908, 63.419 )
 
 [sub_resource type="CircleShape2D" id=4]
-radius = 85.3006
+radius = 193.258
 
 [node name="squad" type="KinematicBody2D"]
 script = ExtResource( 2 )

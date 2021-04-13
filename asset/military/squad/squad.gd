@@ -35,10 +35,45 @@ const SQUAD_TYPE_AXEMAN  = {
 	"formation_space" : 20,
 	"side" : "",
 	"color" : Color(Color.white),
-	"max_speed" : 90.0,
+	"max_speed" : 100.0,
 	"troop_data" : Troop.TROOP_TYPE_AXEMAN
 }
-
+const SQUAD_TYPE_LIGHT_CAVALRY = {
+	"name" : "Light Cavalry Squad",
+	"description" : "Light Cavalry : fast, expensive, medium",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_light_cavalry.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_light_cavalry.png",
+	"troop_amount" : 15,
+	"formation_space" : 35,
+	"side" : "",
+	"color" : Color(Color.white),
+	"max_speed" : 180.0,
+	"troop_data" : Troop.TROOP_TYPE_LIGHT_CAVALRY
+}
+const SQUAD_TYPE_ARCHER = {
+	"name" : "Archer Squad",
+	"description" : "Archer Squad : basic range unit",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_archer.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_archer.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : Color(Color.white),
+	"max_speed" : 80.0,
+	"troop_data" : Troop.TROOP_TYPE_ARCHER
+}
+const SQUAD_TYPE_CROSSBOWMAN = {
+	"name" : "Crossbowman Squad",
+	"description" : "Crossbowman Squad : advance range unit",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_crossbowman.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_crossbowman.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : Color(Color.white),
+	"max_speed" : 80.0,
+	"troop_data" : Troop.TROOP_TYPE_CROSSBOWMAN
+}
 # const
 const dead_sound = [
 	preload("res://asset/sound/maledeath1.wav"),
@@ -65,6 +100,7 @@ onready var _animation = $AnimationPlayer
 onready var _troop_holder = $troop_holder
 onready var _banner = $banner
 onready var _field_of_view = $Area2D
+onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
 
 var targets = []
@@ -93,7 +129,9 @@ func _ready():
 	spawn_full_squad()
 	change_formation(SQUAD_FORMATION_STANDAR)
 	emit_signal("on_squad_ready",self)
-	
+	if data.troop_data["class"] == Troop.CLASS_RANGE:
+		_field_of_view_area.scale.x = 1.5
+		_field_of_view_area.scale.y = 1.5
 	
 func _physics_process(_delta):
 	if is_move:
@@ -112,6 +150,7 @@ func _physics_process(_delta):
 func move_squad_to(pos):
 	is_move = true
 	waypoint = pos
+	update_troop_faccing_direction()
 
 func set_selected(is_selected):
 	if is_selected:
@@ -132,9 +171,9 @@ func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_betw
 		SQUAD_FORMATION_STANDAR:
 			return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
 		SQUAD_FORMATION_SPREAD:
-			return _formation.get_formation_box(waypoint_position,number_of_unit,30)
+			return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units + 10)
 		SQUAD_FORMATION_COMPACT:
-			return _formation.get_formation_box(waypoint_position,number_of_unit, 15)
+			return _formation.get_formation_box(waypoint_position,number_of_unit, space_between_units - 5)
 			
 	return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
 
@@ -167,6 +206,12 @@ func update_troop_position():
 	for child in _troop_holder.get_children():
 		child.rally_point = cur_formation[idx].position
 		idx += 1
+		
+
+func update_troop_faccing_direction():
+	for child in _troop_holder.get_children():
+		child.set_facing_direction((waypoint - global_position).normalized())
+		
 
 func update_troop_target():
 	rng.randomize()

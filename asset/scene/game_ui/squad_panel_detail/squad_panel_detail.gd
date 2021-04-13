@@ -9,8 +9,8 @@ const MAX_STATS = {
 	"attack_damage" : 15.0,
 	"hit_point" : 500.0,
 	"armor" : 5.0,
-	"range_attack" : 1000.0,
-	"max_speed" : 200.0
+	"range_attack" : 500.0,
+	"max_speed" : 500.0
 }
 
 onready var _squad_icon = $HBoxContainer/VBoxContainer/TextureRect

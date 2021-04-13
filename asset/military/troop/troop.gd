@@ -1,8 +1,14 @@
 extends KinematicBody2D
 class_name Troop
 
+enum {
+	CLASS_MELEE
+	CLASS_RANGE
+}
+
 # data troop class
 const TROOP_TYPE_SPEARMAN = {
+	"class" : CLASS_MELEE,
 	"attack_damage" : 7.0,
 	"hit_point" : 40.0,
 	"armor" : 1.5,
@@ -14,12 +20,14 @@ const TROOP_TYPE_SPEARMAN = {
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/spear.png",
+	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack_damage" : 0,
 		"armor" : 0
 	}
 }
 const TROOP_TYPE_SWORDMAN = {
+	"class" : CLASS_MELEE,
 	"attack_damage" : 10.0,
 	"hit_point" : 100.0,
 	"armor" : 5.0,
@@ -31,13 +39,15 @@ const TROOP_TYPE_SWORDMAN = {
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/sword.png",
+	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack_damage" : 0,
 		"armor" : 0
 	}
 }
 const TROOP_TYPE_AXEMAN = {
-	"attack_damage" : 12.0,
+	"class" : CLASS_MELEE,
+	"attack_damage" : 14.0,
 	"hit_point" : 70.0,
 	"armor" : 1.0,
 	"range_attack" : 35,
@@ -48,12 +58,69 @@ const TROOP_TYPE_AXEMAN = {
 	"body_sprite" : "res://asset/military/uniform/no_armor.png",
 	"head_sprite" : "res://asset/military/uniform/wolf_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/axe.png",
+	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack_damage" : 0,
 		"armor" : 0
 	}
 }
-
+const TROOP_TYPE_LIGHT_CAVALRY = {
+	"class" : CLASS_MELEE,
+	"attack_damage" : 5.0,
+	"hit_point" : 120.0,
+	"armor" : 2.0,
+	"range_attack" : 80,
+	"attack_speed" : 3.0,
+	"max_speed" : 230.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/light_armor.png",
+	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/lance.png",
+	"mount_sprite":"res://asset/military/mount/horse.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
+}
+const TROOP_TYPE_ARCHER = {
+	"class" : CLASS_RANGE,
+	"attack_damage" : 4.0,
+	"hit_point" : 40.0,
+	"armor" : 1.0,
+	"range_attack" : 380,
+	"attack_speed" : 5.0,
+	"max_speed" : 90.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
+	"head_sprite" : "res://asset/military/uniform/cap_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/bow.png",
+	"mount_sprite":"res://asset/military/mount/none.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
+}
+const TROOP_TYPE_CROSSBOWMAN = {
+	"class" : CLASS_RANGE,
+	"attack_damage" : 11.0,
+	"hit_point" : 80.0,
+	"armor" : 3.0,
+	"range_attack" : 190,
+	"attack_speed" : 8.0,
+	"max_speed" : 60.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
+	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/crossbow.png",
+	"mount_sprite":"res://asset/military/mount/none.png",
+	"bonus" : {
+		"attack_damage" : 0,
+		"armor" : 0
+	}
+}
 # const
 const combats_sound = [
 	preload("res://asset/sound/fight1.wav"),
@@ -62,11 +129,17 @@ const combats_sound = [
 	preload("res://asset/sound/fight4.wav"),
 	preload("res://asset/sound/fight5.wav")
 ]
-const attack_animations = [
+const attack_melee_animations = [
 	"troop_attack",
 	"troop_attack_2",
 	"troop_attack_3"
 ]
+
+const attack_range_animations = [
+	"troop_attack_bow"
+]
+
+const MELEE_RANGE = 50.0
 
 signal on_troop_dead()
 
@@ -74,6 +147,7 @@ onready var rng = RandomNumberGenerator.new()
 onready var _body = $body
 onready var _head = $body/head
 onready var _weapon = $body/weapon
+onready var _mount = $body/mount
 onready var _collision = $CollisionShape2D
 onready var _attack_delay = $attack_delay
 onready var _animation = $AnimationPlayer
@@ -81,10 +155,10 @@ onready var _audio = $AudioStreamPlayer2D
 
 var target : KinematicBody2D = null
 var rally_point = null
-var range_folowing_distance = 0.5
-var folowing_speed = 80.0
+var range_folowing_distance = 5.5
 
 var data = {
+	"class" : CLASS_MELEE,
 	"attack_damage" : 4.0,
 	"hit_point" : 80.0,
 	"armor" : 80.0,
@@ -96,6 +170,7 @@ var data = {
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/empty_weapon.png",
+	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack_damage" : 0,
 		"armor" : 0,
@@ -107,45 +182,78 @@ func _ready():
 	_head.texture = load(data.head_sprite)
 	_body.texture = load(data.body_sprite)
 	_weapon.texture = load(data.weapon_sprite)
+	_mount.texture = load(data.mount_sprite)
 	
 func set_bonus(bon):
 	data.bonus = bon
-
+	
+func set_facing_direction(_direction):
+	if _direction.x > 0:
+		_body.scale.x = 1
+	else:
+		_body.scale.x = -1
+		
 func _physics_process(delta):
 	var velocity = Vector2.ZERO
+	var distance_to_target = 0.0
+	var direction = Vector2.ZERO
+	
 	if rally_point:
-		var direction = (rally_point - global_position).normalized()
-		var distance_to_rally_point = global_position.distance_to(rally_point)
+		direction = (rally_point - global_position).normalized()
+		distance_to_target = global_position.distance_to(rally_point)
 			
-		if distance_to_rally_point > range_folowing_distance:
+		if distance_to_target > range_folowing_distance:
 			_animation.play("troop_walking")
-			velocity = direction * folowing_speed * delta
-			
+			velocity = direction * data.max_speed * delta
 			
 	if is_instance_valid(target):
-		var direction = (target.global_position - global_position).normalized()
-		var distance_to_target = global_position.distance_to(target.global_position)
-		
+		direction = (target.global_position - global_position).normalized()
+		distance_to_target = global_position.distance_to(target.global_position)
+
+		if distance_to_target > data.range_attack and distance_to_target < data.range_attack + 100.0:
+			_animation.play("troop_walking")
+			velocity = direction * data.max_speed * delta
+			
 		if direction.x > 0:
 			_body.scale.x = 1
 		else:
 			_body.scale.x = -1
-			
-		if distance_to_target > data.range_attack and distance_to_target < data.range_attack + 100.0:
-			_animation.play("troop_walking")
-			velocity = direction * data.max_speed * delta
-
+				
 		if _attack_delay.is_stopped() and distance_to_target <= data.range_attack:
-			target.take_damage(data.attack_damage + data.bonus.attack_damage)
-			play_hit_sound()
-			_animation.play(attack_animations[rng.randf_range(0,attack_animations.size())])
+			if distance_to_target > MELEE_RANGE:
+				match data.class:
+					CLASS_MELEE:
+						play_hit_sound()
+						target.take_damage(data.attack_damage + data.bonus.attack_damage)
+						_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
+					CLASS_RANGE:
+						shoot(direction)
+						_animation.play(attack_range_animations[rng.randf_range(0,attack_range_animations.size())])
+			else:
+				target.take_damage(data.attack_damage + data.bonus.attack_damage)
+				_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
+
 			_attack_delay.wait_time = data.attack_speed
 			_attack_delay.start()
+			
+
 	else:
 		_animation.play("troop_walking")
-		
+	
 	move_and_collide(velocity)
 
+
+func shoot(dir):
+	var projectile = preload("res://asset/military/projectile/projectile.tscn").instance()
+	projectile.attack_damage = data.attack_damage + data.bonus.attack_damage
+	projectile.side = data.side
+	projectile.sprite = preload("res://asset/military/projectile/arrow/arrow.png")
+	projectile.lauching(global_position, dir)
+	add_child(projectile)
+	
+	_audio.stream = preload("res://asset/sound/arrow_fly.wav")
+	_audio.play()
+	
 func take_damage(dmg):
 	data.hit_point -= (dmg - (data.armor + data.bonus.armor))
 	if data.hit_point <= 0:

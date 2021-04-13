@@ -7,28 +7,28 @@ onready var game_ui = $game_ui
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var my_pos = [
-		Vector2(100, 200.0),
-		Vector2(300, 200.0),
-		Vector2(500, 200.0),
-		Vector2(700, 200.0),
-		Vector2(900, 200.0),
-		Vector2(1100, 200.0)
+		Vector2(100, 50.0),
+		Vector2(300, 50.0),
+		Vector2(500, 50.0),
+		Vector2(700, 50.0),
+		Vector2(900, 50.0),
+		Vector2(1100, 50.0)
 	]
 	var enemy_pos = [
-		Vector2(100, 400.0),
-		Vector2(300, 400.0),
-		Vector2(500, 400.0),
-		Vector2(700, 400.0),
-		Vector2(900, 400.0),
-		Vector2(1100, 400.0)
+		Vector2(100, 600.0),
+		Vector2(300, 600.0),
+		Vector2(500, 600.0),
+		Vector2(700, 600.0),
+		Vector2(900, 600.0),
+		Vector2(1100, 600.0)
 	]
 	var squad_types = [
 		Squad.SQUAD_TYPE_SPEARMAN,
 		Squad.SQUAD_TYPE_SWORDMAN,
 		Squad.SQUAD_TYPE_AXEMAN,
-		Squad.SQUAD_TYPE_AXEMAN,
-		Squad.SQUAD_TYPE_SWORDMAN,
-		Squad.SQUAD_TYPE_SPEARMAN
+		Squad.SQUAD_TYPE_LIGHT_CAVALRY,
+		Squad.SQUAD_TYPE_ARCHER,
+		Squad.SQUAD_TYPE_CROSSBOWMAN
 	]
 	
 	var post_troop = 0
