@@ -1,7 +1,7 @@
 [gd_resource type="Animation" format=2]
 
 [resource]
-resource_name = "troop_attack"
+resource_name = "troop_attack_3"
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("body/weapon:position")
@@ -10,10 +10,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.4, 0.5 ),
+"times": PoolRealArray( 0.2, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( -5.03592, -9.96868 ), Vector2( 19.0347, -5.23864 ) ]
+"values": [ Vector2( -17.768, -35.8166 ), Vector2( 17.7299, 6.41602 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("body/weapon:rotation_degrees")
@@ -22,10 +22,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ -133.583, 37.7099 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("body:position")

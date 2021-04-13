@@ -119,6 +119,7 @@ func _on_squad_icon_click(squad):
 	
 	if _selected_squad.has(squad):
 		_selected_squad.erase(squad)
+		_squad_detail_panel.visible = false
 	else:
 		_selected_squad.append(squad)
 		_squad_detail_panel.visible = true

@@ -7,10 +7,9 @@ const MAX_STATS = {
 	"description" : "",
 	"squad_icon" : "",
 	"attack_damage" : 15.0,
-	"hit_point" : 100.0,
+	"hit_point" : 500.0,
 	"armor" : 5.0,
-	"range_attack" : 100.0,
-	"attack_speed" : 5.0,
+	"range_attack" : 1000.0,
 	"max_speed" : 200.0
 }
 
@@ -31,7 +30,6 @@ var data = {
 	"hit_point" : 100.0,
 	"armor" : 5.0,
 	"range_attack" : 100.0,
-	"attack_speed" : 5.0,
 	"max_speed" : 200.0
 }
 

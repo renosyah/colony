@@ -3,12 +3,12 @@ class_name Troop
 
 # data troop class
 const TROOP_TYPE_SPEARMAN = {
-	"attack_damage" : 8.0,
-	"hit_point" : 60.0,
-	"armor" : 3.0,
-	"range_attack" : 60,
+	"attack_damage" : 7.0,
+	"hit_point" : 40.0,
+	"armor" : 1.5,
+	"range_attack" : 70,
 	"attack_speed" : 2.0,
-	"max_speed" : 130.0,
+	"max_speed" : 90.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
@@ -21,11 +21,11 @@ const TROOP_TYPE_SPEARMAN = {
 }
 const TROOP_TYPE_SWORDMAN = {
 	"attack_damage" : 10.0,
-	"hit_point" : 80.0,
+	"hit_point" : 100.0,
 	"armor" : 5.0,
-	"range_attack" : 20,
+	"range_attack" : 40,
 	"attack_speed" : 2.5,
-	"max_speed" : 120.0,
+	"max_speed" : 60.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
@@ -39,8 +39,8 @@ const TROOP_TYPE_SWORDMAN = {
 const TROOP_TYPE_AXEMAN = {
 	"attack_damage" : 12.0,
 	"hit_point" : 70.0,
-	"armor" : 0.5,
-	"range_attack" : 20,
+	"armor" : 1.0,
+	"range_attack" : 35,
 	"attack_speed" : 1.3,
 	"max_speed" : 140.0,
 	"side" : "",
@@ -62,6 +62,11 @@ const combats_sound = [
 	preload("res://asset/sound/fight4.wav"),
 	preload("res://asset/sound/fight5.wav")
 ]
+const attack_animations = [
+	"troop_attack",
+	"troop_attack_2",
+	"troop_attack_3"
+]
 
 signal on_troop_dead()
 
@@ -76,7 +81,7 @@ onready var _audio = $AudioStreamPlayer2D
 
 var target : KinematicBody2D = null
 var rally_point = null
-var range_folowing_distance = 5.0
+var range_folowing_distance = 0.5
 var folowing_speed = 80.0
 
 var data = {
@@ -133,7 +138,7 @@ func _physics_process(delta):
 		if _attack_delay.is_stopped() and distance_to_target <= data.range_attack:
 			target.take_damage(data.attack_damage + data.bonus.attack_damage)
 			play_hit_sound()
-			_animation.play("troop_attack")
+			_animation.play(attack_animations[rng.randf_range(0,attack_animations.size())])
 			_attack_delay.wait_time = data.attack_speed
 			_attack_delay.start()
 	else:

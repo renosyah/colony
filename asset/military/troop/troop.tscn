@@ -1,8 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://asset/military/troop/animation_troop_attack.tres" type="Animation" id=1]
+[ext_resource path="res://asset/military/uniform/light_armor.png" type="Texture" id=2]
+[ext_resource path="res://asset/military/uniform/light_armor_helm.png" type="Texture" id=3]
 [ext_resource path="res://asset/military/troop/troop.gd" type="Script" id=4]
 [ext_resource path="res://asset/military/troop/animation_troop_walking.tres" type="Animation" id=5]
+[ext_resource path="res://asset/military/weapon/sword.png" type="Texture" id=6]
+[ext_resource path="res://asset/military/troop/animation_troop_attack2.tres" type="Animation" id=7]
+[ext_resource path="res://asset/military/troop/animation_troop_attack3.tres" type="Animation" id=8]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.03472
@@ -17,14 +22,16 @@ one_way_collision = true
 
 [node name="body" type="Sprite" parent="."]
 self_modulate = Color( 0.988235, 0.0117647, 0.0117647, 1 )
-position = Vector2( 1.15623, -1.864 )
+position = Vector2( 3.42748, -5.52556 )
+texture = ExtResource( 2 )
 
 [node name="head" type="Sprite" parent="body"]
 position = Vector2( 0, -19.0273 )
+texture = ExtResource( 3 )
 
 [node name="weapon" type="Sprite" parent="body"]
-position = Vector2( 18.1474, 3.53113 )
-rotation = 0.48895
+position = Vector2( 13.5903, -6.3085 )
+texture = ExtResource( 6 )
 
 [node name="attack_delay" type="Timer" parent="."]
 wait_time = 1.6
@@ -32,6 +39,8 @@ one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/troop_attack = ExtResource( 1 )
+anims/troop_attack_2 = ExtResource( 7 )
+anims/troop_attack_3 = ExtResource( 8 )
 anims/troop_walking = ExtResource( 5 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

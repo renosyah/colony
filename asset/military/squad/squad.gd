@@ -104,7 +104,8 @@ func _physics_process(_delta):
 		if distance_to_waypoint > min_area_waypoint:
 			velocity = direction * data.max_speed * _delta
 		
-		update_troop_position(velocity != Vector2.ZERO)
+		if velocity != Vector2.ZERO:
+			update_troop_position()
 		
 		move_and_collide(velocity)
 
@@ -123,7 +124,7 @@ func set_selected(is_selected):
 func change_formation(formation):
 	is_move = false
 	current_formation = formation
-	update_troop_position(true)
+	update_troop_position()
 	update_troop_formation_bonus(formation)
 
 func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int):
@@ -160,22 +161,17 @@ func update_troop_formation_bonus(formation):
 			SQUAD_FORMATION_COMPACT:
 				child.set_bonus(Formation.FORMATION_CIRCLE_BONUS)
 
-func update_troop_position(is_set):
-	var cur_formation = _get_formation(position,data.troop_amount,data.formation_space)
+func update_troop_position():
+	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
 	var idx = 0
 	for child in _troop_holder.get_children():
-		child.rally_point = null
-		if is_set:
-			child.rally_point = cur_formation[idx].position
+		child.rally_point = cur_formation[idx].position
 		idx += 1
 
 func update_troop_target():
 	rng.randomize()
-	for target in targets:
-		if !is_instance_valid(target):
-			targets.erase(target)
-	
 	for child in _troop_holder.get_children():
+		child.rally_point = null
 		if targets.size() <= 0:
 			child.target = null
 		else:
