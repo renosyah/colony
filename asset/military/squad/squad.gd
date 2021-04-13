@@ -164,6 +164,8 @@ func move_squad_to(pos):
 	is_move = true
 	waypoint = pos
 	update_troop_faccing_direction()
+	_field_of_view.monitorable = false
+	_field_of_view.monitorable = true
 
 func set_selected(is_selected):
 	if is_selected:

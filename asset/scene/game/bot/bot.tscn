@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://asset/scene/game/bot/bot.gd" type="Script" id=1]
+
+[node name="bot" type="Node"]
+script = ExtResource( 1 )
+
+[node name="thinker_time" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="reset_data" type="Timer" parent="."]
+autostart = true
+[connection signal="timeout" from="thinker_time" to="." method="_on_thinker_time_timeout"]
+[connection signal="timeout" from="reset_data" to="." method="_on_reset_data_timeout"]

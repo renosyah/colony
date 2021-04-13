@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://asset/military/troop/animation_troop_attack.tres" type="Animation" id=1]
 [ext_resource path="res://asset/military/uniform/light_armor.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://asset/military/troop/animation_troop_attack2.tres" type="Animation" id=7]
 [ext_resource path="res://asset/military/troop/animation_troop_attack3.tres" type="Animation" id=8]
 [ext_resource path="res://asset/military/troop/animation_attack_bow.tres" type="Animation" id=9]
+[ext_resource path="res://asset/military/mount/horse.png" type="Texture" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.03472
@@ -31,7 +32,8 @@ position = Vector2( 0, -19.0273 )
 texture = ExtResource( 6 )
 
 [node name="mount" type="Sprite" parent="body"]
-position = Vector2( 14.7395, 8.1476 )
+position = Vector2( 8.75487, 12.3998 )
+texture = ExtResource( 10 )
 
 [node name="weapon" type="Sprite" parent="body"]
 position = Vector2( -5, -10 )

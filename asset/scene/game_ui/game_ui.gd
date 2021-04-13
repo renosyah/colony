@@ -9,8 +9,8 @@ onready var _dialog_result = $CanvasLayer/VBoxContainer2
 onready var _dialog_result_text = $CanvasLayer/VBoxContainer2/VBoxContainer/Label
 
 onready var _armies_bar = {
-	"red" : $CanvasLayer/HBoxContainer/left_bar,
-	"blue" : $CanvasLayer/HBoxContainer/right_bar
+	"blue" : $CanvasLayer/HBoxContainer/left_bar,
+	"red"  : $CanvasLayer/HBoxContainer/right_bar
 }
 var _squad_in_command = []
 var _selected_squad = []
@@ -30,10 +30,10 @@ func _on_squad_troop_dead(side,troop_left):
 	
 	# battle result
 	if _armies_bar["blue"].value > 0 and _armies_bar["red"].value <= 0:
-		_dialog_result_text.text = "you lose"
+		_dialog_result_text.text =  "you win"
 		_dialog_result.visible = true
 	if _armies_bar["blue"].value <= 0 and _armies_bar["red"].value > 0:
-		_dialog_result_text.text = "you win"
+		_dialog_result_text.text = "you lose"
 		_dialog_result.visible = true
 		
 # button replay
@@ -52,6 +52,10 @@ func _on_Button_deselect_all_pressed():
 	for squad_item in _squad_panel.get_children():
 		squad_item.select_current_squad(false)
 
+
+func _on_Button_stop_unit_pressed():
+	for squad  in _selected_squad:
+		squad.is_move = false
 
 
 func _on_Button_fromation_standar_pressed():
@@ -123,5 +127,4 @@ func _on_squad_icon_click(squad):
 	else:
 		_selected_squad.append(squad)
 		_squad_detail_panel.visible = true
-
 

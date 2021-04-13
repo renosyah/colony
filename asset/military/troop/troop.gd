@@ -255,6 +255,7 @@ func _physics_process(delta):
 						shoot(direction)
 						_animation.play(attack_range_animations[rng.randf_range(0,attack_range_animations.size())])
 			else:
+				play_hit_sound()
 				target.take_damage(data.attack_damage + data.bonus.attack_damage)
 				_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
 
@@ -280,6 +281,7 @@ func take_projectile_damage(dmg):
 	rng.randomize()
 	_audio.stream = stabs_sound[rng.randf_range(0,stabs_sound.size())]
 	_audio.play()
+	
 	take_damage(dmg)
 	
 func take_damage(dmg):
