@@ -34,6 +34,7 @@ func _on_arrow_body_entered(body):
 		return
 	if body.data.side == side:
 		return
+	body.hit_by_projectile()
 	queue_free()
 
 

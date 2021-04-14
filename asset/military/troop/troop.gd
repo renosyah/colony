@@ -151,6 +151,17 @@ const attack_range_animations = [
 	"troop_attack_bow"
 ]
 
+const combats_sound = [
+	preload("res://asset/sound/fight1.wav"),
+	preload("res://asset/sound/fight2.wav"),
+	preload("res://asset/sound/fight3.wav"),
+	preload("res://asset/sound/fight4.wav"),
+	preload("res://asset/sound/fight5.wav")
+]
+const stabs_sound = [
+	preload("res://asset/sound/stab1.wav"),
+	preload("res://asset/sound/stab2.wav"),
+]
 
 signal on_troop_dead()
 
@@ -194,6 +205,7 @@ func _ready():
 	_weapon.texture = load(data.weapon_sprite)
 	_mount.texture = load(data.mount_sprite)
 	_animation.play("troop_walking")
+	set_physics_process(false)
 	
 func set_bonus(bon):
 	data.bonus = bon
@@ -203,8 +215,9 @@ func set_facing_direction(_direction):
 		_body.scale.x = 1
 	else:
 		_body.scale.x = -1
-		
-func _physics_process(delta):
+
+
+func _process(delta):
 	var velocity = Vector2.ZERO
  
 	if target:
@@ -226,6 +239,7 @@ func _physics_process(delta):
 		if _attack_delay.is_stopped() and !is_rally_point and distance_to_target <= data.range_attack:
 			match data.class:
 				CLASS_MELEE:
+					_play_figting_sound()
 					_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
 				CLASS_RANGE:
 					_shoot(direction)
@@ -238,7 +252,6 @@ func _physics_process(delta):
 		
 	move_and_collide(velocity)
 
-
 func _shoot(dir):
 	var projectile = preload("res://asset/military/projectile/projectile.tscn").instance()
 	projectile.side = data.side
@@ -246,14 +259,21 @@ func _shoot(dir):
 	projectile.lauching(global_position, dir)
 	add_child(projectile)
 
+func hit_by_projectile():
+	_play_stab_sound()
 
 func take_damage(dmg):
-	var _dmg = (dmg - (data.armor + data.bonus.armor))
-	if _dmg < 0:
-		_dmg = 1
-		
-	data.hit_point -= _dmg
+	data.hit_point -= dmg
 	if data.hit_point <= 0:
 		emit_signal("on_troop_dead")
 		queue_free()
- 
+
+func _play_figting_sound():
+	rng.randomize()
+	_audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
+	_audio.play()
+	
+func _play_stab_sound():
+	rng.randomize()
+	_audio.stream = stabs_sound[rng.randf_range(0,stabs_sound.size())]
+	_audio.play()

@@ -42,13 +42,13 @@ func _ready():
 	for pos in my_pos:
 		spawn_squad(pos,squad_types[post_troop])
 		post_troop += 1
-	emit_signal("army_ready", "blue" ,Color(Color.blue),105)
+	emit_signal("army_ready", "blue" ,Color(Color.blue),105.0)
 		
 	var post_troop2 = 0
 	for pos in enemy_pos:
 		spawn_enemy_squad(pos,squad_types[post_troop2])
 		post_troop2 += 1
-	emit_signal("army_ready","red",Color(Color.red),105)
+	emit_signal("army_ready","red",Color(Color.red),105.0)
 	
 
 	

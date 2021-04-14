@@ -12,6 +12,7 @@ const SQUAD_TYPE_SPEARMAN  = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 80.0,
+	"attack_delay" : 2.0,
 	"troop_data" : Troop.TROOP_TYPE_SPEARMAN
 }
 const SQUAD_TYPE_SWORDMAN  = {
@@ -24,6 +25,7 @@ const SQUAD_TYPE_SWORDMAN  = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 80.0,
+	"attack_delay" : 2.5,
 	"troop_data" : Troop.TROOP_TYPE_SWORDMAN
 }
 const SQUAD_TYPE_AXEMAN  = {
@@ -36,6 +38,7 @@ const SQUAD_TYPE_AXEMAN  = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 100.0,
+	"attack_delay" : 1.3,
 	"troop_data" : Troop.TROOP_TYPE_AXEMAN
 }
 const SQUAD_TYPE_LIGHT_CAVALRY = {
@@ -48,6 +51,7 @@ const SQUAD_TYPE_LIGHT_CAVALRY = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 180.0,
+	"attack_delay" : 3.0,
 	"troop_data" : Troop.TROOP_TYPE_LIGHT_CAVALRY
 }
 const SQUAD_TYPE_ARCHER = {
@@ -60,6 +64,7 @@ const SQUAD_TYPE_ARCHER = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 80.0,
+	"attack_delay" : 5.0,
 	"troop_data" : Troop.TROOP_TYPE_ARCHER
 }
 const SQUAD_TYPE_CROSSBOWMAN = {
@@ -72,6 +77,7 @@ const SQUAD_TYPE_CROSSBOWMAN = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 80.0,
+	"attack_delay" : 8.0,
 	"troop_data" : Troop.TROOP_TYPE_CROSSBOWMAN
 }
 const SQUAD_TYPE_ARCHER_CAVALRY = {
@@ -84,6 +90,7 @@ const SQUAD_TYPE_ARCHER_CAVALRY = {
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 180.0,
+	"attack_delay" : 2.0,
 	"troop_data" : Troop.TROOP_TYPE_ARCHER_CAVALRY
 }
 
@@ -93,13 +100,6 @@ const dead_sound = [
 	preload("res://asset/sound/maledeath2.wav"),
 	preload("res://asset/sound/maledeath3.wav"),
 	preload("res://asset/sound/maledeath4.wav"),
-]
-const combats_sound = [
-	preload("res://asset/sound/fight1.wav"),
-	preload("res://asset/sound/fight2.wav"),
-	preload("res://asset/sound/fight3.wav"),
-	preload("res://asset/sound/fight4.wav"),
-	preload("res://asset/sound/fight5.wav")
 ]
 
 enum {
@@ -141,6 +141,7 @@ var data = {
 	"side" : "",
 	"color" : Color(Color.red),
 	"max_speed" : 80.0,
+	"attack_delay" : 1.0,
 	"troop_data" : {}
 }
 
@@ -150,12 +151,13 @@ func _ready():
 	spawn_full_squad()
 	change_formation(SQUAD_FORMATION_STANDAR)
 	emit_signal("on_squad_ready",self)
-	_timer_target_damage.wait_time = data.troop_data.attack_speed
+	_timer_target_damage.wait_time = data.attack_delay
 	if data.troop_data["class"] == Troop.CLASS_RANGE:
 		_field_of_view_area.scale.x = 2.3
 		_field_of_view_area.scale.y = 2.3
+	set_physics_process(false)
 	
-func _physics_process(_delta):
+func _process(_delta):
 	if is_move:
 		var velocity = Vector2.ZERO
 		var direction = (waypoint - global_position).normalized()
@@ -243,21 +245,20 @@ func update_troop_facing_direction():
 
 
 func update_troop_target():
+	if targets.empty():
+		return
+		
 	rng.randomize()
 	for child in _troop_holder.get_children():
-		child.target = null
-		if !targets.empty():
+		if is_instance_valid(child.target):
 			child.is_rally_point = false
 			child.target = targets[rng.randf_range(0,targets.size())].global_position
 	
 func set_random_target_damage():
 	if !targets.empty():
-		if data.troop_data.class == Troop.CLASS_MELEE:
-			_play_figting_sound()
-				
 		for child in _troop_holder.get_children():
 			var target = targets[rng.randf_range(0,targets.size())]
-			target.take_damage(data.troop_data.attack_damage + data.troop_data.bonus.attack_damage)
+			target.take_damage(_get_troop_data_attack_damage())
 
 
 func _on_Area2D_body_entered(body):
@@ -287,7 +288,6 @@ func _disband_squad():
 		emit_signal("on_squad_dead",self)
 		queue_free()
 
-
 func _on_area_click_input_event(viewport, event, shape_idx):
 	if event is InputEventScreenTouch or (event is InputEventMouseButton and event.is_pressed()):
 		emit_signal("on_squad_click")
@@ -297,7 +297,9 @@ func _play_dead_sound():
 	_audio.stream = dead_sound[rng.randf_range(0,dead_sound.size())]
 	_audio.play()
 
-func _play_figting_sound():
-	rng.randomize()
-	_audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
-	_audio.play()
+func _get_troop_data_attack_damage():
+	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack_damage
+	if dmg < 0:
+		dmg = 1.0
+	return dmg
+	

@@ -29,10 +29,10 @@ func _on_squad_troop_dead(side,troop_left):
 	_armies_bar[side].value = max(0,army_hp.value - 1)
 	
 	# battle result
-	if _armies_bar["blue"].value > 0 and _armies_bar["red"].value <= 0:
+	if _armies_bar["blue"].value > 0.0 and _armies_bar["red"].value <= 0.0:
 		_dialog_result_text.text =  "you win"
 		_dialog_result.visible = true
-	if _armies_bar["blue"].value <= 0 and _armies_bar["red"].value > 0:
+	if _armies_bar["blue"].value <= 0.0 and _armies_bar["red"].value > 0.0:
 		_dialog_result_text.text = "you lose"
 		_dialog_result.visible = true
 		
@@ -71,6 +71,7 @@ func _on_Button_fromation_compact_pressed():
 		squad.change_formation(Squad.SQUAD_FORMATION_COMPACT)
 	
 
+# input touch or click
 func _on_Control_gui_input( event):
 	if (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_pressed():
 		move_all_selected_squad(get_global_mouse_position())
@@ -109,6 +110,15 @@ func remove_squad_from_squad_panel(squad):
 			_squad_panel.remove_child(child)
 		
 func _on_squad_icon_click(squad):
+	_set_squad_detail(squad)
+	if _selected_squad.has(squad):
+		_selected_squad.erase(squad)
+		_squad_detail_panel.visible = false
+	else:
+		_selected_squad.append(squad)
+		_squad_detail_panel.visible = true
+
+func _set_squad_detail(squad):
 	var template = SquadPanelDetail.MAX_STATS.duplicate()
 	template.name = squad.data.name
 	template.description = squad.data.description
@@ -119,12 +129,3 @@ func _on_squad_icon_click(squad):
 	template.range_attack = squad.data.troop_data.range_attack
 	template.max_speed = squad.data.troop_data.max_speed
 	_squad_detail_panel.show_stats(template)
-	
-	
-	if _selected_squad.has(squad):
-		_selected_squad.erase(squad)
-		_squad_detail_panel.visible = false
-	else:
-		_selected_squad.append(squad)
-		_squad_detail_panel.visible = true
-
