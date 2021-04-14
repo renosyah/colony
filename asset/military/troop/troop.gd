@@ -270,8 +270,8 @@ func take_damage(dmg):
 
 func _get_damage_receive(dmg):
 	var _dmg = (dmg - (data.armor + data.bonus.armor))
-	if _dmg < 0:
-		_dmg = 1
+	if _dmg < 0.0:
+		_dmg =0.5
 	return _dmg
 	
 func _play_figting_sound():

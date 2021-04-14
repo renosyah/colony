@@ -244,15 +244,13 @@ func update_troop_facing_direction():
 		child.set_facing_direction((waypoint - global_position).normalized())
 		
 
-
-
 func update_troop_target():
-	if targets.empty():
-		return
-		
 	rng.randomize()
 	for child in _troop_holder.get_children():
-		if !is_instance_valid(child.target):
+		if targets.empty():
+			child.is_rally_point = true
+			child.target = null
+		elif !is_instance_valid(child.target):
 			child.is_rally_point = false
 			child.target = targets[rng.randf_range(0,targets.size())].global_position
 	
@@ -302,6 +300,6 @@ func _play_dead_sound():
 func _get_troop_data_attack_damage():
 	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack_damage
 	if dmg < 0.0:
-		dmg = 0.5
+		dmg = 1.0
 	return dmg
 	
