@@ -2,21 +2,21 @@ extends Node
 class_name Bot
 
 const EASY_SETTING = {
-	"maximum_squad_control" : 2,
+	"maximum_squad_control" : 1,
 	"maximum_squad_target" : 5,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 20
 }
 const MEDIUM_SETTING = {
-	"maximum_squad_control" : 5,
+	"maximum_squad_control" : 2,
 	"maximum_squad_target" : 2,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 30
 }
 const HARD_SETTING = {
-	"maximum_squad_control" : 10,
+	"maximum_squad_control" : 5,
 	"maximum_squad_target" : 1,
-	"min_tinker_time" : 10,
+	"min_tinker_time" : 15,
 	"max_tinker_time" : 30
 }
 
@@ -47,12 +47,9 @@ func set_bot_setting(_data):
 	_tinker_time.wait_time = rng.randf_range(data.min_tinker_time,data.max_tinker_time)
 	_tinker_time.start()
 	
-func add_bot_squad(_bot_squad):
-	_squad_in_command.append(_bot_squad)
-	
-func add_enemy_squad(_oponent_squad):
-	_enemy_squad.append(_oponent_squad)
-
+func set_armies(_bot_squad,_oponent_squad):
+	_squad_in_command = _bot_squad
+	_enemy_squad = _oponent_squad
 
 func _set_selected_squad():
 	rng.randomize()

@@ -1,6 +1,6 @@
 extends Area2D
 
-var speed = 400.0
+var speed = 800.0
 var sprite = preload("res://asset/military/projectile/empty.png")
 
 var direction = Vector2.ZERO

@@ -303,3 +303,8 @@ func _get_troop_data_attack_damage():
 		dmg = 1.0
 	return dmg
 	
+func get_troop_left():
+	return (_troop_holder.get_children().size() - 1)
+	
+	
+	

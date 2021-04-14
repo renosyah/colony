@@ -9,8 +9,14 @@ onready var _dialog_result = $CanvasLayer/VBoxContainer2
 onready var _dialog_result_text = $CanvasLayer/VBoxContainer2/VBoxContainer/Label
 
 onready var _armies_bar = {
-	"blue" : $CanvasLayer/HBoxContainer/left_bar,
-	"red"  : $CanvasLayer/HBoxContainer/right_bar
+	"blue" : {
+		"label" : $CanvasLayer/HBoxContainer/MarginContainer/Label,
+		"bar" : $CanvasLayer/HBoxContainer/MarginContainer/left_bar
+	},
+	"red"  : {
+		"label" : $CanvasLayer/HBoxContainer/MarginContainer2/Label2,
+		"bar" :$CanvasLayer/HBoxContainer/MarginContainer2/right_bar
+	}
 }
 var _squad_in_command = []
 var _selected_squad = []
@@ -20,22 +26,27 @@ func _ready():
 	pass # Replace with function body.
 
 func _on_game_army_ready(side, color, total_troop):
-	_armies_bar[side].max_value = total_troop
-	_armies_bar[side].value = total_troop
-	_armies_bar[side].self_modulate = color
+	_armies_bar[side].label.text = str(total_troop)
+	_armies_bar[side].bar.max_value = total_troop
+	_armies_bar[side].bar.value = total_troop
+	_armies_bar[side].bar.self_modulate = color
 
-func _on_squad_troop_dead(side,troop_left):
-	var army_hp = _armies_bar[side]
-	_armies_bar[side].value = max(0,army_hp.value - 1)
+func _on_game_army_update(side, total_troop_left):
+	_armies_bar[side].bar.value = max(0, total_troop_left)
+	_armies_bar[side].label.text = str(total_troop_left)
 	
+	if _dialog_result.visible:
+		return
+		
 	# battle result
-	if _armies_bar["blue"].value > 0.0 and _armies_bar["red"].value <= 0.0:
+	if _armies_bar["blue"].bar.value > 5.0  and _armies_bar["red"].bar.value <= 5.0:
 		_dialog_result_text.text =  "you win"
 		_dialog_result.visible = true
-	if _armies_bar["blue"].value <= 0.0 and _armies_bar["red"].value > 0.0:
+	if _armies_bar["blue"].bar.value <= 5.0  and _armies_bar["red"].bar.value > 5.0:
 		_dialog_result_text.text = "you lose"
 		_dialog_result.visible = true
-		
+	
+	
 # button replay
 func _on_Button_pressed():
 	get_tree().reload_current_scene()

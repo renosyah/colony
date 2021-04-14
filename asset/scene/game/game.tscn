@@ -63,3 +63,4 @@ tile_data = PoolIntArray( -393225, 1, 0, -393224, 1, 0, -393223, 1, 0, -393222, 
 
 [node name="bot" parent="." instance=ExtResource( 5 )]
 [connection signal="army_ready" from="." to="game_ui" method="_on_game_army_ready"]
+[connection signal="army_update" from="." to="game_ui" method="_on_game_army_update"]
