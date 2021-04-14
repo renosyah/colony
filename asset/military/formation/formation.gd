@@ -9,12 +9,12 @@ const FORMATION_BOX_BONUS = {
 	"armor" : 1,
 }
 const FORMATION_DELTA_BONUS = {
-	"attack_damage" : 2,
-	"armor" : -2,
+	"attack_damage" : 5,
+	"armor" : -5,
 }
 const FORMATION_CIRCLE_BONUS = {
-	"attack_damage" : -2,
-	"armor" : 2,
+	"attack_damage" : -5,
+	"armor" : 5,
 }
 # Called when the node enters the scene tree for the first time.
 func _ready():

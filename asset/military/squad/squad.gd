@@ -148,13 +148,15 @@ var data = {
 func _ready():
 	_banner.texture = load(data.banner_sprite)
 	_banner.self_modulate = data.color
-	spawn_full_squad()
-	change_formation(SQUAD_FORMATION_STANDAR)
-	emit_signal("on_squad_ready",self)
 	_timer_target_damage.wait_time = data.attack_delay
+	
 	if data.troop_data["class"] == Troop.CLASS_RANGE:
 		_field_of_view_area.scale.x = 2.3
 		_field_of_view_area.scale.y = 2.3
+		
+	spawn_full_squad()
+	change_formation(SQUAD_FORMATION_STANDAR)
+	emit_signal("on_squad_ready",self)
 	set_physics_process(false)
 	
 func _process(_delta):
@@ -250,7 +252,7 @@ func update_troop_target():
 		
 	rng.randomize()
 	for child in _troop_holder.get_children():
-		if is_instance_valid(child.target):
+		if !is_instance_valid(child.target):
 			child.is_rally_point = false
 			child.target = targets[rng.randf_range(0,targets.size())].global_position
 	
@@ -299,7 +301,7 @@ func _play_dead_sound():
 
 func _get_troop_data_attack_damage():
 	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack_damage
-	if dmg < 0:
-		dmg = 1.0
+	if dmg < 0.0:
+		dmg = 0.5
 	return dmg
 	

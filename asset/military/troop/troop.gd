@@ -263,11 +263,17 @@ func hit_by_projectile():
 	_play_stab_sound()
 
 func take_damage(dmg):
-	data.hit_point -= dmg
+	data.hit_point -=  _get_damage_receive(dmg)
 	if data.hit_point <= 0:
 		emit_signal("on_troop_dead")
 		queue_free()
 
+func _get_damage_receive(dmg):
+	var _dmg = (dmg - (data.armor + data.bonus.armor))
+	if _dmg < 0:
+		_dmg = 1
+	return _dmg
+	
 func _play_figting_sound():
 	rng.randomize()
 	_audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
