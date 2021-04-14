@@ -39,10 +39,10 @@ func _on_game_army_update(side, total_troop_left):
 		return
 		
 	# battle result
-	if _armies_bar["blue"].bar.value > 5.0  and _armies_bar["red"].bar.value <= 5.0:
+	if _armies_bar["blue"].bar.value > 1.0  and _armies_bar["red"].bar.value <= 1.0:
 		_dialog_result_text.text =  "you win"
 		_dialog_result.visible = true
-	if _armies_bar["blue"].bar.value <= 5.0  and _armies_bar["red"].bar.value > 5.0:
+	if _armies_bar["blue"].bar.value <= 1.0  and _armies_bar["red"].bar.value > 1.0:
 		_dialog_result_text.text = "you lose"
 		_dialog_result.visible = true
 	
@@ -100,7 +100,7 @@ func _on_squad_on_squad_ready(squad):
 	_squad_in_command.append(squad)
 	add_squad_to_squad_panel(squad)
 	
-func _on_squad_on_squad_dead(squad):
+func _on_squad_on_squad_dead(side, squad):
 	_squad_in_command.erase(squad)
 	_selected_squad.erase(squad)
 	remove_squad_from_squad_panel(squad)

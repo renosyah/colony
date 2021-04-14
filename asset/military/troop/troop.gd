@@ -66,9 +66,9 @@ const TROOP_TYPE_AXEMAN = {
 }
 const TROOP_TYPE_LIGHT_CAVALRY = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 5.0,
+	"attack_damage" : 7.0,
 	"hit_point" : 80.0,
-	"armor" : 2.0,
+	"armor" : 1.5,
 	"range_attack" : 80,
 	"attack_speed" : 3.0,
 	"max_speed" : 230.0,
@@ -220,7 +220,6 @@ func set_facing_direction(_direction):
 
 func _process(delta):
 	var velocity = Vector2.ZERO
- 
 	if target:
 		var direction = (target - global_position).normalized()
 		var distance_to_target = global_position.distance_to(target)
@@ -239,6 +238,11 @@ func _process(delta):
 			
 		if _attack_delay.is_stopped() and !is_rally_point and distance_to_target <= data.range_attack:
 			
+			if direction.x > 0:
+				_body.scale.x = 1
+			else:
+				_body.scale.x = -1
+				
 			match data.class:
 				CLASS_MELEE:
 					_play_figting_sound()

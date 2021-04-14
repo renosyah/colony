@@ -110,7 +110,7 @@ enum {
 
 signal on_squad_ready(squad)
 signal on_squad_click()
-signal on_squad_dead(squad)
+signal on_squad_dead(side,squad)
 signal on_squad_troop_dead(side,troop_left)
 
 
@@ -151,8 +151,8 @@ func _ready():
 	_timer_target_damage.wait_time = data.attack_delay
 	
 	if data.troop_data["class"] == Troop.CLASS_RANGE:
-		_field_of_view_area.scale.x = 2.3
-		_field_of_view_area.scale.y = 2.3
+		_field_of_view_area.scale.x = 1.7
+		_field_of_view_area.scale.y = 1.7
 		
 	spawn_full_squad()
 	change_formation(SQUAD_FORMATION_STANDAR)
@@ -285,7 +285,7 @@ func _on_troop_dead():
 
 func _disband_squad():
 	if _troop_holder.get_children().empty():
-		emit_signal("on_squad_dead",self)
+		emit_signal("on_squad_dead",data.side, self)
 		queue_free()
 
 func _on_area_click_input_event(viewport, event, shape_idx):

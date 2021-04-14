@@ -16,8 +16,8 @@ const MEDIUM_SETTING = {
 const HARD_SETTING = {
 	"maximum_squad_control" : 5,
 	"maximum_squad_target" : 1,
-	"min_tinker_time" : 15,
-	"max_tinker_time" : 30
+	"min_tinker_time" : 5,
+	"max_tinker_time" : 10
 }
 
 onready var rng = RandomNumberGenerator.new()
@@ -116,11 +116,12 @@ func _on_thinker_time_timeout():
 	
 	var percent = rng.randf()
 	if (percent > 0.8):
-		_to_fromation_compact()
-	elif(percent < 0.8 and percent > 0.6):
+		_to_fromation_standar()
+	elif(percent < 0.8 and percent > 0.4):
 		_to_fromation_spread()
 	else:
-		_to_fromation_standar()
+		_to_fromation_compact()
+		
  
 	_attack_enemy_squad()
 	_tinker_time.wait_time = rng.randf_range(data.min_tinker_time,data.max_tinker_time)

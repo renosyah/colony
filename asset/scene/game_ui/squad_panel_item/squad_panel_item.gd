@@ -5,6 +5,8 @@ signal on_squad_icon_click(squad)
 onready var _selected_indicator = $TextureRect
 onready var _texture_rect = $VBoxContainer/TextureRect
 onready var _label = $VBoxContainer/Label
+onready var _flicker_timer = $flicker_time
+onready var _flicker = $TextureRect2
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -29,6 +31,9 @@ func _ready():
 
 func _on_squad_troop_dead(side,troop_left):
 	_label.text = str(troop_left)
+	_flicker.visible = true
+	_flicker_timer.start()
+	
 
 func _on_squad_panel_icon_pressed():
 	_on_squad_click()
@@ -45,4 +50,5 @@ func select_current_squad(_is_select):
 	squad.set_selected(is_selected)
 	
 	
-
+func _on_flicker_time_timeout():
+	_flicker.visible = false
