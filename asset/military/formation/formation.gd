@@ -5,16 +5,16 @@ class_name Formation
 # var a = 2
 # var b = "text"
 const FORMATION_BOX_BONUS = {
-	"attack_damage" : 1,
-	"armor" : 1,
+	"attack_damage" : 1.0,
+	"armor" : 1.0,
 }
 const FORMATION_DELTA_BONUS = {
-	"attack_damage" : 5,
-	"armor" : -5,
+	"attack_damage" : 2.0,
+	"armor" : -2.0,
 }
 const FORMATION_CIRCLE_BONUS = {
-	"attack_damage" : -5,
-	"armor" : 5,
+	"attack_damage" : -2.0,
+	"armor" : 2.0,
 }
 # Called when the node enters the scene tree for the first time.
 func _ready():

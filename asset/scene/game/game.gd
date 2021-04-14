@@ -3,8 +3,20 @@ extends Node2D
 signal army_ready(side,color,total_troop)
 signal army_update(side,total_troop_left)
 
+const TILE_ID = {
+	'grass' : 0,
+	'mud' : 1,
+	'water' : 2,
+	'dirt' : 3
+}
+const HEIGHT = 200
+const WIDHT = 200
+ 
+
+onready var rng = RandomNumberGenerator.new()
 onready var game_ui = $game_ui
 onready var bot = $bot
+onready var tilemap = $TileMap
 
 var armies = {
 	"red" : [],
@@ -13,6 +25,37 @@ var armies = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	generate_battlefield()
+	spawn_armies()
+	
+
+func generate_battlefield():
+	rng.randomize()
+	var simplex = OpenSimplexNoise.new()
+	simplex.seed = 22345
+	
+	simplex.octaves = 4
+	simplex.period = 15
+	simplex.lacunarity = 1.5
+	simplex.persistence = 0.75
+	
+	for x in WIDHT:
+		for y in HEIGHT:
+			tilemap.set_cellv(Vector2(x - WIDHT / 2,y - HEIGHT / 2),_get_tile_index(simplex.get_noise_2d(float(x),float(y))))
+	tilemap.update_bitmask_region()
+	
+func _get_tile_index(_noice_sample):
+	if _noice_sample < -1.0:
+		return TILE_ID.dirt
+	elif _noice_sample > -1.0 and _noice_sample < 0.2:
+		return TILE_ID.grass
+	elif _noice_sample > 0.2 and _noice_sample < 0.3:
+		return TILE_ID.water
+	elif _noice_sample > 0.3 and _noice_sample < 0.6:
+		return TILE_ID.mud
+	return TILE_ID.grass
+
+func spawn_armies():
 	var enemy_pos = [
 		Vector2(-100, 50.0),
 		Vector2(100, 50.0),
@@ -56,6 +99,7 @@ func _ready():
 	
 	bot.set_bot_setting(Bot.EASY_SETTING)
 	bot.set_armies(armies["red"], armies["blue"])
+
 
 func spawn_squad(pos,squad_type):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()

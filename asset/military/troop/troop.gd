@@ -9,7 +9,7 @@ enum {
 # data troop class
 const TROOP_TYPE_SPEARMAN = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 7.0,
+	"attack_damage" : 4.0,
 	"hit_point" : 40.0,
 	"armor" : 1.5,
 	"range_attack" : 70,
@@ -28,7 +28,7 @@ const TROOP_TYPE_SPEARMAN = {
 }
 const TROOP_TYPE_SWORDMAN = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 10.0,
+	"attack_damage" : 7.0,
 	"hit_point" : 100.0,
 	"armor" : 5.0,
 	"range_attack" : 40,
@@ -47,7 +47,7 @@ const TROOP_TYPE_SWORDMAN = {
 }
 const TROOP_TYPE_AXEMAN = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 14.0,
+	"attack_damage" : 8.0,
 	"hit_point" : 70.0,
 	"armor" : 1.0,
 	"range_attack" : 35,
@@ -66,7 +66,7 @@ const TROOP_TYPE_AXEMAN = {
 }
 const TROOP_TYPE_LIGHT_CAVALRY = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 7.0,
+	"attack_damage" : 4.0,
 	"hit_point" : 80.0,
 	"armor" : 1.5,
 	"range_attack" : 80,
@@ -85,7 +85,7 @@ const TROOP_TYPE_LIGHT_CAVALRY = {
 }
 const TROOP_TYPE_ARCHER = {
 	"class" : CLASS_RANGE,
-	"attack_damage" : 4.0,
+	"attack_damage" : 2.0,
 	"hit_point" : 40.0,
 	"armor" : 1.0,
 	"range_attack" : 380,
@@ -104,7 +104,7 @@ const TROOP_TYPE_ARCHER = {
 }
 const TROOP_TYPE_CROSSBOWMAN = {
 	"class" : CLASS_RANGE,
-	"attack_damage" : 11.0,
+	"attack_damage" : 6.0,
 	"hit_point" : 80.0,
 	"armor" : 3.0,
 	"range_attack" : 280,

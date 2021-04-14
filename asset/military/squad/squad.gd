@@ -151,8 +151,8 @@ func _ready():
 	_timer_target_damage.wait_time = data.attack_delay
 	
 	if data.troop_data["class"] == Troop.CLASS_RANGE:
-		_field_of_view_area.scale.x = 1.7
-		_field_of_view_area.scale.y = 1.7
+		_field_of_view_area.scale.x = 2.3
+		_field_of_view_area.scale.y = 2.3
 		
 	spawn_full_squad()
 	change_formation(SQUAD_FORMATION_STANDAR)
