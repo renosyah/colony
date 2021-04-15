@@ -1,24 +1,4 @@
-extends Node
-class_name Bot
-
-const EASY_SETTING = {
-	"maximum_squad_control" : 1,
-	"maximum_squad_target" : 5,
-	"min_tinker_time" : 10,
-	"max_tinker_time" : 20
-}
-const MEDIUM_SETTING = {
-	"maximum_squad_control" : 2,
-	"maximum_squad_target" : 2,
-	"min_tinker_time" : 10,
-	"max_tinker_time" : 30
-}
-const HARD_SETTING = {
-	"maximum_squad_control" : 5,
-	"maximum_squad_target" : 1,
-	"min_tinker_time" : 5,
-	"max_tinker_time" : 10
-}
+extends Node2D
 
 onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
@@ -29,6 +9,7 @@ var _enemy_squad = []
 var _squad_in_command = []
 var _selected_squad = []
 
+# default data prevent null pointer
 var data = {
 	"maximum_squad_control" : 1,
 	"maximum_squad_target" : 1,

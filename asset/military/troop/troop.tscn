@@ -2,7 +2,7 @@
 
 [ext_resource path="res://asset/military/troop/animation_troop_attack.tres" type="Animation" id=1]
 [ext_resource path="res://asset/military/uniform/heavy_armor.png" type="Texture" id=2]
-[ext_resource path="res://asset/military/weapon/lance.png" type="Texture" id=3]
+[ext_resource path="res://asset/military/weapon/musket.png" type="Texture" id=3]
 [ext_resource path="res://asset/military/troop/troop.gd" type="Script" id=4]
 [ext_resource path="res://asset/military/troop/animation_troop_walking.tres" type="Animation" id=5]
 [ext_resource path="res://asset/military/uniform/heavy_armor_helm.png" type="Texture" id=6]
@@ -24,7 +24,7 @@ one_way_collision = true
 
 [node name="body" type="Sprite" parent="."]
 self_modulate = Color( 0.988235, 0.0117647, 0.0117647, 1 )
-position = Vector2( 0.849141, -1.36893 )
+position = Vector2( -0.223924, -5.92269 )
 texture = ExtResource( 2 )
 
 [node name="head" type="Sprite" parent="body"]
@@ -36,8 +36,7 @@ position = Vector2( 8.75487, 12.3998 )
 texture = ExtResource( 10 )
 
 [node name="weapon" type="Sprite" parent="body"]
-position = Vector2( 2.41277, -20.2996 )
-rotation = -1.11336
+position = Vector2( 3.38995, 0.467054 )
 scale = Vector2( 1, 1.44444 )
 texture = ExtResource( 3 )
 

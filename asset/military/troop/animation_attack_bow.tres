@@ -9,10 +9,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.1, 0.5, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ 5.53387, -90.0 ]
+"values": [ 0.0, 0.0, -90.0 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("body/weapon:position")
@@ -21,10 +21,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.1, 0.5, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 3.38995, 0.467054 ), Vector2( 11.8179, -16.2016 ) ]
+"values": [ Vector2( 3.38995, 0.467054 ), Vector2( 3.38995, 0.467054 ), Vector2( 11.8179, -16.2016 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("body:position")

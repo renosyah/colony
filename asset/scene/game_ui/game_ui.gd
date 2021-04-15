@@ -90,6 +90,12 @@ func _on_Control_gui_input( event):
 	get_viewport().unhandled_input(event)
 
 func move_all_selected_squad(pos):
+	if !_selected_squad.empty():
+		var waypoint = preload("res://asset/ui/waypoint/waypoint.tscn").instance()
+		waypoint.position = pos
+		waypoint.color = Color(Color.blue)
+		add_child(waypoint)
+	
 	var formations = _formation.get_formation_box(pos,_selected_squad.size(),100)
 	var idx = 0
 	for squad in _selected_squad:

@@ -1,24 +1,21 @@
 extends Node
 class_name Formation
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 const FORMATION_BOX_BONUS = {
-	"attack_damage" : 1.0,
-	"armor" : 1.0,
+	"attack" : 0.0,
+	"defence" : 0.0,
+	"mobility" : 0.0
 }
 const FORMATION_DELTA_BONUS = {
-	"attack_damage" : 2.0,
-	"armor" : -2.0,
+	"attack" : 2.0,
+	"defence" : -2.0,
+	"mobility" : 35.0
 }
 const FORMATION_CIRCLE_BONUS = {
-	"attack_damage" : -2.0,
-	"armor" : 2.0,
+	"attack" : -2.0,
+	"defence" : 2.0,
+	"mobility" : -40.0
 }
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
 func get_formation_box(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int = 20):
 	var formations = []
@@ -79,7 +76,3 @@ func get_formation_circle(waypoint_position :Vector2 ,number_of_unit : int, spac
 			unit_pos.y = waypoint_position.y + (space_between_units * circle_size) * sin(current_angle)
 			
 	return formations
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

@@ -10,9 +10,9 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
-"class": "Bot",
+"class": "BotSetting",
 "language": "GDScript",
-"path": "res://asset/scene/game/bot/bot.gd"
+"path": "res://asset/data/bot_setting.gd"
 }, {
 "base": "StaticBody2D",
 "class": "CollectorBuilding",
@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://asset/military/squad/squad.gd"
 }, {
+"base": "Node",
+"class": "SquadData",
+"language": "GDScript",
+"path": "res://asset/data/squad_data.gd"
+}, {
 "base": "PanelContainer",
 "class": "SquadPanelDetail",
 "language": "GDScript",
@@ -44,19 +49,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://asset/military/troop/troop.gd"
 }, {
+"base": "Node",
+"class": "TroopData",
+"language": "GDScript",
+"path": "res://asset/data/troop_data.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Worker",
 "language": "GDScript",
 "path": "res://asset/collector/worker/worker.gd"
 } ]
 _global_script_class_icons={
-"Bot": "",
+"BotSetting": "",
 "CollectorBuilding": "",
 "Formation": "",
 "Resources": "",
 "Squad": "",
+"SquadData": "",
 "SquadPanelDetail": "",
 "Troop": "",
+"TroopData": "",
 "Worker": ""
 }
 

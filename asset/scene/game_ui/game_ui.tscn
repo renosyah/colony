@@ -23,10 +23,13 @@ current = true
 zoom = Vector2( 1.5, 1.5 )
 script = ExtResource( 5 )
 
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 512.731, 300.019 )
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-modulate = Color( 1, 1, 1, 0.678431 )
+modulate = Color( 1, 1, 1, 0.764706 )
 anchor_right = 1.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 20 )

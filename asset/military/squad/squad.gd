@@ -1,99 +1,6 @@
 extends KinematicBody2D
 class_name Squad
 
-# data troop squad class
-const SQUAD_TYPE_SPEARMAN  = {
-	"name" : "Spearman",
-	"description" : "Spearman Squad : medium, cheap, weak",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_spearman.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_spearman.png",
-	"troop_amount" : 15,
-	"formation_space" : 20,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 80.0,
-	"attack_delay" : 2.0,
-	"troop_data" : Troop.TROOP_TYPE_SPEARMAN
-}
-const SQUAD_TYPE_SWORDMAN  = {
-	"name" : "Swordman",
-	"description" : "Swordman Squad : slow, expensive, strong",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_swordman.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_swordman.png",
-	"troop_amount" : 15,
-	"formation_space" : 20,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 80.0,
-	"attack_delay" : 2.5,
-	"troop_data" : Troop.TROOP_TYPE_SWORDMAN
-}
-const SQUAD_TYPE_AXEMAN  = {
-	"name" : "Axeman",
-	"description" : "Axeman Squad : fast, expensive, weak",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_axeman.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_axeman.png",
-	"troop_amount" : 15,
-	"formation_space" : 20,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 100.0,
-	"attack_delay" : 1.3,
-	"troop_data" : Troop.TROOP_TYPE_AXEMAN
-}
-const SQUAD_TYPE_LIGHT_CAVALRY = {
-	"name" : "Light Cavalry",
-	"description" : "Light Cavalry : fast, expensive, medium",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_light_cavalry.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_light_cavalry.png",
-	"troop_amount" : 15,
-	"formation_space" : 35,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 180.0,
-	"attack_delay" : 3.0,
-	"troop_data" : Troop.TROOP_TYPE_LIGHT_CAVALRY
-}
-const SQUAD_TYPE_ARCHER = {
-	"name" : "Archer",
-	"description" : "Archer Squad : basic range unit",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_archer.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_archer.png",
-	"troop_amount" : 15,
-	"formation_space" : 20,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 80.0,
-	"attack_delay" : 5.0,
-	"troop_data" : Troop.TROOP_TYPE_ARCHER
-}
-const SQUAD_TYPE_CROSSBOWMAN = {
-	"name" : "Crossbowman",
-	"description" : "Crossbowman Squad : advance range unit",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_crossbowman.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_crossbowman.png",
-	"troop_amount" : 15,
-	"formation_space" : 20,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 80.0,
-	"attack_delay" : 8.0,
-	"troop_data" : Troop.TROOP_TYPE_CROSSBOWMAN
-}
-const SQUAD_TYPE_ARCHER_CAVALRY = {
-	"name" : "Archer Cavalry",
-	"description" : "Archer Cavalry : mounted range unit",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_archer_cavalry.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_archer_cavalry.png",
-	"troop_amount" : 15,
-	"formation_space" : 35,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 180.0,
-	"attack_delay" : 2.0,
-	"troop_data" : Troop.TROOP_TYPE_ARCHER_CAVALRY
-}
-
 # const
 const dead_sound = [
 	preload("res://asset/sound/maledeath1.wav"),
@@ -131,6 +38,7 @@ var formations
 var min_area_waypoint = 5.0
 var current_formation = SQUAD_FORMATION_STANDAR
 
+# default data prevent null pointer
 var data = {
 	"name" : "",
 	"description" : "",
@@ -150,13 +58,12 @@ func _ready():
 	_banner.self_modulate = data.color
 	_timer_target_damage.wait_time = data.attack_delay
 	
-	if data.troop_data["class"] == Troop.CLASS_RANGE:
+	if data.troop_data["class"] == TroopData.CLASS_RANGE:
 		_field_of_view_area.scale.x = 2.3
 		_field_of_view_area.scale.y = 2.3
 		
 	spawn_full_squad()
-	change_formation(SQUAD_FORMATION_STANDAR)
-	emit_signal("on_squad_ready",self)
+	emit_signal("on_squad_ready", self)
 	set_physics_process(false)
 	
 func _process(_delta):
@@ -166,7 +73,7 @@ func _process(_delta):
 		var distance_to_waypoint = global_position.distance_to(waypoint)
 		
 		if distance_to_waypoint > min_area_waypoint:
-			velocity = direction * data.max_speed * _delta
+			velocity = direction * _get_troop_data_mobility() * _delta
 		
 		if velocity != Vector2.ZERO:
 			update_troop_position()
@@ -224,11 +131,18 @@ func update_troop_formation_bonus(formation):
 	for child in _troop_holder.get_children():
 		match current_formation:
 			SQUAD_FORMATION_STANDAR:
-				child.set_bonus(Formation.FORMATION_BOX_BONUS)
+				_display_chatter(false, "Standar Formation!!")
+				data.troop_data.bonus = Formation.FORMATION_BOX_BONUS
+				
 			SQUAD_FORMATION_SPREAD:
-				child.set_bonus(Formation.FORMATION_DELTA_BONUS)
+				_display_chatter(false, "Give some fighting room!!")
+				data.troop_data.bonus = Formation.FORMATION_DELTA_BONUS
+				
 			SQUAD_FORMATION_COMPACT:
-				child.set_bonus(Formation.FORMATION_CIRCLE_BONUS)
+				_display_chatter(false, "Stick toghether, lads!!")
+				data.troop_data.bonus = Formation.FORMATION_CIRCLE_BONUS
+				
+		child.set_bonus(data.troop_data.bonus)
 
 func update_troop_position():
 	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
@@ -277,11 +191,13 @@ func _on_timer_reset_target_timeout():
 	
 func _on_timer_target_damage_timeout():
 	set_random_target_damage()
-		
+
+
 func _on_troop_dead():
 	emit_signal("on_squad_troop_dead",data.side, (_troop_holder.get_children().size() - 1))
 	_play_dead_sound()
 	_disband_squad()
+	_display_chatter(true, "-1")
 
 func _disband_squad():
 	if _troop_holder.get_children().empty():
@@ -298,13 +214,25 @@ func _play_dead_sound():
 	_audio.play()
 
 func _get_troop_data_attack_damage():
-	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack_damage
+	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack
 	if dmg < 0.0:
 		dmg = 1.0
 	return dmg
 	
+func _get_troop_data_mobility():
+	var speed = data.troop_data.max_speed + data.troop_data.bonus.mobility
+	if speed < 0.0:
+		speed = 10.0
+	return speed
+
+func _display_chatter(is_large_text,text):
+	var chatter = preload("res://asset/ui/squad_chatter/squad_chatter.tscn").instance()
+	chatter.text = text
+	chatter.is_large_text = is_large_text
+	chatter.position = _banner.position
+	add_child(chatter)
+	
+	
 func get_troop_left():
 	return (_troop_holder.get_children().size() - 1)
-	
-	
 	
