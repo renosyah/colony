@@ -1,0 +1,202 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://asset/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://asset/ui/fonts/montserrat_eb_48.tres" type="DynamicFont" id=2]
+[ext_resource path="res://asset/scene/menu/quick_battle_menu/quick_battle_menu.gd" type="Script" id=3]
+[ext_resource path="res://asset/ui/fonts/montserrat_eb_16.tres" type="DynamicFont" id=4]
+[ext_resource path="res://asset/ui/map_biom/grass_land.png" type="Texture" id=5]
+[ext_resource path="res://asset/scene/menu/squad_list/squad_list.tscn" type="PackedScene" id=6]
+
+[node name="quick_battle_menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 74.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 67.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="back" type="Button" parent="VBoxContainer/Panel/HBoxContainer"]
+margin_right = 77.0
+margin_bottom = 34.0
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 4 )
+text = "Back"
+flat = true
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel/HBoxContainer"]
+margin_left = 81.0
+margin_right = 908.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+custom_fonts/font = ExtResource( 2 )
+text = "Quick Battle"
+align = 1
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel/HBoxContainer"]
+margin_left = 912.0
+margin_right = 1010.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 98, 0 )
+size_flags_horizontal = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 78.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 214.0
+margin_bottom = 522.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 207.0
+margin_bottom = 515.0
+alignment = 1
+
+[node name="player_label" type="Label" parent="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
+margin_right = 200.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 4 )
+text = "Player (0/7)"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 200.0
+margin_bottom = 454.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/ScrollContainer"]
+margin_right = 200.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+columns = 4
+
+[node name="add_squad_player" type="Button" parent="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
+margin_top = 458.0
+margin_right = 200.0
+margin_bottom = 508.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 4 )
+text = "Add Squad"
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="MarginContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 218.0
+margin_right = 806.0
+margin_bottom = 522.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="map_label" type="Label" parent="VBoxContainer/HBoxContainer2/MarginContainer"]
+margin_left = 220.0
+margin_right = 367.0
+margin_bottom = 28.0
+size_flags_horizontal = 6
+custom_fonts/font = ExtResource( 4 )
+text = "Grass Land"
+align = 1
+
+[node name="map_image" type="TextureRect" parent="VBoxContainer/HBoxContainer2/MarginContainer"]
+margin_left = 166.0
+margin_top = 82.0
+margin_right = 422.0
+margin_bottom = 338.0
+rect_min_size = Vector2( 256, 256 )
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = ExtResource( 5 )
+expand = true
+
+[node name="change_map" type="Button" parent="VBoxContainer/HBoxContainer2/MarginContainer"]
+margin_top = 392.0
+margin_right = 588.0
+margin_bottom = 438.0
+custom_fonts/font = ExtResource( 1 )
+text = "Change Map"
+
+[node name="start_battle" type="Button" parent="VBoxContainer/HBoxContainer2/MarginContainer"]
+margin_top = 442.0
+margin_right = 588.0
+margin_bottom = 522.0
+rect_min_size = Vector2( 0, 80 )
+custom_fonts/font = ExtResource( 2 )
+text = "Start Battle"
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 810.0
+margin_right = 1024.0
+margin_bottom = 522.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 207.0
+margin_bottom = 515.0
+alignment = 1
+
+[node name="bot_label" type="Label" parent="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
+margin_right = 200.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 4 )
+text = "Bot (0/7)"
+align = 1
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
+margin_top = 32.0
+margin_right = 200.0
+margin_bottom = 454.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/ScrollContainer2"]
+margin_right = 200.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+columns = 4
+
+[node name="add_squad_bot" type="Button" parent="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
+margin_top = 458.0
+margin_right = 200.0
+margin_bottom = 508.0
+rect_min_size = Vector2( 0, 50 )
+custom_fonts/font = ExtResource( 4 )
+text = "Add Squad"
+
+[node name="squad_list" parent="." instance=ExtResource( 6 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+[connection signal="pressed" from="VBoxContainer/Panel/HBoxContainer/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/add_squad_player" to="." method="_on_add_squad_player_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/MarginContainer/change_map" to="." method="_on_change_map_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/MarginContainer/start_battle" to="." method="_on_start_battle_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/add_squad_bot" to="." method="_on_add_squad_bot_pressed"]

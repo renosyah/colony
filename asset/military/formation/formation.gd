@@ -17,6 +17,23 @@ const FORMATION_CIRCLE_BONUS = {
 	"mobility" : -40.0
 }
 
+const FORMATION_BOX_CHATTER = [
+	"Standard formation, lads!!",
+	"Back in the line!!",
+	"Make ready, lads!!"
+]
+const FORMATION_DELTA_CHATTER = [
+	"Attack formation!!",
+	"Make some room!!",
+	"Spread out, lads!!"
+]
+const FORMATION_CIRCLE_CHATTER = [
+	"Defensive formation!!",
+	"Stick together, lads!!",
+	"Hold the line!!"
+]
+
+
 func get_formation_box(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int = 20):
 	var formations = []
 	var square_side_size = round(sqrt(number_of_unit))

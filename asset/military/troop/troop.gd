@@ -47,7 +47,12 @@ var data = {
 	"range_attack" : 50,
 	"attack_speed" : 5.0,
 	"side" : "",
-	"color" : Color(Color.red),
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
 	"max_speed" : 150.0,
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
@@ -61,7 +66,7 @@ var data = {
 }
 
 func _ready():
-	_body.self_modulate = data.color
+	_body.self_modulate = Color(data.color.r,data.color.g,data.color.b,data.color.a)
 	_head.texture = load(data.head_sprite)
 	_body.texture = load(data.body_sprite)
 	_weapon.texture = load(data.weapon_sprite)
@@ -104,12 +109,11 @@ func _process(delta):
 			else:
 				_body.scale.x = -1
 				
-			match data.class:
-				TroopData.CLASS_MELEE:
+				if data.class == TroopData.CLASS_MELEE:
 					_play_figting_sound()
 					_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
 				
-				TroopData.CLASS_RANGE:
+				elif data.class == TroopData.CLASS_RANGE:
 					if distance_to_target > FORCE_MELEE_RANGE:
 						_weapon.texture = load(data.weapon_sprite)
 						_shoot(direction)

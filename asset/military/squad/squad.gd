@@ -9,11 +9,10 @@ const dead_sound = [
 	preload("res://asset/sound/maledeath4.wav"),
 ]
 
-enum {
-	SQUAD_FORMATION_STANDAR,
-	SQUAD_FORMATION_SPREAD,
-	SQUAD_FORMATION_COMPACT
-}
+const SQUAD_FORMATION_STANDAR = 0
+const SQUAD_FORMATION_SPREAD = 1
+const SQUAD_FORMATION_COMPACT = 2
+
 
 signal on_squad_ready(squad)
 signal on_squad_click()
@@ -47,7 +46,12 @@ var data = {
 	"troop_amount" : 24,
 	"formation_space" : 40,
 	"side" : "",
-	"color" : Color(Color.red),
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
 	"max_speed" : 80.0,
 	"attack_delay" : 1.0,
 	"troop_data" : {}
@@ -55,7 +59,7 @@ var data = {
 
 func _ready():
 	_banner.texture = load(data.banner_sprite)
-	_banner.self_modulate = data.color
+	_banner.self_modulate = Color(data.color.r,data.color.g,data.color.b,data.color.a)
 	_timer_target_damage.wait_time = data.attack_delay
 	
 	if data.troop_data["class"] == TroopData.CLASS_RANGE:
@@ -83,6 +87,8 @@ func _process(_delta):
 func move_squad_to(pos):
 	is_move = true
 	waypoint = pos
+	waypoint.y += 100.0
+	waypoint.x += 50.0
 	_field_of_view.monitorable = false
 	_field_of_view.monitorable = true
 	update_troop_facing_direction()
@@ -96,7 +102,7 @@ func set_selected(is_selected):
 		_animation.stop()
 		
 func change_formation(formation):
-	is_move = false
+	#is_move = false
 	current_formation = formation
 	update_troop_position()
 	update_troop_formation_bonus(formation)
@@ -128,20 +134,21 @@ func spawn_full_squad():
 
 
 func update_troop_formation_bonus(formation):
+	rng.randomize()
+	match current_formation:
+		SQUAD_FORMATION_STANDAR:
+			_display_chatter(Formation.FORMATION_BOX_CHATTER[rng.randf_range(0,Formation.FORMATION_BOX_CHATTER.size())])
+			data.troop_data.bonus = Formation.FORMATION_BOX_BONUS
+			
+		SQUAD_FORMATION_SPREAD:
+			_display_chatter(Formation.FORMATION_DELTA_CHATTER[rng.randf_range(0,Formation.FORMATION_DELTA_CHATTER.size())])
+			data.troop_data.bonus = Formation.FORMATION_DELTA_BONUS
+			
+		SQUAD_FORMATION_COMPACT:
+			_display_chatter(Formation.FORMATION_CIRCLE_CHATTER[rng.randf_range(0,Formation.FORMATION_CIRCLE_CHATTER.size())])
+			data.troop_data.bonus = Formation.FORMATION_CIRCLE_BONUS
+			
 	for child in _troop_holder.get_children():
-		match current_formation:
-			SQUAD_FORMATION_STANDAR:
-				_display_chatter(false, "Standar Formation!!")
-				data.troop_data.bonus = Formation.FORMATION_BOX_BONUS
-				
-			SQUAD_FORMATION_SPREAD:
-				_display_chatter(false, "Give some fighting room!!")
-				data.troop_data.bonus = Formation.FORMATION_DELTA_BONUS
-				
-			SQUAD_FORMATION_COMPACT:
-				_display_chatter(false, "Stick toghether, lads!!")
-				data.troop_data.bonus = Formation.FORMATION_CIRCLE_BONUS
-				
 		child.set_bonus(data.troop_data.bonus)
 
 func update_troop_position():
@@ -194,10 +201,11 @@ func _on_timer_target_damage_timeout():
 
 
 func _on_troop_dead():
-	emit_signal("on_squad_troop_dead",data.side, (_troop_holder.get_children().size() - 1))
+	data.troop_amount = _troop_holder.get_children().size()
+	emit_signal("on_squad_troop_dead",data.side, data.troop_amount)
 	_play_dead_sound()
 	_disband_squad()
-	_display_chatter(true, "-1")
+	_display_chatter("-1 Unit")
 
 func _disband_squad():
 	if _troop_holder.get_children().empty():
@@ -225,14 +233,15 @@ func _get_troop_data_mobility():
 		speed = 10.0
 	return speed
 
-func _display_chatter(is_large_text,text):
+func _display_chatter(text):
 	var chatter = preload("res://asset/ui/squad_chatter/squad_chatter.tscn").instance()
 	chatter.text = text
-	chatter.is_large_text = is_large_text
 	chatter.position = _banner.position
 	add_child(chatter)
 	
 	
 func get_troop_left():
-	return (_troop_holder.get_children().size() - 1)
+	if _troop_holder.get_children().empty():
+		return data.troop_amount 
+	return _troop_holder.get_children().size()
 	

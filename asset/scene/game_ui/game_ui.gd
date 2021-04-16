@@ -5,19 +5,20 @@ onready var _formation = preload("res://asset/military/formation/formation.gd").
 onready var _squad_panel = $CanvasLayer/HBoxContainer3/HBoxContainer2/HBoxContainer
 onready var _squad_detail_panel = $CanvasLayer/squad_panel_detail
 
-onready var _dialog_result = $CanvasLayer/VBoxContainer2
-onready var _dialog_result_text = $CanvasLayer/VBoxContainer2/VBoxContainer/Label
+onready var _dialog_result = $CanvasLayer/battle_result
+onready var _dialog_result_text = $CanvasLayer/battle_result/VBoxContainer/Label
 
 onready var _armies_bar = {
-	"blue" : {
+	BattleData.PLAYER_SIDE_TAG : {
 		"label" : $CanvasLayer/HBoxContainer/MarginContainer/Label,
 		"bar" : $CanvasLayer/HBoxContainer/MarginContainer/left_bar
 	},
-	"red"  : {
+	BattleData.BOT_SIDE_TAG : {
 		"label" : $CanvasLayer/HBoxContainer/MarginContainer2/Label2,
 		"bar" :$CanvasLayer/HBoxContainer/MarginContainer2/right_bar
 	}
 }
+var _battle_data = {}
 var _squad_in_command = []
 var _selected_squad = []
 
@@ -25,6 +26,9 @@ var _selected_squad = []
 func _ready():
 	pass # Replace with function body.
 
+func _on_game_battle_data_update(battle_data):
+	_battle_data = battle_data
+	
 func _on_game_army_ready(side, color, total_troop):
 	_armies_bar[side].label.text = str(total_troop)
 	_armies_bar[side].bar.max_value = total_troop
@@ -33,25 +37,23 @@ func _on_game_army_ready(side, color, total_troop):
 
 func _on_game_army_update(side, total_troop_left):
 	_armies_bar[side].bar.value = max(0, total_troop_left)
-	_armies_bar[side].label.text = str(total_troop_left)
 	
-	if _dialog_result.visible:
-		return
-		
+	# add -1 for more accurate result
+	_armies_bar[side].label.text = str(total_troop_left - 1)
+	
 	# battle result
-	if _armies_bar["blue"].bar.value > 1.0  and _armies_bar["red"].bar.value <= 1.0:
-		_dialog_result_text.text =  "you win"
+	if _armies_bar[BattleData.PLAYER_SIDE_TAG].bar.value > 1.0  and _armies_bar[BattleData.BOT_SIDE_TAG].bar.value <= 1.0:
+		_dialog_result.set_battle_data("You win", _battle_data)
 		_dialog_result.visible = true
-	if _armies_bar["blue"].bar.value <= 1.0  and _armies_bar["red"].bar.value > 1.0:
-		_dialog_result_text.text = "you lose"
+	elif _armies_bar[BattleData.PLAYER_SIDE_TAG].bar.value <= 1.0  and _armies_bar[BattleData.BOT_SIDE_TAG].bar.value > 1.0:
+		_dialog_result.set_battle_data("You Lose", _battle_data)
 		_dialog_result.visible = true
-	
-	
-# button replay
-func _on_Button_pressed():
-	get_tree().reload_current_scene()
- 
 
+
+# button exit
+func _on_battle_result_on_exit_button_press():
+	get_tree().change_scene("res://asset/scene/menu/menu.tscn")
+ 
 func _on_Button_select_all_pressed():
 	for squad_item in _squad_panel.get_children():
 		_selected_squad.append(squad_item.squad)
@@ -62,12 +64,6 @@ func _on_Button_deselect_all_pressed():
 	_selected_squad.clear()
 	for squad_item in _squad_panel.get_children():
 		squad_item.select_current_squad(false)
-
-
-func _on_Button_stop_unit_pressed():
-	for squad  in _selected_squad:
-		squad.is_move = false
-
 
 func _on_Button_fromation_standar_pressed():
 	for squad in _selected_squad:
@@ -84,8 +80,9 @@ func _on_Button_fromation_compact_pressed():
 
 # input touch or click
 func _on_Control_gui_input( event):
-	if (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_pressed():
+	if !_selected_squad.empty() and (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_pressed():
 		move_all_selected_squad(get_global_mouse_position())
+		return
 		
 	get_viewport().unhandled_input(event)
 
@@ -101,7 +98,13 @@ func move_all_selected_squad(pos):
 	for squad in _selected_squad:
 		squad.move_squad_to(formations[idx].position)
 		idx += 1
-
+	
+	for child in _squad_panel.get_children():
+		child.select_current_squad(false)
+		
+	_selected_squad.clear()
+	_squad_detail_panel.visible = false
+	
 func _on_squad_on_squad_ready(squad):
 	_squad_in_command.append(squad)
 	add_squad_to_squad_panel(squad)
@@ -146,3 +149,4 @@ func _set_squad_detail(squad):
 	template.range_attack = squad.data.troop_data.range_attack
 	template.max_speed = squad.data.troop_data.max_speed
 	_squad_detail_panel.show_stats(template)
+

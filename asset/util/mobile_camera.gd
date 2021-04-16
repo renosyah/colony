@@ -9,6 +9,7 @@ var events = {}
 var last_drag_distance = 0
 
 func _unhandled_input(event):
+ 
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			events[event.index] = event
@@ -18,7 +19,6 @@ func _unhandled_input(event):
 
 	if event is InputEventScreenDrag:
 		events[event.index] = event
-	
 		if events.size() == 1:
 			position += (-event.relative) * zoom.x
 			

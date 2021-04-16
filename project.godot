@@ -10,6 +10,16 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "BattleData",
+"language": "GDScript",
+"path": "res://asset/data/battle_data.gd"
+}, {
+"base": "Node",
+"class": "Biom",
+"language": "GDScript",
+"path": "res://asset/data/biom.gd"
+}, {
+"base": "Node",
 "class": "BotSetting",
 "language": "GDScript",
 "path": "res://asset/data/bot_setting.gd"
@@ -60,6 +70,8 @@ _global_script_classes=[ {
 "path": "res://asset/collector/worker/worker.gd"
 } ]
 _global_script_class_icons={
+"BattleData": "",
+"Biom": "",
 "BotSetting": "",
 "CollectorBuilding": "",
 "Formation": "",
@@ -75,7 +87,7 @@ _global_script_class_icons={
 [application]
 
 config/name="colony"
-run/main_scene="res://asset/scene/game/game.tscn"
+run/main_scene="res://asset/scene/menu/menu.tscn"
 config/icon="res://icon.png"
 
 [input]
@@ -103,6 +115,11 @@ move_down={
 right_click={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+left_click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 

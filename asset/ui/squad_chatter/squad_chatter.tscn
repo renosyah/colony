@@ -1,29 +1,17 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://asset/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://asset/ui/fonts/montserrat_eb_16.tres" type="DynamicFont" id=1]
 [ext_resource path="res://asset/ui/squad_chatter/squad_chatter.gd" type="Script" id=2]
 
 [node name="squad_chatter" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="."]
-visible = false
 margin_left = -50.0
 margin_right = 49.0
 margin_bottom = 40.0
+grow_horizontal = 2
 custom_fonts/font = ExtResource( 1 )
-text = "Im hit"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label2" type="Label" parent="."]
-visible = false
-margin_left = -50.0
-margin_right = 49.0
-margin_bottom = 40.0
 text = "Im hit"
 align = 1
 valign = 1

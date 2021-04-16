@@ -8,7 +8,8 @@
 [node name="squad_panel_detail" type="PanelContainer"]
 margin_left = -1.0
 margin_right = 289.0
-margin_bottom = 201.0
+margin_bottom = 239.0
+grow_vertical = 0
 rect_min_size = Vector2( 200, 150 )
 script = ExtResource( 3 )
 __meta__ = {
@@ -19,14 +20,14 @@ __meta__ = {
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 283.0
-margin_bottom = 194.0
+margin_bottom = 262.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_right = 100.0
-margin_bottom = 187.0
+margin_bottom = 255.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -34,7 +35,7 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
 show_behind_parent = true
 margin_right = 100.0
-margin_bottom = 187.0
+margin_bottom = 255.0
 rect_min_size = Vector2( 100, 150 )
 size_flags_vertical = 3
 texture = ExtResource( 2 )
@@ -46,7 +47,8 @@ __meta__ = {
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 104.0
 margin_right = 276.0
-margin_bottom = 187.0
+margin_bottom = 255.0
+grow_vertical = 0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -66,23 +68,26 @@ __meta__ = {
 [node name="Label2" type="RichTextLabel" parent="HBoxContainer/VBoxContainer2"]
 margin_top = 25.0
 margin_right = 172.0
-margin_bottom = 70.0
+margin_bottom = 130.0
 text = "Spearman
+ 
+
+
+
 
 "
 fit_content_height = true
 scroll_active = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
-margin_top = 74.0
+margin_top = 134.0
 margin_right = 172.0
-margin_bottom = 187.0
+margin_bottom = 225.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_right = 56.0
-margin_bottom = 113.0
+margin_bottom = 91.0
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
@@ -125,7 +130,7 @@ text = "Speed  "
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_left = 60.0
 margin_right = 172.0
-margin_bottom = 113.0
+margin_bottom = 91.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

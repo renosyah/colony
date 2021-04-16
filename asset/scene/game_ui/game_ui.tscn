@@ -1,9 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://asset/ui/bar/bar.png" type="Texture" id=1]
 [ext_resource path="res://asset/scene/game_ui/game_ui.gd" type="Script" id=2]
 [ext_resource path="res://asset/ui/icons/target_sword.png" type="Texture" id=3]
-[ext_resource path="res://asset/ui/fonts/montserrat_eb_48.tres" type="DynamicFont" id=4]
+[ext_resource path="res://asset/scene/game_ui/battle_result/battle_result.tscn" type="PackedScene" id=4]
 [ext_resource path="res://asset/util/mobile_camera.gd" type="Script" id=5]
 [ext_resource path="res://asset/ui/formation/standar_formation.png" type="Texture" id=6]
 [ext_resource path="res://asset/ui/formation/spread_formation.png" type="Texture" id=7]
@@ -11,7 +11,6 @@
 [ext_resource path="res://asset/ui/selection/deselect_all.png" type="Texture" id=9]
 [ext_resource path="res://asset/ui/selection/select_all.png" type="Texture" id=10]
 [ext_resource path="res://asset/scene/game_ui/squad_panel_detail/squad_panel_detail.tscn" type="PackedScene" id=11]
-[ext_resource path="res://asset/ui/selection/select_stop.png" type="Texture" id=12]
 [ext_resource path="res://asset/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=13]
 
 [node name="game_ui" type="Node2D"]
@@ -160,7 +159,7 @@ alignment = 1
 
 [node name="Button_select_all" type="Button" parent="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer"]
 margin_right = 50.0
-margin_bottom = 50.0
+margin_bottom = 77.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_vertical = 3
 icon = ExtResource( 10 )
@@ -168,25 +167,12 @@ flat = true
 expand_icon = true
 
 [node name="Button_deselect_all" type="Button" parent="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer"]
-margin_top = 54.0
-margin_right = 50.0
-margin_bottom = 104.0
-rect_min_size = Vector2( 50, 50 )
-size_flags_vertical = 3
-icon = ExtResource( 9 )
-flat = true
-expand_icon = true
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Button_stop_unit" type="Button" parent="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer"]
-margin_top = 108.0
+margin_top = 81.0
 margin_right = 50.0
 margin_bottom = 158.0
 rect_min_size = Vector2( 50, 50 )
 size_flags_vertical = 3
-icon = ExtResource( 12 )
+icon = ExtResource( 9 )
 flat = true
 expand_icon = true
 __meta__ = {
@@ -269,45 +255,17 @@ __meta__ = {
 visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -219.0
-margin_right = 300.0
-margin_bottom = -1.0
+margin_left = 0.0
+margin_top = -239.0
+margin_right = 301.0
+margin_bottom = 0.0
 
-[node name="VBoxContainer2" type="PanelContainer" parent="CanvasLayer"]
+[node name="battle_result" parent="CanvasLayer" instance=ExtResource( 4 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer2"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 593.0
-
-[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer2/VBoxContainer"]
-margin_right = 1010.0
-margin_bottom = 502.0
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
-text = "Battle is over!"
-align = 1
-valign = 1
-
-[node name="Button" type="Button" parent="CanvasLayer/VBoxContainer2/VBoxContainer"]
-margin_top = 506.0
-margin_right = 1010.0
-margin_bottom = 586.0
-rect_min_size = Vector2( 80, 80 )
-custom_fonts/font = ExtResource( 4 )
-text = "Replay"
 [connection signal="gui_input" from="CanvasLayer/battle_ui_main" to="." method="_on_Control_gui_input"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer/Button_select_all" to="." method="_on_Button_select_all_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer/Button_deselect_all" to="." method="_on_Button_deselect_all_pressed"]
-[connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer/Button_stop_unit" to="." method="_on_Button_stop_unit_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer3/HBoxContainer/Button_fromation_standar" to="." method="_on_Button_fromation_standar_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer3/HBoxContainer/Button_fromation_spread" to="." method="_on_Button_fromation_spread_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer3/HBoxContainer/Button_fromation_compact" to="." method="_on_Button_fromation_compact_pressed"]
-[connection signal="pressed" from="CanvasLayer/VBoxContainer2/VBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="on_exit_button_press" from="CanvasLayer/battle_result" to="." method="_on_battle_result_on_exit_button_press"]

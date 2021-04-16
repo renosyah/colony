@@ -1,10 +1,8 @@
 extends Node
 class_name TroopData
 
-enum {
-	CLASS_MELEE
-	CLASS_RANGE
-}
+const CLASS_MELEE = 0
+const CLASS_RANGE = 1
 
 # data troop class
 const TROOP_TYPE_SPEARMAN = {
@@ -16,7 +14,12 @@ const TROOP_TYPE_SPEARMAN = {
 	"attack_speed" : 2.0,
 	"max_speed" : 90.0,
 	"side" : "",
-	"color" : Color(Color.red),
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/spear.png",
@@ -100,7 +103,7 @@ const TROOP_TYPE_CROSSBOWMAN = {
 	"attack_damage" : 6.0,
 	"hit_point" : 80.0,
 	"armor" : 3.0,
-	"range_attack" : 280,
+	"range_attack" : 320,
 	"attack_speed" : 5.0,
 	"max_speed" : 60.0,
 	"side" : "",
@@ -188,7 +191,7 @@ const TROOP_TYPE_ARCHER_CAVALRY = {
 	"attack_damage" : 2.0,
 	"hit_point" : 60.0,
 	"armor" : 1.0,
-	"range_attack" : 240,
+	"range_attack" : 270,
 	"attack_speed" : 5.0,
 	"max_speed" : 230.0,
 	"side" : "",
