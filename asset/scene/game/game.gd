@@ -21,7 +21,8 @@ func _ready():
 	_tilemap.biom = _battle_data.biom
 	_tilemap.generate_battlefield()
 	spawn_armies()
-
+	_tilemap.spawn_enviroment()
+	
 func load_battle_data():
 	_battle_data = _battle_data_instance.load_battle()
 	

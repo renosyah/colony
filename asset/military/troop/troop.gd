@@ -92,7 +92,7 @@ func _process(delta):
 		
 		if is_rally_point and distance_to_target >= 5.0:
 			_animation.play("troop_walking")
-			velocity = direction * data.max_speed  * delta
+			velocity = direction * data.max_speed * delta
 
 		elif distance_to_target > data.range_attack :
 			_animation.play("troop_walking")
@@ -109,20 +109,20 @@ func _process(delta):
 			else:
 				_body.scale.x = -1
 				
-				if data.class == TroopData.CLASS_MELEE:
+			if data["class"] == TroopData.CLASS_MELEE:
+				_play_figting_sound()
+				_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
+			
+			elif data["class"] == TroopData.CLASS_RANGE:
+				if distance_to_target > FORCE_MELEE_RANGE:
+					_weapon.texture = load(data.weapon_sprite)
+					_shoot(direction)
+					_animation.play(attack_range_animations[rng.randf_range(0,attack_range_animations.size())])
+				else:
+					_weapon.texture = preload("res://asset/military/weapon/dagger.png")
 					_play_figting_sound()
 					_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
-				
-				elif data.class == TroopData.CLASS_RANGE:
-					if distance_to_target > FORCE_MELEE_RANGE:
-						_weapon.texture = load(data.weapon_sprite)
-						_shoot(direction)
-						_animation.play(attack_range_animations[rng.randf_range(0,attack_range_animations.size())])
-					else:
-						_weapon.texture = preload("res://asset/military/weapon/dagger.png")
-						_play_figting_sound()
-						_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
-				
+			
 			_attack_delay.wait_time = rand_range(1.0, data.attack_speed)
 			_attack_delay.start()
 	else:

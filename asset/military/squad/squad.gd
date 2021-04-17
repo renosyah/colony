@@ -89,8 +89,9 @@ func move_squad_to(pos):
 	waypoint = pos
 	waypoint.y += 100.0
 	waypoint.x += 50.0
-	_field_of_view.monitorable = false
-	_field_of_view.monitorable = true
+	targets.clear()
+	_field_of_view_area.disabled = true
+	_field_of_view_area.disabled = false
 	update_troop_facing_direction()
 
 func set_selected(is_selected):
@@ -166,13 +167,15 @@ func update_troop_facing_direction():
 		
 
 func update_troop_target():
-	rng.randomize()
-	for child in _troop_holder.get_children():
-		if targets.empty():
-			child.is_rally_point = true
+	if targets.empty():
+		for child in _troop_holder.get_children():
 			child.target = null
-		elif !is_instance_valid(child.target):
-			child.is_rally_point = false
+		return
+		
+	for child in _troop_holder.get_children():
+		child.is_rally_point = false
+		if !is_instance_valid(child.target):
+			rng.randomize()
 			child.target = targets[rng.randf_range(0,targets.size())].global_position
 	
 func set_random_target_damage():

@@ -23,16 +23,21 @@ func generate_battlefield():
 	
 	for x in tile_size.x:
 		for y in tile_size.y:
-			_tilemap.set_cellv(Vector2(x - tile_size.x / 2,y - tile_size.y / 2),_get_tile_index(biom,simplex.get_noise_2d(float(x),float(y))))
-	
+			var pos = Vector2(x - tile_size.x / 2,y - tile_size.y / 2)
+			_tilemap.set_cellv(pos,_get_tile_index(biom, simplex.get_noise_2d(float(x),float(y))))
+			
 	for x in [0, tile_size.x - 1]:
 		for y in range(tile_size.y):
 			_tilemap.set_cellv(Vector2(x - tile_size.x / 2,y - tile_size.y / 2), Biom.TILE_ID.wall)
 	for x in range(1, tile_size.x - 1):
 		for y in [0, tile_size.y - 1]:
 			_tilemap.set_cellv(Vector2(x - tile_size.x / 2,y - tile_size.y / 2), Biom.TILE_ID.wall)
-
+	
 	_tilemap.update_bitmask_region()
+	
+
+				
+
 	
 func _get_tile_index(_biom, _noice_sample):
  
@@ -78,6 +83,35 @@ func _get_tile_index(_biom, _noice_sample):
 				
 	return Biom.TILE_ID.grass
 
+func spawn_enviroment():
+	for _x in range(-20,20):
+		for _y in range(-20,20):
+			rng.randomize()
+			if rng.randf() < 0.21:
+				var x = _x *150
+				var y = _y *150
+				var pos = Vector2(x,y)
+				_spawn_bush(pos)
+				
+	for _x in range(-20,20):
+		for _y in range(-20,20):
+			rng.randomize()
+			if rng.randf() < 0.25:
+				var x = _x *150
+				var y = _y *150
+				var pos = Vector2(x,y)
+				_spawn_tree(pos)
+
+func _spawn_tree(pos):
+	var tree = preload("res://asset/terrain/tree/tree.tscn").instance()
+	tree.position = pos
+	add_child(tree)
+	
+func _spawn_bush(pos):
+	var tree = preload("res://asset/terrain/bush/bush.tscn").instance()
+	tree.position = pos
+	add_child(tree)
+	
 func top_spawn_position():
 	return [
 		Vector2(-300, 10.0),

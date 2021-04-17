@@ -8,8 +8,18 @@ var zoom_speed = 0.05
 var events = {}
 var last_drag_distance = 0
 
+func _process(delta):
+	if Input.is_action_pressed("move_left"):
+		position += Vector2.LEFT * delta * 550
+	elif Input.is_action_pressed("move_right"):
+		position += Vector2.RIGHT * delta * 550
+	elif Input.is_action_pressed("move_up"):
+		position += Vector2.UP * delta * 550
+	elif Input.is_action_pressed("move_down"):
+		position += Vector2.DOWN * delta * 550
+		
 func _unhandled_input(event):
- 
+
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			events[event.index] = event

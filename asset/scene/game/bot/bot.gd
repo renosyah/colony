@@ -16,7 +16,8 @@ var data = {
 	"maximum_squad_control" : 1,
 	"maximum_squad_target" : 1,
 	"min_tinker_time" : 10,
-	"max_tinker_time" : 50
+	"max_tinker_time" : 50,
+	"surrender_chance" : 0.5,
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -97,12 +98,16 @@ func _on_thinker_time_timeout():
 		return
 	_set_selected_squad()
 	
-	var percent = rng.randf()
+	rng.randomize()
 	var _remnant = _get_total_squad_all_army()
-	if percent > 0.5 and _remnant["bot"] < _remnant["enemy"]:
-		emit_signal("on_bot_surrender")
-		return
-		
+	if rng.randf() < data.surrender_chance and _remnant["bot"].squad_left < _remnant["enemy"].squad_left:
+		rng.randomize()
+		if rng.randf() < data.surrender_chance and _remnant["bot"].troop_left < _remnant["enemy"].troop_left:
+			emit_signal("on_bot_surrender")
+			return
+	
+	rng.randomize()
+	var percent = rng.randf()
 	if (percent > 0.8):
 		_to_fromation_standar()
 	elif(percent < 0.8 and percent > 0.4):
@@ -116,19 +121,30 @@ func _on_thinker_time_timeout():
 
 func _get_total_squad_all_army():
 	var _squad_in_command_count = 0
+	var _troop_in_command_count = 0
+	
 	var _enemy_squad_count = 0
+	var _enemy_troop_count = 0
 	
 	for squad in _squad_in_command:
 		if is_instance_valid(squad):
+			_troop_in_command_count += squad.get_troop_left()
 			_squad_in_command_count += 1
 		
 	for squad in _enemy_squad:
 		if is_instance_valid(squad):
+			_enemy_troop_count += squad.get_troop_left()
 			_enemy_squad_count += 1
 	
 	return {
-		"bot" : _squad_in_command_count,
-		"enemy" : _enemy_squad_count,
+		"bot" : {
+			"troop_left" : _troop_in_command_count,
+			"squad_left" : _squad_in_command_count
+		},
+		"enemy" : {
+			"troop_left" : _enemy_troop_count,
+			"squad_left" : _enemy_squad_count
+		}
 	}
 	
 	

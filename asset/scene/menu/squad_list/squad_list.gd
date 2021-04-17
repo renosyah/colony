@@ -4,6 +4,7 @@ signal on_squad_choosed(squad)
 signal on_panel_close()
 
 onready var _panel_squad_item_list = $PanelContainer/VBoxContainer/ScrollContainer/HBoxContainer
+onready var _label_title = $PanelContainer/VBoxContainer/Panel/HBoxContainer/Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,10 +18,11 @@ func _show_squad_list():
 		squad_menu_item.data = squad
 		_panel_squad_item_list.add_child(squad_menu_item)
 	
-func show():
+func show_squad_list(title):
 	_reset_list()
 	_show_squad_list()
 	visible = true
+	_label_title.text = title
 
 func _reset_list():
 	for child in _panel_squad_item_list.get_children():

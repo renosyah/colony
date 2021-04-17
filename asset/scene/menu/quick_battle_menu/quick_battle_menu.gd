@@ -1,13 +1,13 @@
 extends Control
 
-const MAX_SQUAD = 9
+const MAX_SQUAD = 8
 
 onready var battle_data_instance = BattleData.new()
 onready var rng = RandomNumberGenerator.new()
 
 onready var _map_panel = $VBoxContainer/HBoxContainer2/MarginContainer
 onready var _map_label = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer/map_label
-onready var _map_image = $VBoxContainer/HBoxContainer2/MarginContainer/map_image
+onready var _map_image = $VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/map_image
 
 onready var _change_bot_button = $VBoxContainer/HBoxContainer2/MarginContainer/change_bot
 
@@ -99,13 +99,13 @@ func _on_back_pressed():
 func _on_add_squad_player_pressed():
 	_on_squad_list_on_panel_close()
 	_squad_list.connect("on_squad_choosed",self,"_on_squad_choosed_for_player")
-	_squad_list.show()
+	_squad_list.show_squad_list("Player Squad")
 	_map_panel.visible = false
 
 func _on_add_squad_bot_pressed():
 	_on_squad_list_on_panel_close()
 	_squad_list.connect("on_squad_choosed",self,"_on_squad_choosed_for_bot")
-	_squad_list.show()
+	_squad_list.show_squad_list("Bot Squad")
 	_map_panel.visible = false
 
 func _on_squad_choosed_for_player(squad):
