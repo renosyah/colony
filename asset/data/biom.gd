@@ -10,23 +10,23 @@ const URBAN_LAND = 3
 const BIOMS = [
 	{
 		"id" : GRASS_LAND,
-		"name" : "Grass",
+		"name" : "Grass Land",
 		"sprite" : "res://asset/ui/map_biom/grass_land.png"
 	},
 	{
 		"id" : WET_LAND,
-		"name" : "Wet",
-		"sprite" : "res://asset/ui/map_biom/grass_land.png"
+		"name" : "Wet Land",
+		"sprite" : "res://asset/ui/map_biom/wet_land.png"
 	},
 	{
 		"id" : MUD_LAND,
-		"name" : "Mud",
-		"sprite" : "res://asset/ui/map_biom/grass_land.png"
+		"name" : "Mud Land",
+		"sprite" : "res://asset/ui/map_biom/mud_land.png"
 	},
 	{
 		"id" : URBAN_LAND,
-		"name" : "Urban",
-		"sprite" : "res://asset/ui/map_biom/grass_land.png"
+		"name" : "Urban Land",
+		"sprite" : "res://asset/ui/map_biom/urban_land.png"
 	}
 ]
 const TILE_ID = {

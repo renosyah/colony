@@ -20,4 +20,5 @@ autostart = true
 [connection signal="army_ready" from="." to="game_ui" method="_on_game_army_ready"]
 [connection signal="army_update" from="." to="game_ui" method="_on_game_army_update"]
 [connection signal="battle_data_update" from="." to="game_ui" method="_on_game_battle_data_update"]
+[connection signal="on_bot_surrender" from="bot" to="game_ui" method="_on_bot_on_bot_surrender"]
 [connection signal="timeout" from="timer_update_battle_status" to="." method="_on_timer_update_battle_status_timeout"]

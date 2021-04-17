@@ -39,15 +39,22 @@ func _on_game_army_update(side, total_troop_left):
 	_armies_bar[side].bar.value = max(0, total_troop_left)
 	
 	# add -1 for more accurate result
-	_armies_bar[side].label.text = str(total_troop_left - 1)
+	_armies_bar[side].label.text = str(total_troop_left)
+	
+	if _dialog_result.visible:
+		return
 	
 	# battle result
-	if _armies_bar[BattleData.PLAYER_SIDE_TAG].bar.value > 1.0  and _armies_bar[BattleData.BOT_SIDE_TAG].bar.value <= 1.0:
+	if _armies_bar[BattleData.PLAYER_SIDE_TAG].bar.value > 0  and _armies_bar[BattleData.BOT_SIDE_TAG].bar.value <= 0:
 		_dialog_result.set_battle_data("You win", _battle_data)
 		_dialog_result.visible = true
-	elif _armies_bar[BattleData.PLAYER_SIDE_TAG].bar.value <= 1.0  and _armies_bar[BattleData.BOT_SIDE_TAG].bar.value > 1.0:
+	elif _armies_bar[BattleData.PLAYER_SIDE_TAG].bar.value <= 0  and _armies_bar[BattleData.BOT_SIDE_TAG].bar.value > 0:
 		_dialog_result.set_battle_data("You Lose", _battle_data)
 		_dialog_result.visible = true
+
+func _on_bot_on_bot_surrender():
+	_dialog_result.set_battle_data("You win, Enemy Surrender", _battle_data)
+	_dialog_result.visible = true
 
 
 # button exit

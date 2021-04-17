@@ -155,4 +155,21 @@ const SQUAD_LIST = [{
 	"max_speed" : 180.0,
 	"attack_delay" : 2.0,
 	"troop_data" : TroopData.TROOP_TYPE_ARCHER_CAVALRY
+},{
+	"name" : "General",
+	"description" : "Special unit with good defence and attack",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_leader.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_leader.png",
+	"troop_amount" : 1,
+	"formation_space" : 35,
+	"side" : "",
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
+	"max_speed" : 180.0,
+	"attack_delay" : 3.0,
+	"troop_data" : TroopData.TROOP_TYPE_GENERAL_CAVALRY
 }]

@@ -208,3 +208,25 @@ const TROOP_TYPE_ARCHER_CAVALRY = {
 		"mobility" : 0.0
 	}
 }
+const TROOP_TYPE_GENERAL_CAVALRY = {
+	"class" : CLASS_MELEE,
+	"attack_damage" : 18.0,
+	"hit_point" : 290.0,
+	"armor" : 6.5,
+	"range_attack" : 80,
+	"attack_speed" : 3.0,
+	"max_speed" : 160.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
+	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/sword.png",
+	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
+	"weapon_firing_sound":"",
+	"mount_sprite":"res://asset/military/mount/armored_horse.png",
+	"bonus" : {
+		"attack" : 0.0,
+		"defence" : 0.0,
+		"mobility" : 0.0
+	}
+}

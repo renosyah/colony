@@ -1,9 +1,9 @@
 extends Control
 
 signal on_squad_choosed(squad)
+signal on_panel_close()
 
 onready var _panel_squad_item_list = $PanelContainer/VBoxContainer/ScrollContainer/HBoxContainer
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,6 +28,7 @@ func _reset_list():
 
 func _on_ok_pressed():
 	visible = false
+	emit_signal("on_panel_close")
 
 func _on_squad_icon_click(squad):
 	emit_signal("on_squad_choosed",squad.duplicate(true))

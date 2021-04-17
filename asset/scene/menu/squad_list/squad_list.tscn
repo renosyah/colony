@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://asset/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=1]
 [ext_resource path="res://asset/ui/fonts/montserrat_eb_48.tres" type="DynamicFont" id=2]
 [ext_resource path="res://asset/scene/menu/squad_list/squad_list.gd" type="Script" id=3]
+[ext_resource path="res://asset/scene/menu/squad_panel_item_menu/squad_panel_item_menu.tscn" type="PackedScene" id=4]
 
 [node name="squad_list" type="Control"]
 anchor_right = 1.0
@@ -13,16 +14,8 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -207.0
-margin_top = -293.0
-margin_right = 207.0
-margin_bottom = 293.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -30,20 +23,21 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 407.0
-margin_bottom = 579.0
+margin_right = 1017.0
+margin_bottom = 593.0
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 400.0
+margin_right = 1010.0
 margin_bottom = 74.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Panel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 393.0
+margin_right = 1003.0
 margin_bottom = 67.0
 rect_min_size = Vector2( 0, 60 )
 
@@ -55,7 +49,7 @@ size_flags_horizontal = 0
 
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Panel/HBoxContainer"]
 margin_left = 102.0
-margin_right = 284.0
+margin_right = 894.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
@@ -65,17 +59,17 @@ align = 1
 valign = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/Panel/HBoxContainer"]
-margin_left = 288.0
-margin_right = 386.0
+margin_left = 898.0
+margin_right = 996.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 98, 0 )
 size_flags_horizontal = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
 margin_top = 78.0
-margin_right = 400.0
-margin_bottom = 478.0
-rect_min_size = Vector2( 400, 400 )
+margin_right = 1010.0
+margin_bottom = 492.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 __meta__ = {
@@ -83,15 +77,18 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="GridContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
-margin_right = 400.0
+margin_right = 1010.0
+margin_bottom = 414.0
 size_flags_horizontal = 3
-size_flags_vertical = 2
-columns = 5
+size_flags_vertical = 3
+columns = 6
+
+[node name="squad_panel_icon" parent="PanelContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource( 4 )]
 
 [node name="ok" type="Button" parent="PanelContainer/VBoxContainer"]
-margin_top = 482.0
-margin_right = 400.0
-margin_bottom = 572.0
+margin_top = 496.0
+margin_right = 1010.0
+margin_bottom = 586.0
 rect_min_size = Vector2( 0, 90 )
 custom_fonts/font = ExtResource( 1 )
 text = "Ok"

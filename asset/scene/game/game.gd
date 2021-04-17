@@ -106,3 +106,4 @@ func _copy_to_post_battle():
 	for army in _armies[BattleData.BOT_SIDE_TAG]:
 		if is_instance_valid(army):
 			_battle_data.post_battle[BattleData.BOT_SIDE_TAG].squads.append(army.data.duplicate(true))
+

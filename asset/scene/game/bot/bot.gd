@@ -1,5 +1,7 @@
 extends Node2D
 
+signal on_bot_surrender()
+
 onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
 onready var _tinker_time = $thinker_time
@@ -96,6 +98,11 @@ func _on_thinker_time_timeout():
 	_set_selected_squad()
 	
 	var percent = rng.randf()
+	var _remnant = _get_total_squad_all_army()
+	if percent > 0.5 and _remnant["bot"] < _remnant["enemy"]:
+		emit_signal("on_bot_surrender")
+		return
+		
 	if (percent > 0.8):
 		_to_fromation_standar()
 	elif(percent < 0.8 and percent > 0.4):
@@ -103,12 +110,28 @@ func _on_thinker_time_timeout():
 	else:
 		_to_fromation_compact()
 		
- 
 	_attack_enemy_squad()
 	_tinker_time.wait_time = rng.randf_range(data.min_tinker_time,data.max_tinker_time)
 	_tinker_time.start()
 
-
+func _get_total_squad_all_army():
+	var _squad_in_command_count = 0
+	var _enemy_squad_count = 0
+	
+	for squad in _squad_in_command:
+		if is_instance_valid(squad):
+			_squad_in_command_count += 1
+		
+	for squad in _enemy_squad:
+		if is_instance_valid(squad):
+			_enemy_squad_count += 1
+	
+	return {
+		"bot" : _squad_in_command_count,
+		"enemy" : _enemy_squad_count,
+	}
+	
+	
 func _on_reset_data_timeout():
 	if _squad_in_command.size() <= 0 || _enemy_squad.size() <= 0:
 		return
