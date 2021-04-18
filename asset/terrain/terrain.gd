@@ -87,7 +87,7 @@ func spawn_enviroment():
 	for _x in range(-20,20):
 		for _y in range(-20,20):
 			rng.randomize()
-			if rng.randf() < 0.21:
+			if rng.randf() < 0.11:
 				var x = _x *150
 				var y = _y *150
 				var pos = Vector2(x,y)
@@ -96,7 +96,7 @@ func spawn_enviroment():
 	for _x in range(-20,20):
 		for _y in range(-20,20):
 			rng.randomize()
-			if rng.randf() < 0.25:
+			if rng.randf() < 0.15:
 				var x = _x *150
 				var y = _y *150
 				var pos = Vector2(x,y)

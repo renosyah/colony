@@ -14,6 +14,8 @@ __meta__ = {
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -66,26 +68,16 @@ size_flags_horizontal = 0
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
 margin_top = 78.0
 margin_right = 1010.0
-margin_bottom = 492.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-scroll_horizontal_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="GridContainer" parent="PanelContainer/VBoxContainer/ScrollContainer"]
 margin_right = 1010.0
-margin_bottom = 414.0
+margin_bottom = 508.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-columns = 6
-
-[node name="ok" type="Button" parent="PanelContainer/VBoxContainer"]
-margin_top = 496.0
-margin_right = 1010.0
-margin_bottom = 586.0
-rect_min_size = Vector2( 0, 90 )
-custom_fonts/font = ExtResource( 1 )
-text = "Ok"
-[connection signal="pressed" from="PanelContainer/VBoxContainer/ok" to="." method="_on_ok_pressed"]
+columns = 3

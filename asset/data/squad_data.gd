@@ -19,7 +19,41 @@ const SQUAD_LIST = [{
 	"max_speed" : 80.0,
 	"attack_delay" : 2.0,
 	"troop_data" : TroopData.TROOP_TYPE_SPEARMAN
-}, {
+},{
+	"name" : "Man At Arms",
+	"description" : "Ligth infantry arm with sword with weak armor and attack, efective for hoarde",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_man_at_arms.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_man_at_arms.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
+	"max_speed" : 80.0,
+	"attack_delay" : 2.0,
+	"troop_data" : TroopData.TROOP_TYPE_MAN_AT_ARMS
+},{
+	"name" : "Pikeman",
+	"description" : "infantry arm with pike, unlike spearman, this unit have armor and deadly pike",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_pikeman.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_pikeman.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
+	"max_speed" : 80.0,
+	"attack_delay" : 2.0,
+	"troop_data" : TroopData.TROOP_TYPE_PIKEMAN
+},{
 	"name" : "Swordman",
 	"description" : "Heavy infantry arm with two-handded sword with good armor and attack, efective for holding line, but with slow movement speed",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_swordman.png",

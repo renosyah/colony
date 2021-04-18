@@ -9,13 +9,15 @@ onready var _map_panel = $VBoxContainer/HBoxContainer2/MarginContainer
 onready var _map_label = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer/map_label
 onready var _map_image = $VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/map_image
 
-onready var _change_bot_button = $VBoxContainer/HBoxContainer2/MarginContainer/change_bot
+onready var _change_bot_button = $VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer2/change_bot
 
+onready var _player_squad_panel = $VBoxContainer/HBoxContainer2/PanelContainer
 onready var _player_label = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/player_label
-onready var _player_squad_panel = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/ScrollContainer/GridContainer
+onready var _player_squad_panel_list = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/ScrollContainer/GridContainer
 
+onready var _bot_squad_panel = $VBoxContainer/HBoxContainer2/PanelContainer2
 onready var _bot_label = $VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/bot_label
-onready var _bot_squad_panel = $VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/ScrollContainer2/GridContainer
+onready var _bot_squad_panel_list = $VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/ScrollContainer2/GridContainer
 
 onready var _squad_list = $VBoxContainer/HBoxContainer2/squad_list
 
@@ -30,6 +32,7 @@ var _battle_data = {
 	"name" : "quick battle",
 	"bot_setting" :BotSetting.EASY_SETTING,
 	"biom" : Biom.GRASS_LAND,
+	"winner" : "",
 	"battle" : {
 		BattleData.PLAYER_SIDE_TAG : {
 			"name" : "Player",
@@ -97,16 +100,22 @@ func _on_back_pressed():
 	get_tree().change_scene("res://asset/scene/menu/menu.tscn")
 
 func _on_add_squad_player_pressed():
-	_on_squad_list_on_panel_close()
+	_reset_signal_recruit_from_squad_list()
 	_squad_list.connect("on_squad_choosed",self,"_on_squad_choosed_for_player")
 	_squad_list.show_squad_list("Player Squad")
-	_map_panel.visible = false
+	_squad_list.visible = !_squad_list.visible
+	_map_panel.visible = !_squad_list.visible
+	_player_squad_panel.visible = true
+	_bot_squad_panel.visible = !_squad_list.visible
 
 func _on_add_squad_bot_pressed():
-	_on_squad_list_on_panel_close()
+	_reset_signal_recruit_from_squad_list()
 	_squad_list.connect("on_squad_choosed",self,"_on_squad_choosed_for_bot")
 	_squad_list.show_squad_list("Bot Squad")
-	_map_panel.visible = false
+	_squad_list.visible = !_squad_list.visible
+	_map_panel.visible = !_squad_list.visible
+	_player_squad_panel.visible = !_squad_list.visible
+	_bot_squad_panel.visible = true
 
 func _on_squad_choosed_for_player(squad):
 	if _battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads.size() < MAX_SQUAD:
@@ -116,13 +125,13 @@ func _on_squad_choosed_for_player(squad):
 		
 	_player_label.text = "Player ("+ str(_battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads.size()) + "/" +  str(MAX_SQUAD) + ")"
 	
-	for child in _player_squad_panel.get_children():
-		_player_squad_panel.remove_child(child)
+	for child in _player_squad_panel_list.get_children():
+		_player_squad_panel_list.remove_child(child)
 		
 	for squad in _battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads:
 		var squad_menu_item = preload("res://asset/scene/menu/squad_panel_item_menu/squad_panel_item_menu.tscn").instance()
 		squad_menu_item.data = squad
-		_player_squad_panel.add_child(squad_menu_item)
+		_player_squad_panel_list.add_child(squad_menu_item)
 
 
 
@@ -135,13 +144,13 @@ func _on_squad_choosed_for_bot(squad):
 		
 	_bot_label.text = "Bot ("+ str(_battle_data.battle[BattleData.BOT_SIDE_TAG].squads.size()) + "/" +  str(MAX_SQUAD) + ")"
 	
-	for child in _bot_squad_panel.get_children():
-		_bot_squad_panel.remove_child(child)
+	for child in _bot_squad_panel_list.get_children():
+		_bot_squad_panel_list.remove_child(child)
 	
 	for squad in _battle_data.battle[BattleData.BOT_SIDE_TAG].squads:
 		var squad_menu_item = preload("res://asset/scene/menu/squad_panel_item_menu/squad_panel_item_menu.tscn").instance()
 		squad_menu_item.data = squad
-		_bot_squad_panel.add_child(squad_menu_item)
+		_bot_squad_panel_list.add_child(squad_menu_item)
 		
 	
 	
@@ -149,22 +158,20 @@ func _on_squad_choosed_for_bot(squad):
 func _on_clear_squad_bot_pressed():
 	_battle_data.battle[BattleData.BOT_SIDE_TAG].squads.clear()
 	
-	for child in _bot_squad_panel.get_children():
-		_bot_squad_panel.remove_child(child)
+	for child in _bot_squad_panel_list.get_children():
+		_bot_squad_panel_list.remove_child(child)
 
 
 func _on_clear_squad_player_pressed():
 	_battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads.clear()
 	
-	for child in _player_squad_panel.get_children():
-		_player_squad_panel.remove_child(child)
+	for child in _player_squad_panel_list.get_children():
+		_player_squad_panel_list.remove_child(child)
 	
 	
-	
-func _on_squad_list_on_panel_close():
+func _reset_signal_recruit_from_squad_list():
 	for _signal in _squad_list.get_signal_connection_list("on_squad_choosed"):
 		_squad_list.disconnect("on_squad_choosed",self,_signal.method)
-	_map_panel.visible = true
 	
 	
 func _on_change_map_pressed():

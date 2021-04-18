@@ -18,6 +18,7 @@ func lauching(from, to: Vector2):
 	position = from
 	velocity = to
 	velocity = velocity.rotated(rand_range(-spread, spread))
+	$sprite.rotation = velocity.angle()
 	is_lauched = true
 	$sprite.texture = sprite
 
@@ -34,7 +35,7 @@ func _on_arrow_body_entered(body):
 		return
 	if body.data.side == side:
 		return
-	body.hit_by_projectile()
+	#body.hit_by_projectile()
 	queue_free()
 
 

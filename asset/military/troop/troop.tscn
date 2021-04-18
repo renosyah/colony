@@ -1,14 +1,16 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://asset/military/troop/animation_troop_attack.tres" type="Animation" id=1]
 [ext_resource path="res://asset/military/uniform/heavy_armor.png" type="Texture" id=2]
-[ext_resource path="res://asset/military/weapon/bow.png" type="Texture" id=3]
+[ext_resource path="res://asset/military/weapon/musket.png" type="Texture" id=3]
 [ext_resource path="res://asset/military/troop/troop.gd" type="Script" id=4]
 [ext_resource path="res://asset/military/troop/animation_troop_walking.tres" type="Animation" id=5]
 [ext_resource path="res://asset/military/uniform/heavy_armor_helm.png" type="Texture" id=6]
 [ext_resource path="res://asset/military/troop/animation_troop_attack2.tres" type="Animation" id=7]
 [ext_resource path="res://asset/military/troop/animation_troop_attack3.tres" type="Animation" id=8]
 [ext_resource path="res://asset/military/troop/animation_attack_bow.tres" type="Animation" id=9]
+[ext_resource path="res://asset/military/troop/animation_troop_dead.tres" type="Animation" id=10]
+[ext_resource path="res://asset/military/mount/horse.png" type="Texture" id=11]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.03472
@@ -30,10 +32,12 @@ position = Vector2( 0, -20 )
 texture = ExtResource( 6 )
 
 [node name="mount" type="Sprite" parent="body"]
+visible = false
 position = Vector2( 8.75487, 12.3998 )
+texture = ExtResource( 11 )
 
 [node name="weapon" type="Sprite" parent="body"]
-position = Vector2( 11.8179, -16.2016 )
+position = Vector2( -5, -10 )
 rotation = -1.5708
 scale = Vector2( 1, 1.44444 )
 texture = ExtResource( 3 )
@@ -46,6 +50,7 @@ anims/troop_attack = ExtResource( 1 )
 anims/troop_attack_2 = ExtResource( 7 )
 anims/troop_attack_3 = ExtResource( 8 )
 anims/troop_attack_bow = ExtResource( 9 )
+anims/troop_dead = ExtResource( 10 )
 anims/troop_walking = ExtResource( 5 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

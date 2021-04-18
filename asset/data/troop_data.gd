@@ -1,6 +1,17 @@
 extends Node
 class_name TroopData
 
+const MAX_STATS = {
+	"name" : "",
+	"description" : "",
+	"squad_icon" : "",
+	"attack_damage" : 15.0,
+	"hit_point" : 500.0,
+	"armor" : 15.0,
+	"range_attack" : 500.0,
+	"max_speed" : 500.0
+}
+
 const CLASS_MELEE = 0
 const CLASS_RANGE = 1
 
@@ -9,7 +20,7 @@ const TROOP_TYPE_SPEARMAN = {
 	"class" : CLASS_MELEE,
 	"attack_damage" : 4.0,
 	"hit_point" : 40.0,
-	"armor" : 1.5,
+	"armor" : 1.0,
 	"range_attack" : 70,
 	"attack_speed" : 2.0,
 	"max_speed" : 90.0,
@@ -21,8 +32,57 @@ const TROOP_TYPE_SPEARMAN = {
 		"a": 0.0
 	},
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
-	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
+	"head_sprite" : "res://asset/military/uniform/cap_armor_helm_3.png",
 	"weapon_sprite":"res://asset/military/weapon/spear.png",
+	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
+	"weapon_firing_sound":"",
+	"mount_sprite":"res://asset/military/mount/none.png",
+	"bonus" : {
+		"attack" : 0.0,
+		"defence" : 0.0,
+		"mobility" : 0.0
+	}
+}
+const TROOP_TYPE_MAN_AT_ARMS = {
+	"class" : CLASS_MELEE,
+	"attack_damage" : 5.0,
+	"hit_point" : 40.0,
+	"armor" : 1.2,
+	"range_attack" : 50,
+	"attack_speed" : 2.0,
+	"max_speed" : 80.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/light_armor.png",
+	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/short_sword.png",
+	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
+	"weapon_firing_sound":"",
+	"mount_sprite":"res://asset/military/mount/none.png",
+	"bonus" : {
+		"attack" : 0.0,
+		"defence" : 0.0,
+		"mobility" : 0.0
+	}
+}
+const TROOP_TYPE_PIKEMAN = {
+	"class" : CLASS_MELEE,
+	"attack_damage" : 6.5,
+	"hit_point" : 40.0,
+	"armor" : 2.8,
+	"range_attack" : 90,
+	"attack_speed" : 3.0,
+	"max_speed" : 80.0,
+	"side" : "",
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
+	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
+	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
+	"weapon_sprite":"res://asset/military/weapon/pike.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
 	"weapon_firing_sound":"",
 	"mount_sprite":"res://asset/military/mount/none.png",
@@ -112,7 +172,7 @@ const TROOP_TYPE_CROSSBOWMAN = {
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
 	"weapon_sprite":"res://asset/military/weapon/crossbow.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/bolt/bolt.png",
-	"weapon_firing_sound":"res://asset/sound/arrow_fly.wav",
+	"weapon_firing_sound":"",
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
@@ -122,7 +182,7 @@ const TROOP_TYPE_CROSSBOWMAN = {
 }
 const TROOP_TYPE_MUSKETEER = {
 	"class" : CLASS_RANGE,
-	"attack_damage" : 8.0,
+	"attack_damage" : 14.0,
 	"hit_point" : 40.0,
 	"armor" : 1.0,
 	"range_attack" : 380,
@@ -153,7 +213,7 @@ const TROOP_TYPE_LIGHT_CAVALRY = {
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
-	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
+	"head_sprite" : "res://asset/military/uniform/cap_armor_helm_2.png",
 	"weapon_sprite":"res://asset/military/weapon/lance.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
 	"weapon_firing_sound":"",
@@ -166,7 +226,7 @@ const TROOP_TYPE_LIGHT_CAVALRY = {
 }
 const TROOP_TYPE_HEAVY_CAVALRY = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 4.0,
+	"attack_damage" : 7.0,
 	"hit_point" : 90.0,
 	"armor" : 4.5,
 	"range_attack" : 80,
@@ -210,17 +270,17 @@ const TROOP_TYPE_ARCHER_CAVALRY = {
 }
 const TROOP_TYPE_GENERAL_CAVALRY = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 18.0,
+	"attack_damage" : 15.0,
 	"hit_point" : 290.0,
 	"armor" : 6.5,
-	"range_attack" : 80,
+	"range_attack" : 50,
 	"attack_speed" : 3.0,
 	"max_speed" : 160.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/sword.png",
+	"weapon_sprite":"res://asset/military/weapon/war_hammer.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
 	"weapon_firing_sound":"",
 	"mount_sprite":"res://asset/military/mount/armored_horse.png",

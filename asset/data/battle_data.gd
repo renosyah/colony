@@ -14,6 +14,7 @@ var battle_data = {
 	"name" : "",
 	"bot_setting" : {},
 	"biom" : 0,
+	"winner" : "",
 	"battle" : {
 		PLAYER_SIDE_TAG : {
 			"name" : "",

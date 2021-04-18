@@ -25,7 +25,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0.1, 1.2, 1.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 3.38995, 0.467054 ), Vector2( 3.38995, 0.467054 ), Vector2( 11.8179, -16.2016 ) ]
+"values": [ Vector2( 3.39, -5 ), Vector2( 3.39, -5 ), Vector2( 11.8179, -16.2016 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("body:position")
@@ -86,4 +86,16 @@ tracks/6/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 0.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("body/mount:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }

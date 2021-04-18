@@ -11,6 +11,13 @@ const attack_range_animations = [
 	"troop_attack_bow"
 ]
 
+# const
+const dead_sound = [
+	preload("res://asset/sound/maledeath1.wav"),
+	preload("res://asset/sound/maledeath2.wav"),
+	preload("res://asset/sound/maledeath3.wav"),
+	preload("res://asset/sound/maledeath4.wav"),
+]
 const combats_sound = [
 	preload("res://asset/sound/fight1.wav"),
 	preload("res://asset/sound/fight2.wav"),
@@ -36,6 +43,7 @@ onready var _attack_delay = $attack_delay
 onready var _animation = $AnimationPlayer
 onready var _audio = $AudioStreamPlayer2D
 
+var _last_position = Vector2.ZERO
 var target = null
 var is_rally_point = true
 
@@ -86,6 +94,11 @@ func set_facing_direction(_direction):
 
 func _process(delta):
 	var velocity = Vector2.ZERO
+ 
+	if data.hit_point <= 0:
+		global_position = _last_position
+		return
+		
 	if target:
 		var direction = (target - global_position).normalized()
 		var distance_to_target = global_position.distance_to(target)
@@ -142,11 +155,22 @@ func hit_by_projectile():
 	_play_stab_sound()
 
 func take_damage(dmg):
+	if data.hit_point <= 0:
+		return
+		
 	var _dmg = _get_damage_receive(dmg)
 	data.hit_point -=  _dmg
 	if data.hit_point <= 0:
-		emit_signal("on_troop_dead")
-		queue_free()
+		_play_animation_troop_dead()
+
+func _play_animation_troop_dead():
+	_play_dead_sound()
+	_last_position = global_position
+	_collision.disabled = true
+	_animation.play("troop_dead")
+	yield(_animation,"animation_finished")
+	emit_signal("on_troop_dead")
+	queue_free()
 
 func _get_damage_receive(dmg):
 	var _dmg = (dmg - (data.armor + data.bonus.defence))
@@ -169,4 +193,9 @@ func _play_weapon_firing():
 		return
 		
 	_audio.stream = load(data.weapon_firing_sound)
+	_audio.play()
+	
+func _play_dead_sound():
+	rng.randomize()
+	_audio.stream = dead_sound[rng.randf_range(0,dead_sound.size())]
 	_audio.play()

@@ -7,14 +7,14 @@ const EASY_SETTING = {
 	"maximum_squad_target" : 5,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 20,
-	"surrender_chance" : 0.5,
+	"surrender_chance" : 0.4,
 }
 const MEDIUM_SETTING = {
 	"maximum_squad_control" : 2,
 	"maximum_squad_target" : 2,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 30,
-	"surrender_chance" : 0.3,
+	"surrender_chance" : 0.2,
 }
 const HARD_SETTING = {
 	"maximum_squad_control" : 5,

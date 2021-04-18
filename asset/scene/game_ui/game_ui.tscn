@@ -262,6 +262,7 @@ margin_bottom = 0.0
 
 [node name="battle_result" parent="CanvasLayer" instance=ExtResource( 4 )]
 visible = false
+[connection signal="on_camera_moving" from="Camera2D" to="." method="_on_Camera2D_on_camera_moving"]
 [connection signal="gui_input" from="CanvasLayer/battle_ui_main" to="." method="_on_Control_gui_input"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer/Button_select_all" to="." method="_on_Button_select_all_pressed"]
 [connection signal="pressed" from="CanvasLayer/HBoxContainer3/HBoxContainer4/HBoxContainer/Button_deselect_all" to="." method="_on_Button_deselect_all_pressed"]

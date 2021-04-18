@@ -1,24 +1,14 @@
 extends KinematicBody2D
 class_name Squad
 
-# const
-const dead_sound = [
-	preload("res://asset/sound/maledeath1.wav"),
-	preload("res://asset/sound/maledeath2.wav"),
-	preload("res://asset/sound/maledeath3.wav"),
-	preload("res://asset/sound/maledeath4.wav"),
-]
-
 const SQUAD_FORMATION_STANDAR = 0
 const SQUAD_FORMATION_SPREAD = 1
 const SQUAD_FORMATION_COMPACT = 2
-
 
 signal on_squad_ready(squad)
 signal on_squad_click()
 signal on_squad_dead(side,squad)
 signal on_squad_troop_dead(side,troop_left)
-
 
 onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
@@ -30,6 +20,7 @@ onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
 onready var _timer_target_damage = $timer_target_damage
 
+var velocity = Vector2.ZERO
 var targets = []
 var is_move = false
 var waypoint = Vector2.ZERO
@@ -71,18 +62,18 @@ func _ready():
 	set_physics_process(false)
 	
 func _process(_delta):
+	velocity = Vector2.ZERO
 	if is_move:
-		var velocity = Vector2.ZERO
 		var direction = (waypoint - global_position).normalized()
 		var distance_to_waypoint = global_position.distance_to(waypoint)
 		
 		if distance_to_waypoint > min_area_waypoint:
 			velocity = direction * _get_troop_data_mobility() * _delta
 		
-		if velocity != Vector2.ZERO:
-			update_troop_position()
-		
 		move_and_collide(velocity)
+		
+	if velocity != Vector2.ZERO:
+		update_troop_position()
 
 func move_squad_to(pos):
 	is_move = true
@@ -107,6 +98,12 @@ func change_formation(formation):
 	current_formation = formation
 	update_troop_position()
 	update_troop_formation_bonus(formation)
+
+
+func change_banner_visual(_scale,_transparacy):
+	_banner.self_modulate.a = _transparacy
+	_banner.scale.x = _scale
+	_banner.scale.y = _scale
 
 func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int):
 	match current_formation:
@@ -179,7 +176,7 @@ func update_troop_target():
 			child.target = targets[rng.randf_range(0,targets.size())].global_position
 	
 func set_random_target_damage():
-	if !targets.empty():
+	if !targets.empty() and velocity == Vector2.ZERO:
 		for child in _troop_holder.get_children():
 			var target = targets[rng.randf_range(0,targets.size())]
 			target.take_damage(_get_troop_data_attack_damage())
@@ -187,6 +184,8 @@ func set_random_target_damage():
 
 func _on_Area2D_body_entered(body):
 	if body is Troop and body.data.side != data.side:
+		if targets.has(body):
+			return
 		targets.append(body)
 
 func _on_Area2D_body_exited(body):
@@ -206,9 +205,7 @@ func _on_timer_target_damage_timeout():
 func _on_troop_dead():
 	data.troop_amount = _troop_holder.get_children().size()
 	emit_signal("on_squad_troop_dead",data.side, data.troop_amount)
-	_play_dead_sound()
 	_disband_squad()
-	_display_chatter("-1 Unit")
 
 func _disband_squad():
 	if _troop_holder.get_children().empty():
@@ -217,12 +214,9 @@ func _disband_squad():
 
 func _on_area_click_input_event(viewport, event, shape_idx):
 	if event is InputEventScreenTouch or (event is InputEventMouseButton and event.is_pressed()):
-		emit_signal("on_squad_click")
+		if _banner.self_modulate.a > 0.0:
+			emit_signal("on_squad_click")
 
-func _play_dead_sound():
-	rng.randomize()
-	_audio.stream = dead_sound[rng.randf_range(0,dead_sound.size())]
-	_audio.play()
 
 func _get_troop_data_attack_damage():
 	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack

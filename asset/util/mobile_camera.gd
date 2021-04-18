@@ -1,7 +1,9 @@
 extends Camera2D
 
+signal on_camera_moving(_pos,_zoom)
+
 var min_zoom = 0.5
-var max_zoom = 2
+var max_zoom = 2.5
 var zoom_sensitivity = 10
 var zoom_speed = 0.05
 
@@ -39,6 +41,8 @@ func _unhandled_input(event):
 				new_zoom = clamp(zoom.x * new_zoom, min_zoom, max_zoom)
 				zoom = Vector2.ONE * new_zoom
 				last_drag_distance = drag_distance
+				
+	emit_signal("on_camera_moving",position,zoom)
 				
 				
 				

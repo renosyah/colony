@@ -1,17 +1,6 @@
 extends PanelContainer
-
 class_name SquadPanelDetail
 
-const MAX_STATS = {
-	"name" : "",
-	"description" : "",
-	"squad_icon" : "",
-	"attack_damage" : 15.0,
-	"hit_point" : 500.0,
-	"armor" : 15.0,
-	"range_attack" : 500.0,
-	"max_speed" : 500.0
-}
 
 onready var _squad_icon = $HBoxContainer/VBoxContainer/TextureRect
 onready var _squad_name = $HBoxContainer/VBoxContainer2/Label
@@ -43,11 +32,11 @@ func show_stats(_data):
 	_squad_description.text = data.description + "\n\n"
 	_squad_icon.texture = load(data.squad_icon)
 	
-	_squad_attack_bar.max_value = MAX_STATS.attack_damage
-	_squad_hp_bar.max_value = MAX_STATS.hit_point 
-	_squad_armor_bar.max_value = MAX_STATS.armor 
-	_squad_range_bar.max_value = MAX_STATS.range_attack 
-	_squad_speed_bar.max_value = MAX_STATS.max_speed
+	_squad_attack_bar.max_value = TroopData.MAX_STATS.attack_damage
+	_squad_hp_bar.max_value = TroopData.MAX_STATS.hit_point 
+	_squad_armor_bar.max_value = TroopData.MAX_STATS.armor 
+	_squad_range_bar.max_value = TroopData.MAX_STATS.range_attack 
+	_squad_speed_bar.max_value = TroopData.MAX_STATS.max_speed
 	
 	_squad_attack_bar.value = data.attack_damage
 	_squad_hp_bar.value = data.hit_point 
