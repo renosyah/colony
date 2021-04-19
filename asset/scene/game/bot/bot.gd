@@ -120,8 +120,8 @@ func _on_thinker_time_timeout():
 	_tinker_time.start()
 
 func _get_total_squad_all_army():
-	var _squad_in_command_count = 0
-	var _troop_in_command_count = 0
+	var _squad_in_command_count = 2
+	var _troop_in_command_count = 8
 	
 	var _enemy_squad_count = 0
 	var _enemy_troop_count = 0

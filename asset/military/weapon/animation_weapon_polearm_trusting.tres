@@ -1,0 +1,42 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+resource_name = "weapon_polearm_trusting"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.3, 0.5, 0.6, 0.9, 1.1, 1.3, 1.5, 1.6, 1.8, 2, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 13.5739, -5 ), Vector2( 0.539974, 0.2556 ), Vector2( -21.023, -3.06294 ), Vector2( 31.6023, -1.66587 ), Vector2( 20.7293, -12.0799 ), Vector2( -4.50122, -12.7442 ), Vector2( -19.4786, -12.1096 ), Vector2( -3.708, -14.65 ), Vector2( 42.3824, -7.66515 ), Vector2( 20.462, -2.47465 ), Vector2( 26.2388, -22.2197 ), Vector2( 9.62684, -26.4608 ), Vector2( 22.3889, 14.3816 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.3, 0.5, 0.6, 0.9, 1.1, 1.3, 1.5, 1.6, 1.8, 2, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, -6.7, -2.14429, 7.28333, 6.58968, -0.831276, 6.58968, 7.28333, -3.11064, -25.8307, -45.0, 19.6185 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/ammo:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}

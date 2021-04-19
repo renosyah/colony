@@ -1,16 +1,10 @@
 extends KinematicBody2D
 class_name Troop
 
-const attack_melee_animations = [
-	"troop_attack",
-	"troop_attack_2",
-	"troop_attack_3"
+const dead_animations = [
+	"troop_dead",
+	"troop_dead_2"
 ]
-
-const attack_range_animations = [
-	"troop_attack_bow"
-]
-
 # const
 const dead_sound = [
 	preload("res://asset/sound/maledeath1.wav"),
@@ -30,8 +24,9 @@ const stabs_sound = [
 	preload("res://asset/sound/stab2.wav"),
 ]
 const FORCE_MELEE_RANGE = 80.0
+const MAXIMUM_ENGAGEMENT_RANGE = 90.0
 
-signal on_troop_dead()
+signal on_troop_dead(troop)
 
 onready var rng = RandomNumberGenerator.new()
 onready var _body = $body
@@ -44,42 +39,18 @@ onready var _animation = $AnimationPlayer
 onready var _audio = $AudioStreamPlayer2D
 
 var _last_position = Vector2.ZERO
-var target = null
-var is_rally_point = true
+var target : KinematicBody2D = null
+var rally_point = null
 
-var data = {
-	"class" : 0,
-	"attack_damage" : 4.0,
-	"hit_point" : 80.0,
-	"armor" : 80.0,
-	"range_attack" : 50,
-	"attack_speed" : 5.0,
-	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 150.0,
-	"body_sprite" : "res://asset/military/uniform/light_armor.png",
-	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/empty_weapon.png",
-	"mount_sprite":"res://asset/military/mount/none.png",
-	"bonus" : {
-		"attack" : 0.0,
-		"defence" : 0.0,
-		"mobility" : 0.0
-	}
-}
+var data = {}
 
 func _ready():
 	_body.self_modulate = Color(data.color.r,data.color.g,data.color.b,data.color.a)
 	_head.texture = load(data.head_sprite)
 	_body.texture = load(data.body_sprite)
-	_weapon.texture = load(data.weapon_sprite)
 	_mount.texture = load(data.mount_sprite)
 	_animation.play("troop_walking")
+	_weapon.set_data(data.weapon)
 	set_physics_process(false)
 	
 func set_bonus(bon):
@@ -94,60 +65,75 @@ func set_facing_direction(_direction):
 
 func _process(delta):
 	var velocity = Vector2.ZERO
- 
+	var direction = Vector2.ZERO
+	var distance_to_target = 0.0
+	
 	if data.hit_point <= 0:
 		global_position = _last_position
 		return
 		
-	if target:
-		var direction = (target - global_position).normalized()
-		var distance_to_target = global_position.distance_to(target)
+	if rally_point:
+		direction = (rally_point - global_position).normalized()
+		distance_to_target = global_position.distance_to(rally_point)
 		
-		if is_rally_point and distance_to_target >= 5.0:
+		if distance_to_target >= 5.0:
+			_weapon.do_nothing()
 			_animation.play("troop_walking")
-			velocity = direction * data.max_speed * delta
-
-		elif distance_to_target > data.range_attack :
+			velocity = direction * _get_troop_data_mobility() * delta
+			
+	# want move and fire
+	# remove elif => if
+	elif target:
+		direction = (target.global_position - global_position).normalized()
+		distance_to_target = global_position.distance_to(target.global_position)
+		var distance_to_parent = global_position.distance_to(get_parent().get_parent().global_position)
+		
+		if !rally_point and distance_to_target > data.range_attack and distance_to_parent < MAXIMUM_ENGAGEMENT_RANGE:
+			_weapon.do_nothing()
 			_animation.play("troop_walking")
-			velocity = direction * (data.max_speed + data.bonus.mobility) * delta
-			if direction.x > 0:
-				_body.scale.x = 1
-			else:
-				_body.scale.x = -1
-				
-		if _attack_delay.is_stopped() and !is_rally_point and distance_to_target <= data.range_attack:
+			velocity = direction * _get_troop_data_mobility() * delta
+			set_facing_direction(direction)
 			
-			if direction.x > 0:
-				_body.scale.x = 1
-			else:
-				_body.scale.x = -1
-				
-			if data["class"] == TroopData.CLASS_MELEE:
-				_play_figting_sound()
-				_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
-			
-			elif data["class"] == TroopData.CLASS_RANGE:
-				if distance_to_target > FORCE_MELEE_RANGE:
-					_weapon.texture = load(data.weapon_sprite)
-					_shoot(direction)
-					_animation.play(attack_range_animations[rng.randf_range(0,attack_range_animations.size())])
-				else:
-					_weapon.texture = preload("res://asset/military/weapon/dagger.png")
-					_play_figting_sound()
-					_animation.play(attack_melee_animations[rng.randf_range(0,attack_melee_animations.size())])
-			
-			_attack_delay.wait_time = rand_range(1.0, data.attack_speed)
+		if _attack_delay.is_stopped() and distance_to_target <= data.range_attack:
+			set_facing_direction(direction)
+			_start_combat(target,direction,distance_to_target)
+			_attack_delay.wait_time = _get_troop_data_attack_delay()
 			_attack_delay.start()
+
 	else:
+		_weapon.do_nothing()
 		_animation.play("troop_walking")
 		
 	move_and_collide(velocity)
 
+func _start_combat(_target,_direction, _distance):
+	
+	if data["class"] == TroopData.CLASS_MELEE:
+		_weapon.perform_attack()
+		_target.take_damage(_get_troop_data_attack_damage())
+		_play_fighting_sound()
+		
+	elif data["class"] == TroopData.CLASS_RANGE:
+		if _distance > FORCE_MELEE_RANGE:
+			_weapon.set_data(data.weapon)
+			_weapon.perform_attack()
+			yield(_weapon,"on_animation_attack_performed")
+			_play_weapon_firing()
+			_shoot(_direction)
+			
+		else:
+			_weapon.set_data(WeaponData.DAGGER)
+			_weapon.perform_attack()
+			_target.take_damage(_get_troop_data_attack_damage())
+			_play_fighting_sound()
+			
+	_animation.play("troop_walking")
+
 func _shoot(dir):
-	_play_weapon_firing()
 	var projectile = preload("res://asset/military/projectile/projectile.tscn").instance()
 	projectile.side = data.side
-	projectile.sprite = load(data.weapon_projectile_sprite)
+	projectile.damage = _get_troop_data_attack_damage()
+	projectile.sprite = load(data.weapon.weapon_projectile_sprite)
 	projectile.lauching(global_position, dir)
 	add_child(projectile)
 
@@ -165,20 +151,46 @@ func take_damage(dmg):
 
 func _play_animation_troop_dead():
 	_play_dead_sound()
+	_weapon.do_nothing()
 	_last_position = global_position
-	_collision.disabled = true
-	_animation.play("troop_dead")
+	_animation.play(dead_animations[rng.randf_range(0,dead_animations.size())])
 	yield(_animation,"animation_finished")
-	emit_signal("on_troop_dead")
-	queue_free()
-
+	_collision.disabled = true
+	emit_signal("on_troop_dead", self)
+	#queue_free()
+	
+func _get_troop_data_attack_damage():
+	var dmg = data.attack_damage + data.bonus.attack
+	if dmg < 0.0:
+		dmg = 1.0
+	return dmg
+	
+func _get_troop_data_attack_delay():
+	var delay = data.attack_delay + data.bonus.attack_delay
+	if delay < 0.0:
+		delay = 0.5
+	return delay
+	
+func _get_troop_data_mobility():
+	var speed = data.max_speed + data.bonus.mobility
+	if speed < 0.0:
+		speed = 10.0
+	return speed
+	
 func _get_damage_receive(dmg):
 	var _dmg = (dmg - (data.armor + data.bonus.defence))
 	if _dmg < 0.0:
 		_dmg =0.5
 	return _dmg
 	
-func _play_figting_sound():
+func _play_weapon_firing():
+	if data.weapon.weapon_firing_sound == "":
+		return
+		
+	_audio.stream = load(data.weapon.weapon_firing_sound)
+	_audio.play()
+	
+func _play_fighting_sound():
 	rng.randomize()
 	_audio.stream = combats_sound[rng.randf_range(0,combats_sound.size())]
 	_audio.play()
@@ -186,13 +198,6 @@ func _play_figting_sound():
 func _play_stab_sound():
 	rng.randomize()
 	_audio.stream = stabs_sound[rng.randf_range(0,stabs_sound.size())]
-	_audio.play()
-	
-func _play_weapon_firing():
-	if data.weapon_firing_sound == "":
-		return
-		
-	_audio.stream = load(data.weapon_firing_sound)
 	_audio.play()
 	
 func _play_dead_sound():

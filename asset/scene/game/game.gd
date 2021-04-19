@@ -24,17 +24,25 @@ func _ready():
 	_tilemap.spawn_enviroment()
 	
 func load_battle_data():
-	_battle_data = _battle_data_instance.load_battle()
+	var _save_file = _battle_data_instance.load_battle()
+	if !_save_file:
+			get_tree().change_scene("res://asset/scene/menu/menu.tscn")
+			
+	_battle_data = _save_file
 	
 func spawn_armies():
 	var pos_bot_idx = 0
-	for squad in _battle_data.battle[BattleData.BOT_SIDE_TAG].squads:
-		spawn_enemy_squad(_tilemap.top_spawn_position()[pos_bot_idx], squad)
+	for _squad in _battle_data.battle[BattleData.BOT_SIDE_TAG].squads:
+		var _pos = _tilemap.top_spawn_position[pos_bot_idx]
+		var _color = _battle_data.battle[BattleData.BOT_SIDE_TAG].color
+		spawn_enemy_squad(_pos, _squad, _color)
 		pos_bot_idx += 1
 	
 	var pos_player_idx = 0
-	for squad in _battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads:
-		spawn_squad(_tilemap.bottom_spawn_position()[pos_player_idx], squad)
+	for _squad in _battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads:
+		var _pos = _tilemap.bottom_spawn_position[pos_player_idx]
+		var _color = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].color
+		spawn_squad(_pos, _squad,_color)
 		pos_player_idx += 1
 		
 	var data_player = _battle_data.battle[BattleData.PLAYER_SIDE_TAG]
@@ -47,7 +55,7 @@ func spawn_armies():
 	_bot.set_armies(_armies[BattleData.BOT_SIDE_TAG],_armies [BattleData.PLAYER_SIDE_TAG])
 
 
-func spawn_squad(pos,squad_data):
+func spawn_squad(pos, squad_data, color):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()
 	squad.position = pos
 	squad.connect("on_squad_ready",_game_ui,"_on_all_squad_on_squad_ready")
@@ -56,17 +64,19 @@ func spawn_squad(pos,squad_data):
 	squad.connect("on_squad_dead",self,"_on_squad_on_squad_dead")
 	squad.connect("on_squad_troop_dead",self,"_on_squad_troop_dead")
 	squad.data = squad_data.duplicate(true)
+	squad.data.color = color
 	add_child(squad)
 	
 	_armies[squad_data.side].append(squad)
 	
-func spawn_enemy_squad(pos,squad_data):
+func spawn_enemy_squad(pos, squad_data, color):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()
 	squad.position = pos
 	squad.connect("on_squad_ready",_game_ui,"_on_all_squad_on_squad_ready")
 	squad.connect("on_squad_troop_dead",self,"_on_squad_troop_dead")
 	squad.connect("on_squad_dead",self,"_on_squad_on_squad_dead")
 	squad.data = squad_data.duplicate(true)
+	squad.data.color = color
 	add_child(squad)
 
 	_armies[squad_data.side].append(squad)

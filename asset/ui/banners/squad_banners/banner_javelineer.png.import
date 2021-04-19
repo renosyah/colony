@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bullet.png-75e74dae02ff2139b99041a9ecf719c3.stex"
+path="res://.import/banner_javelineer.png-f7385656faf83b86e69f3d7beb52f023.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/military/projectile/bullet/bullet.png"
-dest_files=[ "res://.import/bullet.png-75e74dae02ff2139b99041a9ecf719c3.stex" ]
+source_file="res://asset/ui/banners/squad_banners/banner_javelineer.png"
+dest_files=[ "res://.import/banner_javelineer.png-f7385656faf83b86e69f3d7beb52f023.stex" ]
 
 [params]
 

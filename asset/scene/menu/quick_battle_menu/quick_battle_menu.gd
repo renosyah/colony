@@ -9,6 +9,10 @@ onready var _map_panel = $VBoxContainer/HBoxContainer2/MarginContainer
 onready var _map_label = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer/map_label
 onready var _map_image = $VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/map_image
 
+onready var _change_player_color = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer3/HBoxContainer3/player_color
+onready var _change_bot_color = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer3/HBoxContainer3/bot_color
+
+
 onready var _change_bot_button = $VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer2/change_bot
 
 onready var _player_squad_panel = $VBoxContainer/HBoxContainer2/PanelContainer
@@ -27,6 +31,10 @@ var _bioms  = Biom.BIOMS
 var _bot_pos = 1
 var _bots  = BotSetting.BOTS
 
+var _player_color_pos = 0
+var _bot_color_pos = 0
+
+
 var _battle_data = {
 	"type" : BattleData.TYPE_QUICK_BATTLE,
 	"name" : "quick battle",
@@ -37,10 +45,10 @@ var _battle_data = {
 		BattleData.PLAYER_SIDE_TAG : {
 			"name" : "Player",
 			"color" : {
-				"r": Color.blue.r,
-				"g": Color.blue.g,
-				"b": Color.blue.b,
-				"a": Color.blue.a
+				"r": 0.04,
+				"g": 0.14,
+				"b": 0.5,
+				"a": 1.0
 			},
 			"squads": [],
 			"position" : {
@@ -51,10 +59,10 @@ var _battle_data = {
 		BattleData.BOT_SIDE_TAG : {
 			"name" : "Bot",
 			"color" : {
-				"r": Color.red.r,
-				"g": Color.red.g,
-				"b": Color.red.b,
-				"a": Color.red.a
+				"r": 0.59,
+				"g": 0.1,
+				"b": 0.1,
+				"a": 1.0
 			},
 			"squads": [],
 			"position" : {
@@ -199,8 +207,37 @@ func _on_start_battle_pressed():
 	if _battle_data.battle[BattleData.BOT_SIDE_TAG].squads.empty():
 		return
 		
-	battle_data_instance.battle_data = _battle_data
-	battle_data_instance.save_battle()
+	battle_data_instance.save_battle(_battle_data)
 	
 	get_tree().change_scene("res://asset/scene/game/game.tscn")
 
+
+func _on_player_color_pressed():
+	var color = ColorData.COLOR_LIST[_player_color_pos]
+	_change_player_color.self_modulate = color
+	_player_color_pos += 1
+	if _player_color_pos >= ColorData.COLOR_LIST.size():
+		_player_color_pos = 0
+		
+	var _color = {
+		"r": color.r,
+		"g": color.g,
+		"b": color.b,
+		"a": color.a
+	}
+	_battle_data.battle[BattleData.PLAYER_SIDE_TAG].color = _color
+
+func _on_bot_color_pressed():
+	var color = ColorData.COLOR_LIST[_bot_color_pos]
+	_change_bot_color.self_modulate = color
+	_bot_color_pos += 1
+	if _bot_color_pos >= ColorData.COLOR_LIST.size():
+		_bot_color_pos = 0
+		
+	var _color = {
+		"r": color.r,
+		"g": color.g,
+		"b": color.b,
+		"a": color.a
+	}
+	_battle_data.battle[BattleData.BOT_SIDE_TAG].color = _color

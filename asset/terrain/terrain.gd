@@ -6,6 +6,31 @@ onready var _audio = $AudioStreamPlayer2D
 
 var biom = Biom.GRASS_LAND
 var tile_size = Vector2(200.0,200.0)
+	
+const top_spawn_position = [
+	Vector2(-300, 10.0),
+	Vector2(-100, 10.0),
+	Vector2(100, 10.0),
+	Vector2(300, 10.0),
+	Vector2(500, 10.0),
+	Vector2(700, 10.0),
+	Vector2(900, 10.0),
+	Vector2(1100, 10.0),
+	Vector2(1300, 10.0),
+]
+	
+const bottom_spawn_position = [
+	Vector2(-300, 580.0),
+	Vector2(-100, 580.0),
+	Vector2(100, 580.0),
+	Vector2(300, 580.0),
+	Vector2(500, 580.0),
+	Vector2(700, 580.0),
+	Vector2(900, 580.0),
+	Vector2(1100, 580.0),
+	Vector2(1300, 580.0),
+]
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,9 +60,6 @@ func generate_battlefield():
 	
 	_tilemap.update_bitmask_region()
 	
-
-				
-
 	
 func _get_tile_index(_biom, _noice_sample):
  
@@ -102,6 +124,7 @@ func spawn_enviroment():
 				var pos = Vector2(x,y)
 				_spawn_tree(pos)
 
+ 
 func _spawn_tree(pos):
 	var tree = preload("res://asset/terrain/tree/tree.tscn").instance()
 	tree.position = pos
@@ -111,31 +134,6 @@ func _spawn_bush(pos):
 	var tree = preload("res://asset/terrain/bush/bush.tscn").instance()
 	tree.position = pos
 	add_child(tree)
-	
-func top_spawn_position():
-	return [
-		Vector2(-300, 10.0),
-		Vector2(-100, 10.0),
-		Vector2(100, 10.0),
-		Vector2(300, 10.0),
-		Vector2(500, 10.0),
-		Vector2(700, 10.0),
-		Vector2(900, 10.0),
-		Vector2(1100, 10.0),
-		Vector2(1300, 10.0),
-	]
-	
-func bottom_spawn_position():
-	return [
-		Vector2(-300, 580.0),
-		Vector2(-100, 580.0),
-		Vector2(100, 580.0),
-		Vector2(300, 580.0),
-		Vector2(500, 580.0),
-		Vector2(700, 580.0),
-		Vector2(900, 580.0),
-		Vector2(1100, 580.0),
-		Vector2(1300, 580.0),
-	]
+
 
 

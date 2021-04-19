@@ -4,17 +4,20 @@ class_name Formation
 const FORMATION_BOX_BONUS = {
 	"attack" : 0.0,
 	"defence" : 0.0,
-	"mobility" : 0.0
+	"mobility" : 0.0,
+	"attack_delay" : 0.0
 }
 const FORMATION_DELTA_BONUS = {
 	"attack" : 2.0,
 	"defence" : -2.0,
-	"mobility" : 35.0
+	"mobility" : 10.0,
+	"attack_delay" : -0.5
 }
 const FORMATION_CIRCLE_BONUS = {
 	"attack" : -2.0,
 	"defence" : 2.0,
-	"mobility" : -40.0
+	"mobility" : -40.0,
+	"attack_delay": 0.5
 }
 
 const FORMATION_BOX_CHATTER = [

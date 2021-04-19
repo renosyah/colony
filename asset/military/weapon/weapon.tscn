@@ -1,0 +1,32 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://asset/military/weapon/animation_weapon_crossbow_firing.tres" type="Animation" id=2]
+[ext_resource path="res://asset/military/weapon/weapon.gd" type="Script" id=4]
+[ext_resource path="res://asset/military/weapon/animation_weapon_iddle.tres" type="Animation" id=5]
+[ext_resource path="res://asset/military/weapon/animation_weapon_bow_firing.tres" type="Animation" id=6]
+[ext_resource path="res://asset/military/weapon/animation_weapon_polearm_trusting.tres" type="Animation" id=7]
+[ext_resource path="res://asset/military/weapon/animation_weapon_musket_firing.tres" type="Animation" id=8]
+[ext_resource path="res://asset/military/weapon/animation_weapon_throwing.tres" type="Animation" id=9]
+[ext_resource path="res://asset/military/weapon/animation_weapon_sword_slashing.tres" type="Animation" id=10]
+
+[node name="weapon" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="sprite" type="Sprite" parent="."]
+position = Vector2( -5, -9.58 )
+
+[node name="ammo" type="Sprite" parent="sprite"]
+visible = false
+position = Vector2( 1.48651, -2.22976 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "weapon_iddle"
+anims/weapon_bow_firing = ExtResource( 6 )
+anims/weapon_crossbow_firing = ExtResource( 2 )
+anims/weapon_iddle = ExtResource( 5 )
+anims/weapon_musket_firing = ExtResource( 8 )
+anims/weapon_polearm_trusting = ExtResource( 7 )
+anims/weapon_sword_slashing = ExtResource( 10 )
+anims/weapon_throwing = ExtResource( 9 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

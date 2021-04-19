@@ -92,6 +92,7 @@ func _on_Button_fromation_compact_pressed():
 
 # input touch or click
 func _on_Control_gui_input( event):
+	
 	if !_selected_squad.empty() and (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_pressed():
 		move_all_selected_squad(get_global_mouse_position())
 		return

@@ -1,5 +1,6 @@
 extends Area2D
 
+var damage = 0.0
 var speed = 800.0
 var sprite = preload("res://asset/military/projectile/empty.png")
 
@@ -35,7 +36,7 @@ func _on_arrow_body_entered(body):
 		return
 	if body.data.side == side:
 		return
-	#body.hit_by_projectile()
+	body.take_damage(damage)
 	queue_free()
 
 

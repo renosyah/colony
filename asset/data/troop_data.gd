@@ -22,7 +22,7 @@ const TROOP_TYPE_SPEARMAN = {
 	"hit_point" : 40.0,
 	"armor" : 1.0,
 	"range_attack" : 70,
-	"attack_speed" : 2.0,
+	"attack_delay" : 2.0,
 	"max_speed" : 90.0,
 	"side" : "",
 	"color" : {
@@ -33,14 +33,13 @@ const TROOP_TYPE_SPEARMAN = {
 	},
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/cap_armor_helm_3.png",
-	"weapon_sprite":"res://asset/military/weapon/spear.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.SPEAR,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_MAN_AT_ARMS = {
@@ -49,20 +48,19 @@ const TROOP_TYPE_MAN_AT_ARMS = {
 	"hit_point" : 40.0,
 	"armor" : 1.2,
 	"range_attack" : 50,
-	"attack_speed" : 2.0,
+	"attack_delay" : 2.0,
 	"max_speed" : 80.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/short_sword.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.SHORT_SWORD,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_PIKEMAN = {
@@ -71,7 +69,7 @@ const TROOP_TYPE_PIKEMAN = {
 	"hit_point" : 40.0,
 	"armor" : 2.8,
 	"range_attack" : 90,
-	"attack_speed" : 3.0,
+	"attack_delay" : 3.0,
 	"max_speed" : 80.0,
 	"side" : "",
 	"color" : {
@@ -82,14 +80,13 @@ const TROOP_TYPE_PIKEMAN = {
 	},
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/light_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/pike.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.PIKE,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_SWORDMAN = {
@@ -97,87 +94,104 @@ const TROOP_TYPE_SWORDMAN = {
 	"attack_damage" : 7.0,
 	"hit_point" : 100.0,
 	"armor" : 5.0,
-	"range_attack" : 40,
-	"attack_speed" : 2.5,
+	"range_attack" : 80,
+	"attack_delay" : 2.5,
 	"max_speed" : 60.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/sword.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.LONG_SWORD,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_AXEMAN = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 8.0,
+	"attack_damage" : 9.0,
 	"hit_point" : 60.0,
-	"armor" : 1.0,
+	"armor" : 0.0,
 	"range_attack" : 35,
-	"attack_speed" : 1.3,
+	"attack_delay" : 1.3,
 	"max_speed" : 140.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/no_armor.png",
 	"head_sprite" : "res://asset/military/uniform/wolf_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/axe.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.AXE,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
+	}
+}
+const TROOP_TYPE_JAVELINEER = {
+	"class" : CLASS_RANGE,
+	"attack_damage" : 6.5,
+	"hit_point" : 40.0,
+	"armor" : 0.0,
+	"range_attack" : 260,
+	"attack_delay" : 5.0,
+	"max_speed" : 130.0,
+	"side" : "",
+	"color" : Color(Color.red),
+	"body_sprite" : "res://asset/military/uniform/no_armor.png",
+	"head_sprite" : "res://asset/military/uniform/wolf_armor_helm.png",
+	"weapon" : WeaponData.JAVELINE,
+	"mount_sprite":"res://asset/military/mount/none.png",
+	"bonus" : {
+		"attack" : 0.0,
+		"defence" : 0.0,
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_ARCHER = {
 	"class" : CLASS_RANGE,
-	"attack_damage" : 2.0,
+	"attack_damage" : 2.5,
 	"hit_point" : 40.0,
 	"armor" : 1.0,
 	"range_attack" : 380,
-	"attack_speed" : 5.0,
+	"attack_delay" : 3.0,
 	"max_speed" : 90.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
 	"head_sprite" : "res://asset/military/uniform/cap_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/bow.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/arrow/arrow.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.BOW,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_CROSSBOWMAN = {
 	"class" : CLASS_RANGE,
-	"attack_damage" : 6.0,
+	"attack_damage" : 12.0,
 	"hit_point" : 80.0,
 	"armor" : 3.0,
 	"range_attack" : 320,
-	"attack_speed" : 5.0,
+	"attack_delay" : 8.0,
 	"max_speed" : 60.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/crossbow.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/bolt/bolt.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.CROSSBOW,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_MUSKETEER = {
@@ -185,65 +199,62 @@ const TROOP_TYPE_MUSKETEER = {
 	"attack_damage" : 14.0,
 	"hit_point" : 40.0,
 	"armor" : 1.0,
-	"range_attack" : 380,
-	"attack_speed" : 5.0,
+	"range_attack" : 360,
+	"attack_delay" : 11.0,
 	"max_speed" : 90.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
 	"head_sprite" : "res://asset/military/uniform/cap_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/musket.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/bullet/bullet.png",
-	"weapon_firing_sound":"res://asset/sound/cannon.wav",
+	"weapon" : WeaponData.MUSKET,
 	"mount_sprite":"res://asset/military/mount/none.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_LIGHT_CAVALRY = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 4.0,
+	"attack_damage" : 6.0,
 	"hit_point" : 80.0,
 	"armor" : 1.5,
 	"range_attack" : 80,
-	"attack_speed" : 3.0,
+	"attack_delay" : 3.0,
 	"max_speed" : 230.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/light_armor.png",
 	"head_sprite" : "res://asset/military/uniform/cap_armor_helm_2.png",
-	"weapon_sprite":"res://asset/military/weapon/lance.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.LANCE,
 	"mount_sprite":"res://asset/military/mount/horse.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_HEAVY_CAVALRY = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 7.0,
+	"attack_damage" : 7.5,
 	"hit_point" : 90.0,
 	"armor" : 4.5,
 	"range_attack" : 80,
-	"attack_speed" : 3.0,
+	"attack_delay" : 3.0,
 	"max_speed" : 160.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/sword.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.LONG_SWORD,
 	"mount_sprite":"res://asset/military/mount/armored_horse.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_ARCHER_CAVALRY = {
@@ -251,21 +262,20 @@ const TROOP_TYPE_ARCHER_CAVALRY = {
 	"attack_damage" : 2.0,
 	"hit_point" : 60.0,
 	"armor" : 1.0,
-	"range_attack" : 270,
-	"attack_speed" : 5.0,
+	"range_attack" : 350,
+	"attack_delay" : 2.5,
 	"max_speed" : 230.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/archer_armor.png",
 	"head_sprite" : "res://asset/military/uniform/cap_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/bow.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/arrow/arrow.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.BOW,
 	"mount_sprite":"res://asset/military/mount/horse.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }
 const TROOP_TYPE_GENERAL_CAVALRY = {
@@ -273,20 +283,19 @@ const TROOP_TYPE_GENERAL_CAVALRY = {
 	"attack_damage" : 15.0,
 	"hit_point" : 290.0,
 	"armor" : 6.5,
-	"range_attack" : 50,
-	"attack_speed" : 3.0,
+	"range_attack" : 80,
+	"attack_delay" : 3.0,
 	"max_speed" : 160.0,
 	"side" : "",
 	"color" : Color(Color.red),
 	"body_sprite" : "res://asset/military/uniform/heavy_armor.png",
 	"head_sprite" : "res://asset/military/uniform/heavy_armor_helm.png",
-	"weapon_sprite":"res://asset/military/weapon/war_hammer.png",
-	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
-	"weapon_firing_sound":"",
+	"weapon" : WeaponData.LONG_SWORD,
 	"mount_sprite":"res://asset/military/mount/armored_horse.png",
 	"bonus" : {
 		"attack" : 0.0,
 		"defence" : 0.0,
-		"mobility" : 0.0
+		"mobility" : 0.0,
+		"attack_delay" : 0.0
 	}
 }

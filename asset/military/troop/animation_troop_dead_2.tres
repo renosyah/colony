@@ -1,7 +1,7 @@
 [gd_resource type="Animation" format=2]
 
 [resource]
-resource_name = "troop_dead"
+resource_name = "troop_dead_2"
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("body:position")
@@ -22,7 +22,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.7 ),
+"times": PoolRealArray( 0, 0.3, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, -20 ), Vector2( -2.16251, -20.9966 ), Vector2( -2.78227, -22.4644 ), Vector2( 1.42131, -20.7312 ) ]
@@ -34,7 +34,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5, 0.7 ),
+"times": PoolRealArray( 0, 0.3, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 0.0, -13.2345, -23.9235, 8.59644 ]
@@ -49,7 +49,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.3, 0.5, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0, -24.7425, -69.9435, -87.8946 ]
+"values": [ 0.0, 24.7, 69.9, 87.9 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("body/mount:visible")
@@ -73,7 +73,7 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3, 0.5, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 10.9504, 1.13663 ), Vector2( 16.3038, 12.6059 ), Vector2( -1.44108, 20.3504 ), Vector2( -5.46833, 20.0522 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 17.8664, 2.32761 ), Vector2( 32.5431, -1.30074 ), Vector2( 24.6036, -29.6139 ), Vector2( 14.3339, -45.5185 ) ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("body/weapon:rotation_degrees")
@@ -85,5 +85,5 @@ tracks/6/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3, 0.5, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0, 19.364, 60.8614, 167.575, 180.639 ]
+"values": [ 0.0, 48.0759, 58.1314, 24.4028, 0.581205 ]
 }

@@ -14,11 +14,11 @@ onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
 onready var _animation = $AnimationPlayer
 onready var _troop_holder = $troop_holder
+onready var _dead_troop_holder = $dead_troop_holder
 onready var _banner = $banner
 onready var _field_of_view = $Area2D
 onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
-onready var _timer_target_damage = $timer_target_damage
 
 var velocity = Vector2.ZERO
 var targets = []
@@ -44,14 +44,12 @@ var data = {
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 1.0,
 	"troop_data" : {}
 }
 
 func _ready():
 	_banner.texture = load(data.banner_sprite)
 	_banner.self_modulate = Color(data.color.r,data.color.g,data.color.b,data.color.a)
-	_timer_target_damage.wait_time = data.attack_delay
 	
 	if data.troop_data["class"] == TroopData.CLASS_RANGE:
 		_field_of_view_area.scale.x = 2.3
@@ -74,15 +72,16 @@ func _process(_delta):
 		
 	if velocity != Vector2.ZERO:
 		update_troop_position()
-
+		
+		
 func move_squad_to(pos):
 	is_move = true
 	waypoint = pos
 	waypoint.y += 100.0
 	waypoint.x += 50.0
-	targets.clear()
 	_field_of_view_area.disabled = true
 	_field_of_view_area.disabled = false
+	targets.clear()
 	update_troop_facing_direction()
 
 func set_selected(is_selected):
@@ -122,7 +121,7 @@ func spawn_full_squad():
 	var idx = 0
 	for i in data.troop_amount:
 		var troop = preload("res://asset/military/troop/troop.tscn").instance()
-		troop.data = data.troop_data.duplicate()
+		troop.data = data.troop_data.duplicate(true)
 		troop.data.side = data.side
 		troop.data.color = data.color
 		troop.connect("on_troop_dead", self , "_on_troop_dead")
@@ -148,38 +147,32 @@ func update_troop_formation_bonus(formation):
 			
 	for child in _troop_holder.get_children():
 		child.set_bonus(data.troop_data.bonus)
-
+		
+		
 func update_troop_position():
 	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
 	var idx = 0
 	for child in _troop_holder.get_children():
-		child.is_rally_point = true
-		child.target = cur_formation[idx].position
+		child.rally_point = cur_formation[idx].position
+		child.target = null
 		idx += 1
 		
-
 func update_troop_facing_direction():
 	for child in _troop_holder.get_children():
 		child.set_facing_direction((waypoint - global_position).normalized())
-		
+
 
 func update_troop_target():
 	if targets.empty():
 		for child in _troop_holder.get_children():
-			child.target = null
+				child.target = null
 		return
 		
 	for child in _troop_holder.get_children():
-		child.is_rally_point = false
+		child.rally_point = null
 		if !is_instance_valid(child.target):
 			rng.randomize()
-			child.target = targets[rng.randf_range(0,targets.size())].global_position
-	
-func set_random_target_damage():
-	if !targets.empty() and velocity == Vector2.ZERO:
-		for child in _troop_holder.get_children():
-			var target = targets[rng.randf_range(0,targets.size())]
-			target.take_damage(_get_troop_data_attack_damage())
+			child.target = targets[rng.randf_range(0,targets.size())]
 
 
 func _on_Area2D_body_entered(body):
@@ -187,6 +180,7 @@ func _on_Area2D_body_entered(body):
 		if targets.has(body):
 			return
 		targets.append(body)
+
 
 func _on_Area2D_body_exited(body):
 	if body is Troop:
@@ -196,34 +190,31 @@ func _on_Area2D_body_exited(body):
 func _on_timer_reset_target_timeout():
 	update_troop_target()
 	_disband_squad()
-	
-	
-func _on_timer_target_damage_timeout():
-	set_random_target_damage()
 
 
-func _on_troop_dead():
+func _on_troop_dead(troop):
+	troop.show_behind_parent = true
+	_troop_holder.remove_child(troop)
+	_dead_troop_holder.add_child(troop)
+	
 	data.troop_amount = _troop_holder.get_children().size()
 	emit_signal("on_squad_troop_dead",data.side, data.troop_amount)
 	_disband_squad()
 
+
 func _disband_squad():
 	if _troop_holder.get_children().empty():
 		emit_signal("on_squad_dead",data.side, self)
-		queue_free()
+		_banner.visible = false
+		#queue_free()
+
 
 func _on_area_click_input_event(viewport, event, shape_idx):
-	if event is InputEventScreenTouch or (event is InputEventMouseButton and event.is_pressed()):
-		if _banner.self_modulate.a > 0.0:
+	if (event is InputEventScreenTouch and event.is_pressed()) or (event is InputEventMouseButton and event.is_action_pressed("left_click")):
+		if _banner.self_modulate.a > 0.3:
 			emit_signal("on_squad_click")
 
 
-func _get_troop_data_attack_damage():
-	var dmg = data.troop_data.attack_damage + data.troop_data.bonus.attack
-	if dmg < 0.0:
-		dmg = 1.0
-	return dmg
-	
 func _get_troop_data_mobility():
 	var speed = data.troop_data.max_speed + data.troop_data.bonus.mobility
 	if speed < 0.0:

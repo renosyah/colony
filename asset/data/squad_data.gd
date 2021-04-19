@@ -17,7 +17,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 2.0,
 	"troop_data" : TroopData.TROOP_TYPE_SPEARMAN
 },{
 	"name" : "Man At Arms",
@@ -51,7 +50,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 2.0,
 	"troop_data" : TroopData.TROOP_TYPE_PIKEMAN
 },{
 	"name" : "Swordman",
@@ -68,7 +66,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 2.5,
 	"troop_data" : TroopData.TROOP_TYPE_SWORDMAN
 },{
 	"name" : "Axeman",
@@ -85,8 +82,23 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 140.0,
-	"attack_delay" : 1.3,
 	"troop_data" : TroopData.TROOP_TYPE_AXEMAN
+},{
+	"name" : "Javelineer",
+	"description" : "Short range unit arm with javelin for supporting other, because lack of armor it not suit for close quarter combat",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_javelineer.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_javelineer.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : {
+		"r": 0.0,
+		"g": 0.0,
+		"b": 0.0,
+		"a": 0.0
+	},
+	"max_speed" : 80.0,
+	"troop_data" : TroopData.TROOP_TYPE_JAVELINEER
 },{
 	"name" : "Archer",
 	"description" : "Basic range unit arm with bow for supporting other, because lack of armor it not suit for close quarter combat",
@@ -102,7 +114,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 5.0,
 	"troop_data" : TroopData.TROOP_TYPE_ARCHER
 },{
 	"name" : "Crossbowman",
@@ -119,7 +130,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 8.0,
 	"troop_data" : TroopData.TROOP_TYPE_CROSSBOWMAN
 },{
 	"name" : "Musketeer",
@@ -136,7 +146,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 80.0,
-	"attack_delay" : 12.0,
 	"troop_data" : TroopData.TROOP_TYPE_MUSKETEER
 },{
 	"name" : "Light Cavalry",
@@ -153,7 +162,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 180.0,
-	"attack_delay" : 3.0,
 	"troop_data" : TroopData.TROOP_TYPE_LIGHT_CAVALRY
 },{
 	"name" : "Heavy Cavalry",
@@ -170,7 +178,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 180.0,
-	"attack_delay" : 3.0,
 	"troop_data" : TroopData.TROOP_TYPE_HEAVY_CAVALRY
 },{
 	"name" : "Archer Cavalry",
@@ -187,7 +194,6 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 180.0,
-	"attack_delay" : 2.0,
 	"troop_data" : TroopData.TROOP_TYPE_ARCHER_CAVALRY
 },{
 	"name" : "General",
@@ -204,6 +210,5 @@ const SQUAD_LIST = [{
 		"a": 0.0
 	},
 	"max_speed" : 180.0,
-	"attack_delay" : 3.0,
 	"troop_data" : TroopData.TROOP_TYPE_GENERAL_CAVALRY
 }]
