@@ -29,9 +29,8 @@ func _ready():
 		squad.connect("on_squad_click",self,"_on_squad_click")
 		squad.connect("on_squad_troop_dead",self,"_on_squad_troop_dead")
 
-func _on_squad_troop_dead(side,troop_left):
-	# add -1 for more accurate result
-	_label.text = str(troop_left - 1)
+func _on_squad_troop_dead(troop_left):
+	_label.text = str(troop_left)
 	_flicker.visible = true
 	_flicker_timer.start()
 	

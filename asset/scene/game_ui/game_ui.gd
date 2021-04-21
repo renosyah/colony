@@ -40,8 +40,6 @@ func _on_game_army_ready(side, color, total_troop):
 
 func _on_game_army_update(side, total_troop_left):
 	_armies_bar[side].bar.value = max(0, total_troop_left)
-	
-	# add -1 for more accurate result
 	_armies_bar[side].label.text = str(total_troop_left)
 	
 	if _dialog_result.visible:
@@ -125,7 +123,7 @@ func _on_squad_on_squad_ready(squad):
 	_squad_in_command.append(squad)
 	add_squad_to_squad_panel(squad)
 	
-func _on_squad_on_squad_dead(side, squad):
+func _on_squad_on_squad_dead(squad):
 	_squad_in_command.erase(squad)
 	_selected_squad.erase(squad)
 	remove_squad_from_squad_panel(squad)

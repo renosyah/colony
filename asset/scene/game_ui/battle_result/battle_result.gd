@@ -3,7 +3,8 @@ extends PanelContainer
 signal on_exit_button_press()
 
 onready var _title_label = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer/Label
-onready var _image_ilustration = $VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/TextureRect
+onready var _image_ilustration = $VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/TextureRect
+onready var _quote_label = $VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/Label
 
 onready var _player_name_label = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/Label
 onready var _player_list_squad_container = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/GridContainer
@@ -12,6 +13,8 @@ onready var _bot_name_label = $VBoxContainer/HBoxContainer2/PanelContainer2/VBox
 onready var _bot_list_squad_container = $VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/GridContainer
 
 onready var _button_exit = $VBoxContainer/Button
+
+onready var rng = RandomNumberGenerator.new()
 
 var _battle_data = {}
 
@@ -23,8 +26,10 @@ func set_battle_data(text_result, battle_data, _image_ilustration_sprite):
 	if battle_data.empty():
 		return
 	
+	rng.randomize()
 	_image_ilustration.texture = load(_image_ilustration_sprite)
 	_title_label.text = text_result
+	_quote_label.text = QuoteData.LIST_QUOTE[rng.randf_range(0,QuoteData.LIST_QUOTE.size())]
 	_battle_data = battle_data
 	_player_name_label.text = battle_data.battle[BattleData.PLAYER_SIDE_TAG].name
 	_bot_name_label.text =  battle_data.battle[BattleData.BOT_SIDE_TAG].name

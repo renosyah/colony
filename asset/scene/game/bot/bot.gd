@@ -71,17 +71,20 @@ func _attack_enemy_squad():
 func _to_fromation_standar():
 	for squad in _selected_squad:
 		if is_instance_valid(squad):
-			squad.change_formation(Squad.SQUAD_FORMATION_STANDAR)
+			if !squad.is_disbanded:
+				squad.change_formation(Squad.SQUAD_FORMATION_STANDAR)
 
 func _to_fromation_spread():
 	for squad in _selected_squad:
 		if is_instance_valid(squad):
-			squad.change_formation(Squad.SQUAD_FORMATION_SPREAD)
+			if !squad.is_disbanded:
+				squad.change_formation(Squad.SQUAD_FORMATION_SPREAD)
 
 func _to_fromation_compact():
 	for squad in _selected_squad:
 		if is_instance_valid(squad):
-			squad.change_formation(Squad.SQUAD_FORMATION_COMPACT)
+			if !squad.is_disbanded:
+				squad.change_formation(Squad.SQUAD_FORMATION_COMPACT)
 	
 
 func _move_all_selected_squad(pos):

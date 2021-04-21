@@ -10,15 +10,13 @@ script = ExtResource( 4 )
 
 [node name="terrain" parent="." instance=ExtResource( 1 )]
 
+[node name="disposable_body" type="Node2D" parent="."]
+
 [node name="game_ui" parent="." instance=ExtResource( 3 )]
+rotation = 0.00275911
 
 [node name="bot" parent="." instance=ExtResource( 5 )]
-
-[node name="timer_update_battle_status" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
 [connection signal="army_ready" from="." to="game_ui" method="_on_game_army_ready"]
 [connection signal="army_update" from="." to="game_ui" method="_on_game_army_update"]
 [connection signal="battle_data_update" from="." to="game_ui" method="_on_game_battle_data_update"]
 [connection signal="on_bot_surrender" from="bot" to="game_ui" method="_on_bot_on_bot_surrender"]
-[connection signal="timeout" from="timer_update_battle_status" to="." method="_on_timer_update_battle_status_timeout"]

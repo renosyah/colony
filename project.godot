@@ -30,9 +30,19 @@ _global_script_classes=[ {
 "path": "res://asset/collector/depot/collector_building.gd"
 }, {
 "base": "Node",
+"class": "ColorData",
+"language": "GDScript",
+"path": "res://asset/data/color_data.gd"
+}, {
+"base": "Node",
 "class": "Formation",
 "language": "GDScript",
 "path": "res://asset/military/formation/formation.gd"
+}, {
+"base": "Node",
+"class": "QuoteData",
+"language": "GDScript",
+"path": "res://asset/data/quote_data.gd"
 }, {
 "base": "StaticBody2D",
 "class": "Resources",
@@ -54,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://asset/scene/game_ui/squad_panel_detail/squad_panel_detail.gd"
 }, {
+"base": "PanelContainer",
+"class": "SquadPanelDetailMenu",
+"language": "GDScript",
+"path": "res://asset/scene/menu/squad_panel_detail_menu/squad_panel_detail_menu.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Troop",
 "language": "GDScript",
@@ -63,6 +78,11 @@ _global_script_classes=[ {
 "class": "TroopData",
 "language": "GDScript",
 "path": "res://asset/data/troop_data.gd"
+}, {
+"base": "Node",
+"class": "WeaponData",
+"language": "GDScript",
+"path": "res://asset/data/weapon_data.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Worker",
@@ -74,13 +94,17 @@ _global_script_class_icons={
 "Biom": "",
 "BotSetting": "",
 "CollectorBuilding": "",
+"ColorData": "",
 "Formation": "",
+"QuoteData": "",
 "Resources": "",
 "Squad": "",
 "SquadData": "",
 "SquadPanelDetail": "",
+"SquadPanelDetailMenu": "",
 "Troop": "",
 "TroopData": "",
+"WeaponData": "",
 "Worker": ""
 }
 
@@ -120,6 +144,16 @@ right_click={
 left_click={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+scroll_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+scroll_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 

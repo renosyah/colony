@@ -44,57 +44,29 @@ var _battle_data = {
 	"battle" : {
 		BattleData.PLAYER_SIDE_TAG : {
 			"name" : "Player",
-			"color" : {
-				"r": 0.04,
-				"g": 0.14,
-				"b": 0.5,
-				"a": 1.0
-			},
+			"color" : Color(0.04,0.14,0.5,1),
 			"squads": [],
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		},
 		BattleData.BOT_SIDE_TAG : {
 			"name" : "Bot",
-			"color" : {
-				"r": 0.59,
-				"g": 0.1,
-				"b": 0.1,
-				"a": 1.0
-			},
+			"color" :Color(0.59,0.1,0.1,1),
 			"squads": [],
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		}
 	},
 	"post_battle" : {
 		BattleData.PLAYER_SIDE_TAG : {
 			"name" : "",
-			"color" : {},
+			"color" : Color(0.04,0.14,0.5,1),
 			"squads": [],
-			"troop_remain" : 0,
-			"troop_kill" : 0,
-			"troop_lost" : 0,
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		},
 		BattleData.BOT_SIDE_TAG : {
 			"name" : "",
-			"color" : {},
+			"color" :Color(0.59,0.1,0.1,1),
 			"squads": [],
-			"troop_remain" : 0,
-			"troop_kill" : 0,
-			"troop_lost" : 0,
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		}
 	}
 }
@@ -128,7 +100,6 @@ func _on_add_squad_bot_pressed():
 func _on_squad_choosed_for_player(squad):
 	if _battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads.size() < MAX_SQUAD:
 		squad.side = BattleData.PLAYER_SIDE_TAG
-		squad.color = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].color
 		_battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads.append(squad)
 		
 	_player_label.text = "Player ("+ str(_battle_data.battle[BattleData.PLAYER_SIDE_TAG].squads.size()) + "/" +  str(MAX_SQUAD) + ")"
@@ -147,7 +118,6 @@ func _on_squad_choosed_for_bot(squad):
 	
 	if _battle_data.battle[BattleData.BOT_SIDE_TAG].squads.size() < MAX_SQUAD:
 		squad.side = BattleData.BOT_SIDE_TAG
-		squad.color = _battle_data.battle[BattleData.BOT_SIDE_TAG].color
 		_battle_data.battle[BattleData.BOT_SIDE_TAG].squads.append(squad)
 		
 	_bot_label.text = "Bot ("+ str(_battle_data.battle[BattleData.BOT_SIDE_TAG].squads.size()) + "/" +  str(MAX_SQUAD) + ")"
@@ -218,14 +188,8 @@ func _on_player_color_pressed():
 	_player_color_pos += 1
 	if _player_color_pos >= ColorData.COLOR_LIST.size():
 		_player_color_pos = 0
-		
-	var _color = {
-		"r": color.r,
-		"g": color.g,
-		"b": color.b,
-		"a": color.a
-	}
-	_battle_data.battle[BattleData.PLAYER_SIDE_TAG].color = _color
+
+	_battle_data.battle[BattleData.PLAYER_SIDE_TAG].color = color
 
 func _on_bot_color_pressed():
 	var color = ColorData.COLOR_LIST[_bot_color_pos]
@@ -233,11 +197,5 @@ func _on_bot_color_pressed():
 	_bot_color_pos += 1
 	if _bot_color_pos >= ColorData.COLOR_LIST.size():
 		_bot_color_pos = 0
-		
-	var _color = {
-		"r": color.r,
-		"g": color.g,
-		"b": color.b,
-		"a": color.a
-	}
-	_battle_data.battle[BattleData.BOT_SIDE_TAG].color = _color
+
+	_battle_data.battle[BattleData.BOT_SIDE_TAG].color = color

@@ -17,47 +17,29 @@ var battle_data = {
 	"battle" : {
 		PLAYER_SIDE_TAG : {
 			"name" : "",
-			"color" : {},
+			"color" : Color(Color.white),
 			"squads": [],
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		},
 		BOT_SIDE_TAG : {
 			"name" : "",
-			"color" : {},
+			"color" : Color(Color.white),
 			"squads": [],
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		}
 	},
 	"post_battle" : {
 		PLAYER_SIDE_TAG : {
 			"name" : "",
-			"color" : {},
+			"color" : Color(Color.white),
 			"squads": [],
-			"troop_remain" : 0,
-			"troop_kill" : 0,
-			"troop_lost" : 0,
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		},
 		BOT_SIDE_TAG : {
 			"name" : "",
-			"color" : {},
+			"color" : Color(Color.white),
 			"squads": [],
-			"troop_remain" : 0,
-			"troop_kill" : 0,
-			"troop_lost" : 0,
-			"position" : {
-				"x" : 0.0,
-				"y" : 0.0,
-			}
+			"position" : Vector2.ZERO
 		}
 	}
 }

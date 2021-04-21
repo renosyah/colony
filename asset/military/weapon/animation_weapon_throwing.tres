@@ -2,6 +2,7 @@
 
 [resource]
 resource_name = "weapon_throwing"
+length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:position")
 tracks/0/interp = 1
@@ -9,10 +10,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.2, 0.8, 0.9 ),
+"times": PoolRealArray( 0.1, 0.4, 1.1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( -10, -5 ), Vector2( -10, -10 ), Vector2( 4.9259, -9.57955 ) ]
+"values": [ Vector2( 3, -5 ), Vector2( 2, -5 ), Vector2( 3, 5 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:rotation_degrees")
@@ -21,10 +22,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ -60.014, -60.014, -60.014 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("sprite/ammo:visible")
@@ -33,10 +34,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0.1, 0.9 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.1, 1.1, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ true, false, true ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("sprite/ammo:rotation_degrees")
@@ -45,10 +46,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.7, 0.9, 1, 1.1, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0, -10.2417, 0.331363 ]
+"values": [ -4.25979, -4.25979, -19.1479, 26.9682, 45.1148, 45.1148, 45.1148, 44.053, -4.25979 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("sprite/ammo:position")
@@ -57,10 +58,10 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.7, 0.9, 1, 1.1, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( -21.0854, -1.60747 ), Vector2( 23.4821, -2.44837 ) ]
+"values": [ Vector2( 0.00470829, -3.26355 ), Vector2( 0.316002, -12.5392 ), Vector2( 8.13031, -17.7347 ), Vector2( 8.13, -35 ), Vector2( 16.42, -35 ), Vector2( 3.09748, -35.0822 ), Vector2( 29.777, -15 ), Vector2( 33.2552, -1.87333 ), Vector2( 0.00470829, -3.26355 ) ]
 }
 tracks/5/type = "method"
 tracks/5/path = NodePath(".")
@@ -69,7 +70,7 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0.9 ),
+"times": PoolRealArray( 1.2 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],

@@ -5,7 +5,7 @@
 [ext_resource path="res://asset/military/projectile/tracer.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 11.2145
+radius = 9.60478
 
 [node name="projectile" type="Area2D"]
 script = ExtResource( 1 )
@@ -16,16 +16,24 @@ centered = false
 offset = Vector2( -35, -3 )
 
 [node name="tracer" type="Sprite" parent="sprite"]
+visible = false
 modulate = Color( 1, 1, 1, 0.329412 )
 position = Vector2( -52.1709, -0.342023 )
 scale = Vector2( 1.49913, 0.475833 )
 texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.61703
 shape = SubResource( 1 )
 
 [node name="life_time" type="Timer" parent="."]
 wait_time = 1.3
 autostart = true
+
+[node name="tracer_display_delay" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
 [connection signal="body_entered" from="." to="." method="_on_arrow_body_entered"]
 [connection signal="timeout" from="life_time" to="." method="_on_time_out_timeout"]
+[connection signal="timeout" from="tracer_display_delay" to="." method="_on_tracer_display_delay_timeout"]

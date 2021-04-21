@@ -8,6 +8,7 @@ onready var _battle_data_instance = BattleData.new()
 onready var _game_ui = $game_ui
 onready var _bot = $bot
 onready var _tilemap = $terrain
+onready var _disposable_dead_body = $disposable_body
 
 var _battle_data = {}
 var _armies = {
@@ -65,6 +66,7 @@ func spawn_squad(pos, squad_data, color):
 	squad.connect("on_squad_troop_dead",self,"_on_squad_troop_dead")
 	squad.data = squad_data.duplicate(true)
 	squad.data.color = color
+	squad.disposable_dead_body = _disposable_dead_body
 	add_child(squad)
 	
 	_armies[squad_data.side].append(squad)
@@ -77,15 +79,16 @@ func spawn_enemy_squad(pos, squad_data, color):
 	squad.connect("on_squad_dead",self,"_on_squad_on_squad_dead")
 	squad.data = squad_data.duplicate(true)
 	squad.data.color = color
+	squad.disposable_dead_body = _disposable_dead_body
 	add_child(squad)
 
 	_armies[squad_data.side].append(squad)
 	
-func _on_squad_on_squad_dead(side,squad):
-	emit_signal("army_update",side, _get_troop_remain(side))
+func _on_squad_on_squad_dead(squad):
+	update_battle_status()
 
-func _on_squad_troop_dead(side, troop_left):
-	emit_signal("army_update",side, _get_troop_remain(side))
+func _on_squad_troop_dead(troop_left):
+	update_battle_status()
 
 func _get_troop_remain(side):
 	var troop_sum = 0
@@ -94,7 +97,7 @@ func _get_troop_remain(side):
 			troop_sum += squad.get_troop_left()
 	return troop_sum
 
-func _on_timer_update_battle_status_timeout():
+func update_battle_status():
 	_copy_to_post_battle()
 	emit_signal("army_update",BattleData.PLAYER_SIDE_TAG, _get_troop_remain(BattleData.PLAYER_SIDE_TAG))
 	emit_signal("army_update",BattleData.BOT_SIDE_TAG, _get_troop_remain(BattleData.BOT_SIDE_TAG))
@@ -102,12 +105,12 @@ func _on_timer_update_battle_status_timeout():
 
 func _copy_to_post_battle():
 	_battle_data.post_battle[BattleData.PLAYER_SIDE_TAG].name = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].name
-	_battle_data.post_battle[BattleData.PLAYER_SIDE_TAG].color = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].color.duplicate()
-	_battle_data.post_battle[BattleData.PLAYER_SIDE_TAG].position = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].position.duplicate()
+	_battle_data.post_battle[BattleData.PLAYER_SIDE_TAG].color = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].color
+	_battle_data.post_battle[BattleData.PLAYER_SIDE_TAG].position = _battle_data.battle[BattleData.PLAYER_SIDE_TAG].position
 	
 	_battle_data.post_battle[BattleData.BOT_SIDE_TAG].name = _battle_data.battle[BattleData.BOT_SIDE_TAG].name
-	_battle_data.post_battle[BattleData.BOT_SIDE_TAG].color = _battle_data.battle[BattleData.BOT_SIDE_TAG].color.duplicate()
-	_battle_data.post_battle[BattleData.BOT_SIDE_TAG].position = _battle_data.battle[BattleData.BOT_SIDE_TAG].position.duplicate()
+	_battle_data.post_battle[BattleData.BOT_SIDE_TAG].color = _battle_data.battle[BattleData.BOT_SIDE_TAG].color
+	_battle_data.post_battle[BattleData.BOT_SIDE_TAG].position = _battle_data.battle[BattleData.BOT_SIDE_TAG].position
 
 	_battle_data.post_battle[BattleData.PLAYER_SIDE_TAG].squads.clear()
 	_battle_data.post_battle[BattleData.BOT_SIDE_TAG].squads.clear()

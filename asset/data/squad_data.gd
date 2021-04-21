@@ -10,13 +10,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_SPEARMAN
 },{
 	"name" : "Man At Arms",
@@ -26,13 +21,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"attack_delay" : 2.0,
 	"troop_data" : TroopData.TROOP_TYPE_MAN_AT_ARMS
 },{
@@ -43,13 +33,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_PIKEMAN
 },{
 	"name" : "Swordman",
@@ -59,13 +44,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_SWORDMAN
 },{
 	"name" : "Axeman",
@@ -75,13 +55,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 140.0,
+	"color" : Color(Color.white),
+	"max_speed" : 60.0,
 	"troop_data" : TroopData.TROOP_TYPE_AXEMAN
 },{
 	"name" : "Javelineer",
@@ -91,13 +66,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 60.0,
 	"troop_data" : TroopData.TROOP_TYPE_JAVELINEER
 },{
 	"name" : "Archer",
@@ -107,13 +77,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_ARCHER
 },{
 	"name" : "Crossbowman",
@@ -123,13 +88,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_CROSSBOWMAN
 },{
 	"name" : "Musketeer",
@@ -139,13 +99,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 20,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 80.0,
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_MUSKETEER
 },{
 	"name" : "Light Cavalry",
@@ -155,13 +110,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 35,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 180.0,
+	"color" : Color(Color.white),
+	"max_speed" : 80.0,
 	"troop_data" : TroopData.TROOP_TYPE_LIGHT_CAVALRY
 },{
 	"name" : "Heavy Cavalry",
@@ -171,13 +121,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 35,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 180.0,
+	"color" : Color(Color.white),
+	"max_speed" : 60.0,
 	"troop_data" : TroopData.TROOP_TYPE_HEAVY_CAVALRY
 },{
 	"name" : "Archer Cavalry",
@@ -187,13 +132,8 @@ const SQUAD_LIST = [{
 	"troop_amount" : 15,
 	"formation_space" : 35,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 180.0,
+	"color" : Color(Color.white),
+	"max_speed" : 80.0,
 	"troop_data" : TroopData.TROOP_TYPE_ARCHER_CAVALRY
 },{
 	"name" : "General",
@@ -203,12 +143,7 @@ const SQUAD_LIST = [{
 	"troop_amount" : 1,
 	"formation_space" : 35,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
-	"max_speed" : 180.0,
+	"color" : Color(Color.white),
+	"max_speed" : 60.0,
 	"troop_data" : TroopData.TROOP_TYPE_GENERAL_CAVALRY
 }]

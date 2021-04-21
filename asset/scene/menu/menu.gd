@@ -21,7 +21,6 @@ func _on_about_pressed():
 	_title_panel.visible = _about_panel.visible
 	_about_panel.visible = !_title_panel.visible
 
-
 func _on_quit_pressed():
 	get_tree().quit()
 

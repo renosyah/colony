@@ -74,16 +74,16 @@ const BOW = {
 	"weapon_type" : CLASS_WEAPON_RANGE,
 	"weapon_sprite":"res://asset/military/weapon/bow.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/arrow/arrow.png",
-	"weapon_firing_sound": "",
+	"weapon_firing_sound": "res://asset/sound/arrow_fly.wav",
 	"ready_animation" : "weapon_iddle",
 	"attack_animation" :"weapon_bow_firing"
 }
 # javeline
 const JAVELINE = {
 	"weapon_type" : CLASS_WEAPON_RANGE,
-	"weapon_sprite":"res://asset/military/weapon/empty_weapon.png",
+	"weapon_sprite":"res://asset/military/projectile/javeline/javelin.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/javeline/javelin.png",
-	"weapon_firing_sound": "",
+	"weapon_firing_sound": "res://asset/sound/arrow_fly.wav",
 	"ready_animation" : "weapon_iddle",
 	"attack_animation" :"weapon_throwing"
 }
@@ -92,7 +92,7 @@ const CROSSBOW = {
 	"weapon_type" : CLASS_WEAPON_RANGE,
 	"weapon_sprite":"res://asset/military/weapon/crossbow.png",
 	"weapon_projectile_sprite":"res://asset/military/projectile/bolt/bolt.png",
-	"weapon_firing_sound": "",
+	"weapon_firing_sound": "res://asset/sound/arrow_fly.wav",
 	"ready_animation" : "weapon_iddle",
 	"attack_animation" :"weapon_crossbow_firing"
 }

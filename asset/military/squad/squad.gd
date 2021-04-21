@@ -7,8 +7,8 @@ const SQUAD_FORMATION_COMPACT = 2
 
 signal on_squad_ready(squad)
 signal on_squad_click()
-signal on_squad_dead(side,squad)
-signal on_squad_troop_dead(side,troop_left)
+signal on_squad_dead(squad)
+signal on_squad_troop_dead(troop_left)
 
 onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
@@ -20,6 +20,9 @@ onready var _field_of_view = $Area2D
 onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
 
+var disposable_dead_body = null
+
+var is_disbanded = false
 var velocity = Vector2.ZERO
 var targets = []
 var is_move = false
@@ -37,19 +40,14 @@ var data = {
 	"troop_amount" : 24,
 	"formation_space" : 40,
 	"side" : "",
-	"color" : {
-		"r": 0.0,
-		"g": 0.0,
-		"b": 0.0,
-		"a": 0.0
-	},
+	"color" : Color(Color.white),
 	"max_speed" : 80.0,
 	"troop_data" : {}
 }
 
 func _ready():
 	_banner.texture = load(data.banner_sprite)
-	_banner.self_modulate = Color(data.color.r,data.color.g,data.color.b,data.color.a)
+	_banner.self_modulate = data.color
 	
 	if data.troop_data["class"] == TroopData.CLASS_RANGE:
 		_field_of_view_area.scale.x = 2.3
@@ -170,7 +168,11 @@ func update_troop_target():
 		
 	for child in _troop_holder.get_children():
 		child.rally_point = null
-		if !is_instance_valid(child.target):
+		if is_instance_valid(child.target):
+			if !child.target.is_alive:
+				rng.randomize()
+				child.target = targets[rng.randf_range(0,targets.size())]
+		else:
 			rng.randomize()
 			child.target = targets[rng.randf_range(0,targets.size())]
 
@@ -178,6 +180,8 @@ func update_troop_target():
 func _on_Area2D_body_entered(body):
 	if body is Troop and body.data.side != data.side:
 		if targets.has(body):
+			return
+		if !body.is_alive:
 			return
 		targets.append(body)
 
@@ -193,19 +197,23 @@ func _on_timer_reset_target_timeout():
 
 
 func _on_troop_dead(troop):
-	troop.show_behind_parent = true
 	_troop_holder.remove_child(troop)
-	_dead_troop_holder.add_child(troop)
+	
+	if disposable_dead_body:
+		disposable_dead_body.add_child(troop)
+	else:
+		_dead_troop_holder.add_child(troop)
 	
 	data.troop_amount = _troop_holder.get_children().size()
-	emit_signal("on_squad_troop_dead",data.side, data.troop_amount)
+	emit_signal("on_squad_troop_dead", data.troop_amount)
 	_disband_squad()
 
 
 func _disband_squad():
 	if _troop_holder.get_children().empty():
-		emit_signal("on_squad_dead",data.side, self)
+		emit_signal("on_squad_dead",self)
 		_banner.visible = false
+		is_disbanded = true
 		#queue_free()
 
 

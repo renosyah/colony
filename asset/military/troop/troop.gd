@@ -23,8 +23,8 @@ const stabs_sound = [
 	preload("res://asset/sound/stab1.wav"),
 	preload("res://asset/sound/stab2.wav"),
 ]
-const FORCE_MELEE_RANGE = 80.0
-const MAXIMUM_ENGAGEMENT_RANGE = 90.0
+const FORCE_MELEE_RANGE = 50.0
+const MAXIMUM_ENGAGEMENT_RANGE = 150.0
 
 signal on_troop_dead(troop)
 
@@ -38,6 +38,8 @@ onready var _attack_delay = $attack_delay
 onready var _animation = $AnimationPlayer
 onready var _audio = $AudioStreamPlayer2D
 
+
+var is_alive = true
 var _last_position = Vector2.ZERO
 var target : KinematicBody2D = null
 var rally_point = null
@@ -45,7 +47,7 @@ var rally_point = null
 var data = {}
 
 func _ready():
-	_body.self_modulate = Color(data.color.r,data.color.g,data.color.b,data.color.a)
+	_body.self_modulate = data.color
 	_head.texture = load(data.head_sprite)
 	_body.texture = load(data.body_sprite)
 	_mount.texture = load(data.mount_sprite)
@@ -68,7 +70,7 @@ func _process(delta):
 	var direction = Vector2.ZERO
 	var distance_to_target = 0.0
 	
-	if data.hit_point <= 0:
+	if !is_alive:
 		global_position = _last_position
 		return
 		
@@ -76,7 +78,7 @@ func _process(delta):
 		direction = (rally_point - global_position).normalized()
 		distance_to_target = global_position.distance_to(rally_point)
 		
-		if distance_to_target >= 5.0:
+		if distance_to_target > 5.0:
 			_weapon.do_nothing()
 			_animation.play("troop_walking")
 			velocity = direction * _get_troop_data_mobility() * delta
@@ -106,7 +108,7 @@ func _process(delta):
 		
 	move_and_collide(velocity)
 
-func _start_combat(_target,_direction, _distance):
+func _start_combat(_target, _direction, _distance):
 	
 	if data["class"] == TroopData.CLASS_MELEE:
 		_weapon.perform_attack()
@@ -118,8 +120,9 @@ func _start_combat(_target,_direction, _distance):
 			_weapon.set_data(data.weapon)
 			_weapon.perform_attack()
 			yield(_weapon,"on_animation_attack_performed")
-			_play_weapon_firing()
-			_shoot(_direction)
+			if is_instance_valid(_target):
+				_play_weapon_firing()
+				_shoot_at(_target)
 			
 		else:
 			_weapon.set_data(WeaponData.DAGGER)
@@ -129,34 +132,60 @@ func _start_combat(_target,_direction, _distance):
 			
 	_animation.play("troop_walking")
 
-func _shoot(dir):
+func _shoot_at(_target):
+	var direction = (_target.global_position - global_position).normalized()
 	var projectile = preload("res://asset/military/projectile/projectile.tscn").instance()
 	projectile.side = data.side
 	projectile.damage = _get_troop_data_attack_damage()
 	projectile.sprite = load(data.weapon.weapon_projectile_sprite)
-	projectile.lauching(global_position, dir)
+	projectile.lauching(global_position, direction)
 	add_child(projectile)
 
-func hit_by_projectile():
+func hit_by_projectile(_projectile_sprite):
+	if rng.randf() < 0.4 and data.hit_point <= 10.0:
+		_attach_projectile(_projectile_sprite)
 	_play_stab_sound()
+
+func _attach_projectile(_projectile_sprite):
+	var _projectile_attach = Sprite.new()
+	_projectile_attach.texture = _projectile_sprite
+	_projectile_attach.rotate(rand_range(-0.10, 0.10))
+	_projectile_attach.flip_h = true
+	_projectile_attach.scale.x = 0.8
+	_projectile_attach.scale.y = 0.8
+	_projectile_attach.offset = Vector2(rand_range(8.0, 10.0),rand_range(-4, -10))
+	_projectile_attach.show_behind_parent = true
+	_body.add_child(_projectile_attach)
 
 func take_damage(dmg):
 	if data.hit_point <= 0:
 		return
 		
 	var _dmg = _get_damage_receive(dmg)
-	data.hit_point -=  _dmg
+	data.hit_point -= _dmg
 	if data.hit_point <= 0:
-		_play_animation_troop_dead()
+		_set_dead()
 
-func _play_animation_troop_dead():
-	_play_dead_sound()
-	_weapon.do_nothing()
+func _set_dead():
+	is_alive = false
 	_last_position = global_position
+	_weapon.do_nothing()
+	_play_troop_dead_animation()
+	
+func _play_troop_dead_animation():
+	
+	_play_dead_sound()
+	
 	_animation.play(dead_animations[rng.randf_range(0,dead_animations.size())])
 	yield(_animation,"animation_finished")
-	_collision.disabled = true
+	
+	if rng.randf() < 0.5:
+		_body.rotation_degrees = rand_range(-90, 90)
+		_weapon.rotation_degrees = rand_range(-90, 90)
+		
 	emit_signal("on_troop_dead", self)
+	_collision.disabled = true
+	
 	#queue_free()
 	
 func _get_troop_data_attack_damage():
