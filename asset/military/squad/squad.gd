@@ -31,19 +31,7 @@ var formations
 var min_area_waypoint = 5.0
 var current_formation = SQUAD_FORMATION_STANDAR
 
-# default data prevent null pointer
-var data = {
-	"name" : "",
-	"description" : "",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_empty.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_empty.png",
-	"troop_amount" : 24,
-	"formation_space" : 40,
-	"side" : "",
-	"color" : Color(Color.white),
-	"max_speed" : 80.0,
-	"troop_data" : {}
-}
+var data = {}
 
 func _ready():
 	_banner.texture = load(data.banner_sprite)
@@ -53,8 +41,7 @@ func _ready():
 		_field_of_view_area.scale.x = 2.3
 		_field_of_view_area.scale.y = 2.3
 		
-	spawn_full_squad()
-	emit_signal("on_squad_ready", self)
+	_spawn_full_squad()
 	set_physics_process(false)
 	
 func _process(_delta):
@@ -69,7 +56,7 @@ func _process(_delta):
 		move_and_collide(velocity)
 		
 	if velocity != Vector2.ZERO:
-		update_troop_position()
+		_update_troop_position()
 		
 		
 func move_squad_to(pos):
@@ -80,7 +67,7 @@ func move_squad_to(pos):
 	_field_of_view_area.disabled = true
 	_field_of_view_area.disabled = false
 	targets.clear()
-	update_troop_facing_direction()
+	_update_troop_facing_direction()
 
 func set_selected(is_selected):
 	if is_selected:
@@ -93,8 +80,8 @@ func set_selected(is_selected):
 func change_formation(formation):
 	#is_move = false
 	current_formation = formation
-	update_troop_position()
-	update_troop_formation_bonus(formation)
+	_update_troop_position()
+	_update_troop_formation_bonus()
 
 
 func change_banner_visual(_scale,_transparacy):
@@ -114,7 +101,7 @@ func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_betw
 	return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
 
 
-func spawn_full_squad():
+func _spawn_full_squad():
 	var cur_formation = _formation.get_formation_box(Vector2.ZERO ,data.troop_amount ,data.formation_space)
 	var idx = 0
 	for i in data.troop_amount:
@@ -126,9 +113,11 @@ func spawn_full_squad():
 		troop.position = cur_formation[idx].position
 		_troop_holder.add_child(troop)
 		idx += 1
+		
+	emit_signal("on_squad_ready", self)
 
 
-func update_troop_formation_bonus(formation):
+func _update_troop_formation_bonus():
 	rng.randomize()
 	match current_formation:
 		SQUAD_FORMATION_STANDAR:
@@ -147,7 +136,7 @@ func update_troop_formation_bonus(formation):
 		child.set_bonus(data.troop_data.bonus)
 		
 		
-func update_troop_position():
+func _update_troop_position():
 	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
 	var idx = 0
 	for child in _troop_holder.get_children():
@@ -155,12 +144,12 @@ func update_troop_position():
 		child.target = null
 		idx += 1
 		
-func update_troop_facing_direction():
+func _update_troop_facing_direction():
 	for child in _troop_holder.get_children():
 		child.set_facing_direction((waypoint - global_position).normalized())
 
 
-func update_troop_target():
+func _update_troop_target():
 	if targets.empty():
 		for child in _troop_holder.get_children():
 				child.target = null
@@ -192,7 +181,7 @@ func _on_Area2D_body_exited(body):
 	
 	
 func _on_timer_reset_target_timeout():
-	update_troop_target()
+	_update_troop_target()
 	_disband_squad()
 
 
@@ -217,7 +206,7 @@ func _disband_squad():
 		#queue_free()
 
 
-func _on_area_click_input_event(viewport, event, shape_idx):
+func _on_area_click_input_event(_viewport, event,_shape_idx):
 	if (event is InputEventScreenTouch and event.is_pressed()) or (event is InputEventMouseButton and event.is_action_pressed("left_click")):
 		if _banner.self_modulate.a > 0.3:
 			emit_signal("on_squad_click")

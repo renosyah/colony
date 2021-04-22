@@ -35,7 +35,7 @@ var data = {
 func _ready():
 	_animation.play("worker_walking")
 	
-func _physics_process(delta):
+func _process(delta):
 	_collision.disabled = (data.resource_in_hand == null)
 	_item.visible = (data.resource_in_hand != null)
 	var velocity = Vector2.ZERO

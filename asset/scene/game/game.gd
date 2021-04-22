@@ -84,10 +84,10 @@ func spawn_enemy_squad(pos, squad_data, color):
 
 	_armies[squad_data.side].append(squad)
 	
-func _on_squad_on_squad_dead(squad):
+func _on_squad_on_squad_dead(_squad):
 	update_battle_status()
 
-func _on_squad_troop_dead(troop_left):
+func _on_squad_troop_dead(_troop_left):
 	update_battle_status()
 
 func _get_troop_remain(side):

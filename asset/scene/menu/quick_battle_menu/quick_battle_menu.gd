@@ -73,9 +73,12 @@ var _battle_data = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	get_tree().set_quit_on_go_back(false)
 
-
+func _notification(what):
+	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST || what == NOTIFICATION_WM_GO_BACK_REQUEST):
+		_on_back_pressed()
+		
 func _on_back_pressed():
 	get_tree().change_scene("res://asset/scene/menu/menu.tscn")
 

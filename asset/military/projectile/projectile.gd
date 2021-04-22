@@ -2,6 +2,7 @@ extends Area2D
 
 var damage = 0.0
 var speed = 500.0
+var spread = 0.1
 var sprite = preload("res://asset/military/projectile/empty.png")
 
 var direction = Vector2.ZERO
@@ -17,6 +18,7 @@ func _ready():
 func lauching(from, to: Vector2):
 	position = from
 	velocity = to
+	velocity = velocity.rotated(rand_range(-spread, spread))
 	$sprite.rotation = velocity.angle()
 	is_lauched = true
 	$sprite.texture = sprite

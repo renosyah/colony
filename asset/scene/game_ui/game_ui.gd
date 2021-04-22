@@ -56,13 +56,15 @@ func _on_game_army_update(side, total_troop_left):
 		_dialog_result.visible = true
 
 func _on_bot_on_bot_surrender():
-	_dialog_result.set_battle_data("You win, Enemy Surrender", _battle_data,"res://asset/ui/ilustration/win.png")
+	_battle_data.winner = BattleData.PLAYER_SIDE_TAG
+	_dialog_result.set_battle_data("You win, Enemy Surrender", _battle_data, "res://asset/ui/ilustration/win.png")
 	_dialog_result.visible = true
 
 
 # button exit
 func _on_battle_result_on_exit_button_press():
-	get_tree().change_scene("res://asset/scene/menu/menu.tscn")
+	if _battle_data.type == BattleData.TYPE_QUICK_BATTLE:
+		get_tree().change_scene("res://asset/scene/menu/menu.tscn")
  
 func _on_Button_select_all_pressed():
 	for squad_item in _squad_panel.get_children():

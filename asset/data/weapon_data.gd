@@ -5,6 +5,14 @@ const CLASS_WEAPON_MELEE = 0
 const CLASS_WEAPON_RANGE = 1
 
 # polearms
+const PITCHFORK = {
+	"weapon_type" : CLASS_WEAPON_MELEE,
+	"weapon_sprite":"res://asset/military/weapon/pitchfork.png",
+	"weapon_projectile_sprite":"res://asset/military/projectile/empty.png",
+	"weapon_firing_sound": "",
+	"ready_animation" : "weapon_iddle",
+	"attack_animation" : "weapon_polearm_trusting",
+}
 const SPEAR = {
 	"weapon_type" : CLASS_WEAPON_MELEE,
 	"weapon_sprite":"res://asset/military/weapon/spear.png",

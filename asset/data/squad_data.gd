@@ -2,7 +2,19 @@ extends Node
 class_name SquadData
 
 # data troop squad class
-const SQUAD_LIST = [{
+const SQUAD_LIST = [
+{
+	"name" : "Peasant",
+	"description" : "Pathetic infantry unit arm with pitch fork, only effective fighting agains... rabbit?!",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_empty.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_empty.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
+	"troop_data" : TroopData.TROOP_TYPE_PEASANT
+},{
 	"name" : "Spearman",
 	"description" : "Basic infantry unit arm with spear, has weak armor, and not effective again other class, but they are cheap",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_spearman.png",
@@ -47,6 +59,17 @@ const SQUAD_LIST = [{
 	"color" : Color(Color.white),
 	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_SWORDMAN
+},{
+	"name" : "Halberdier",
+	"description" : "Heavy infantry arm with pike with good armor and attack, efective for holding line, but with slow movement speed",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_halberdier.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_halberdier.png",
+	"troop_amount" : 15,
+	"formation_space" : 20,
+	"side" : "",
+	"color" : Color(Color.white),
+	"max_speed" : 40.0,
+	"troop_data" : TroopData.TROOP_TYPE_HALBERDIER
 },{
 	"name" : "Axeman",
 	"description" : "Fastest infantry unit,arm with axe have excelent attack, but have no armor, efective for attacking enemy from flank",
@@ -136,14 +159,14 @@ const SQUAD_LIST = [{
 	"max_speed" : 80.0,
 	"troop_data" : TroopData.TROOP_TYPE_ARCHER_CAVALRY
 },{
-	"name" : "General",
-	"description" : "Special unit with good defence and attack",
-	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_leader.png",
-	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_leader.png",
-	"troop_amount" : 1,
+	"name" : "Dragoon",
+	"description" : "Special Range Cavalry unit arm with musket with good defence and attack",
+	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_musket_cavalry.png",
+	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_musket_cavalry.png",
+	"troop_amount" : 15,
 	"formation_space" : 35,
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 60.0,
-	"troop_data" : TroopData.TROOP_TYPE_GENERAL_CAVALRY
+	"troop_data" : TroopData.TROOP_TYPE_MUSKET_CAVALRY
 }]
