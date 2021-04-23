@@ -4,6 +4,7 @@ signal on_squad_icon_click(squad)
 
 onready var _selected_indicator = $TextureRect
 onready var _texture_rect = $VBoxContainer/TextureRect
+onready var _squad_scatter = $TextureRect3
 onready var _label = $VBoxContainer/Label
 onready var _flicker_timer = $flicker_time
 onready var _flicker = $TextureRect2
@@ -27,6 +28,7 @@ func _ready():
 	if is_instance_valid(squad):
 		_label.text = str(squad.data.troop_amount)
 		squad.connect("on_squad_click",self,"_on_squad_click")
+		squad.connect("on_squad_scatter",self,"_on_squad_scatter")
 		squad.connect("on_squad_troop_dead",self,"_on_squad_troop_dead")
 
 func _on_squad_troop_dead(troop_left):
@@ -42,6 +44,9 @@ func _on_squad_click():
 	is_selected = !is_selected
 	_selected_indicator.visible = is_selected
 	squad.set_selected(is_selected)
+
+func _on_squad_scatter(is_scatter):
+	_squad_scatter.visible = is_scatter
 
 func select_current_squad(_is_select):
 	is_selected = _is_select

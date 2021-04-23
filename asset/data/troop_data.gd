@@ -9,7 +9,8 @@ const MAX_STATS = {
 	"hit_point" : 500.0,
 	"armor" : 15.0,
 	"range_attack" : 500.0,
-	"max_speed" : 500.0
+	"max_speed" : 500.0,
+	"morale_point" : 10
 }
 
 const CLASS_MELEE = 0

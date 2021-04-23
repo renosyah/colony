@@ -23,8 +23,7 @@ const stabs_sound = [
 	preload("res://asset/sound/stab1.wav"),
 	preload("res://asset/sound/stab2.wav"),
 ]
-const FORCE_MELEE_RANGE = 50.0
-const MAXIMUM_ENGAGEMENT_RANGE = 150.0
+const MAXIMUM_ENGAGEMENT_RANGE = 250.0
 
 signal on_troop_dead(troop)
 
@@ -89,7 +88,7 @@ func _process(delta):
 		var distance_to_parent = global_position.distance_to(get_parent().get_parent().global_position)
 		
 		if distance_to_target > data.range_attack and distance_to_parent < MAXIMUM_ENGAGEMENT_RANGE:
-			_weapon.do_nothing()
+			_weapon.make_ready()
 			_animation.play("troop_walking")
 			velocity = direction * _get_troop_data_mobility() * delta
 			set_facing_direction(direction)
@@ -108,8 +107,6 @@ func _process(delta):
 
 func _start_combat(_target, _direction, _distance):
 	
-	_weapon.set_data(data.weapon)
-	
 	if data["class"] == TroopData.CLASS_MELEE:
 		_weapon.perform_attack()
 		_target.take_damage(_get_troop_data_attack_damage())
@@ -121,12 +118,6 @@ func _start_combat(_target, _direction, _distance):
 		if is_instance_valid(_target):
 			_play_weapon_firing()
 			_shoot_at(_target)
-			
-	if _distance <= FORCE_MELEE_RANGE:
-			_weapon.set_data(WeaponData.DAGGER)
-			_weapon.perform_attack()
-			_target.take_damage(_get_troop_data_attack_damage())
-			_play_fighting_sound()
 			
 	_animation.play("troop_walking")
 

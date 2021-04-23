@@ -9,6 +9,7 @@ signal on_squad_ready(squad)
 signal on_squad_click()
 signal on_squad_dead(squad)
 signal on_squad_troop_dead(troop_left)
+signal on_squad_scatter(is_scatter)
 
 onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
@@ -19,9 +20,12 @@ onready var _banner = $banner
 onready var _field_of_view = $Area2D
 onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
+onready var _rally_time = $rally_time
 
 var disposable_dead_body = null
 
+var morale_point = 0
+var is_scatter = false
 var is_disbanded = false
 var velocity = Vector2.ZERO
 var targets = []
@@ -34,6 +38,7 @@ var current_formation = SQUAD_FORMATION_STANDAR
 var data = {}
 
 func _ready():
+	morale_point = data.morale_point
 	_banner.texture = load(data.banner_sprite)
 	_banner.self_modulate = data.color
 	
@@ -60,6 +65,9 @@ func _process(_delta):
 		
 		
 func move_squad_to(pos):
+	if is_disbanded || is_scatter:
+		return
+		
 	is_move = true
 	waypoint = pos
 	waypoint.y += 100.0
@@ -70,6 +78,9 @@ func move_squad_to(pos):
 	_update_troop_facing_direction()
 
 func set_selected(is_selected):
+	if is_disbanded || is_scatter:
+		return
+		
 	if is_selected:
 		_animation.play("squad_selected")
 	else:
@@ -78,7 +89,9 @@ func set_selected(is_selected):
 		_animation.stop()
 		
 func change_formation(formation):
-	#is_move = false
+	if is_disbanded || is_scatter:
+		return
+		
 	current_formation = formation
 	_update_troop_position()
 	_update_troop_formation_bonus()
@@ -137,6 +150,9 @@ func _update_troop_formation_bonus():
 		
 		
 func _update_troop_position():
+	if is_disbanded || is_scatter:
+		return
+		
 	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
 	var idx = 0
 	for child in _troop_holder.get_children():
@@ -144,15 +160,34 @@ func _update_troop_position():
 		child.target = null
 		idx += 1
 		
+func _make_troop_scatter():
+	if is_scatter:
+		return
+		
+	_display_chatter(Formation.FORMATION_SCATTER_CHATTER[rng.randf_range(0,Formation.FORMATION_SCATTER_CHATTER.size())])
+	
+	for child in _troop_holder.get_children():
+		rng.randomize()
+		var _scatter_x = global_position.x + rng.randf_range(rng.randf_range(-200,-100), rng.randf_range(200,300))
+		var _scatter_y = global_position.y + rng.randf_range(rng.randf_range(-200,-100), rng.randf_range(200,300))
+		child.rally_point = Vector2(_scatter_x,_scatter_y)
+		child.target = null
+		
+	is_scatter = true
+	emit_signal("on_squad_scatter",is_scatter)
+	_rally_time.start()
+
 func _update_troop_facing_direction():
 	for child in _troop_holder.get_children():
 		child.set_facing_direction((waypoint - global_position).normalized())
 
-
 func _update_troop_target():
+	if is_disbanded || is_scatter:
+		return
+		
 	if targets.empty():
 		for child in _troop_holder.get_children():
-				child.target = null
+			child.target = null
 		return
 		
 	for child in _troop_holder.get_children():
@@ -182,23 +217,42 @@ func _on_Area2D_body_exited(body):
 	
 func _on_timer_reset_target_timeout():
 	_update_troop_target()
-	_disband_squad()
+	_check_is_squad_need_to_disbanded()
 
 
+func _on_rally_time_timeout():
+	is_scatter = false
+	emit_signal("on_squad_scatter",is_scatter)
+	morale_point = rng.randf_range(1, data.morale_point)
+	
 func _on_troop_dead(troop):
-	_troop_holder.remove_child(troop)
-	
-	if disposable_dead_body:
-		disposable_dead_body.add_child(troop)
-	else:
-		_dead_troop_holder.add_child(troop)
-	
+	_relocate_troop_deadbody(troop)
+	_notify_troop_dead()
+	_check_is_squad_need_to_disbanded()
+	_decrease_squad_morale()
+
+
+func _notify_troop_dead():
 	data.troop_amount = _troop_holder.get_children().size()
 	emit_signal("on_squad_troop_dead", data.troop_amount)
-	_disband_squad()
 
 
-func _disband_squad():
+func _relocate_troop_deadbody(_troop):
+	_troop_holder.remove_child(_troop)
+	if disposable_dead_body:
+		disposable_dead_body.add_child(_troop)
+	else:
+		_dead_troop_holder.add_child(_troop)
+
+func _decrease_squad_morale():
+	rng.randomize()
+	if rng.randf() < 0.5:
+		morale_point -= 1
+		
+	if morale_point <= 0:
+		_make_troop_scatter()
+
+func _check_is_squad_need_to_disbanded():
 	if _troop_holder.get_children().empty():
 		emit_signal("on_squad_dead",self)
 		_banner.visible = false
@@ -230,3 +284,4 @@ func get_troop_left():
 		return data.troop_amount 
 	return _troop_holder.get_children().size()
 	
+

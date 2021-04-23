@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://asset/scene/game_ui/squad_panel_item/squad_panel_item.gd" type="Script" id=1]
 [ext_resource path="res://asset/ui/icons/squad_icon/icon_squad_spearman.png" type="Texture" id=2]
 [ext_resource path="res://asset/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=3]
 [ext_resource path="res://asset/ui/icons/squad_icon/icon_empty.png" type="Texture" id=4]
+[ext_resource path="res://asset/ui/icons/panic.png" type="Texture" id=5]
 
 [node name="squad_panel_icon" type="Button"]
 self_modulate = Color( 0, 0, 0, 1 )
@@ -55,6 +56,15 @@ self_modulate = Color( 1, 1, 1, 0.764706 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 4 )
+expand = true
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+visible = false
+modulate = Color( 1, 0.972549, 0.941176, 1 )
+self_modulate = Color( 1, 1, 1, 0.968627 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
 expand = true
 
 [node name="flicker_time" type="Timer" parent="."]

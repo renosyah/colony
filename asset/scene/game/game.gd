@@ -27,7 +27,7 @@ func _ready():
 func load_battle_data():
 	var _save_file = _battle_data_instance.load_battle()
 	if !_save_file:
-			get_tree().change_scene("res://asset/scene/menu/menu.tscn")
+		get_tree().change_scene("res://asset/scene/menu/menu.tscn")
 			
 	_battle_data = _save_file
 	

@@ -54,10 +54,6 @@ __meta__ = {
 anims/squad_idle = SubResource( 3 )
 anims/squad_selected = ExtResource( 3 )
 
-[node name="regroup_time" type="Timer" parent="."]
-wait_time = 2.0
-autostart = true
-
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -67,7 +63,12 @@ shape = SubResource( 4 )
 
 [node name="timer_reset_target" type="Timer" parent="."]
 autostart = true
+
+[node name="rally_time" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
 [connection signal="input_event" from="banner/area_click" to="." method="_on_area_click_input_event"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
 [connection signal="timeout" from="timer_reset_target" to="." method="_on_timer_reset_target_timeout"]
+[connection signal="timeout" from="rally_time" to="." method="_on_rally_time_timeout"]

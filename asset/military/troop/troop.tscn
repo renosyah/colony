@@ -22,6 +22,7 @@ one_way_collision = true
 
 [node name="body" type="Sprite" parent="."]
 self_modulate = Color( 0.988235, 0.0117647, 0.0117647, 1 )
+position = Vector2( 0, -5.41104 )
 texture = ExtResource( 2 )
 
 [node name="head" type="Sprite" parent="body"]
@@ -29,7 +30,6 @@ position = Vector2( 0, -20 )
 texture = ExtResource( 6 )
 
 [node name="mount" type="Sprite" parent="body"]
-visible = false
 position = Vector2( 8.75487, 12.3998 )
 texture = ExtResource( 11 )
 

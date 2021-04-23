@@ -164,6 +164,7 @@ func _set_squad_detail(squad):
 	template.armor = squad.data.troop_data.armor
 	template.range_attack = squad.data.troop_data.range_attack
 	template.max_speed = squad.data.troop_data.max_speed
+	template.morale_point = squad.data.morale_point
 	_squad_detail_panel.show_stats(template)
 
 

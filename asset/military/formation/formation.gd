@@ -37,6 +37,15 @@ const FORMATION_CIRCLE_CHATTER = [
 ]
 
 
+const FORMATION_SCATTER_CHATTER = [
+	"Fall back!!",
+	"Save your self, lads!!",
+	"Break.. break!!",
+	"Run for your life!!",
+	"This is too much!!",
+	"Ruun!!"
+]
+
 func get_formation_box(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int = 20):
 	var formations = []
 	var square_side_size = round(sqrt(number_of_unit))

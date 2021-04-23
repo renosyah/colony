@@ -11,6 +11,7 @@ onready var _squad_armor_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxC
 onready var _squad_hp_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress3
 onready var _squad_range_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress4
 onready var _squad_speed_bar= $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress5
+onready var _squad_morale_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress6
 
 var clickable = true
 
@@ -38,12 +39,14 @@ func _ready():
 	_squad_armor_bar.max_value = TroopData.MAX_STATS.armor 
 	_squad_range_bar.max_value = TroopData.MAX_STATS.range_attack 
 	_squad_speed_bar.max_value = TroopData.MAX_STATS.max_speed
+	_squad_morale_bar.max_value = TroopData.MAX_STATS.morale_point
 	
 	_squad_attack_bar.value = data.attack_damage
 	_squad_hp_bar.value = data.hit_point 
 	_squad_armor_bar.value = data.armor 
 	_squad_range_bar.value = data.range_attack 
 	_squad_speed_bar.value = data.max_speed
+	_squad_morale_bar.value = data.morale_point
 
 func show_stats(squad):
 	
@@ -58,7 +61,8 @@ func show_stats(squad):
 	template.armor = squad.troop_data.armor
 	template.range_attack = squad.troop_data.range_attack
 	template.max_speed = squad.troop_data.max_speed
-	 
+	template.morale_point = squad.morale_point
+	
 	data = template
  
 
