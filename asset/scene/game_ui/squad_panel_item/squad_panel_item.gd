@@ -25,6 +25,7 @@ var data = {
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_texture_rect.texture = load(data.squad_icon)
+	_squad_scatter.visible = false
 	if is_instance_valid(squad):
 		_label.text = str(squad.data.troop_amount)
 		squad.connect("on_squad_click",self,"_on_squad_click")
@@ -52,7 +53,6 @@ func select_current_squad(_is_select):
 	is_selected = _is_select
 	_selected_indicator.visible = is_selected
 	squad.set_selected(is_selected)
-	
 	
 func _on_flicker_time_timeout():
 	_flicker.visible = false

@@ -93,7 +93,7 @@ func _on_squad_troop_dead(_troop_left):
 func _get_troop_remain(side):
 	var troop_sum = 0
 	for squad in _armies[side]:
-		if is_instance_valid(squad):
+		if is_instance_valid(squad) and !squad.is_scatter:
 			troop_sum += squad.get_troop_left()
 	return troop_sum
 

@@ -38,12 +38,15 @@ const FORMATION_CIRCLE_CHATTER = [
 
 
 const FORMATION_SCATTER_CHATTER = [
+	"We're doomed!!",
+	"Screw this!!",
 	"Fall back!!",
 	"Save your self, lads!!",
-	"Break.. break!!",
+	"Break.. break..!!",
 	"Run for your life!!",
 	"This is too much!!",
-	"Ruun!!"
+	"Ruun!!",
+	"Save your self!!"
 ]
 
 func get_formation_box(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int = 20):

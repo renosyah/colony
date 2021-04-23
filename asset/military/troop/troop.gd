@@ -37,7 +37,6 @@ onready var _attack_delay = $attack_delay
 onready var _animation = $AnimationPlayer
 onready var _audio = $AudioStreamPlayer2D
 
-
 var is_alive = true
 var _last_position = Vector2.ZERO
 var target : KinematicBody2D = null
@@ -53,6 +52,7 @@ func _ready():
 	_animation.play("troop_walking")
 	_weapon.set_data(data.weapon)
 	set_physics_process(false)
+	
 	
 func set_bonus(bon):
 	data.bonus = bon

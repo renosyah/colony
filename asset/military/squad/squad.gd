@@ -20,7 +20,6 @@ onready var _banner = $banner
 onready var _field_of_view = $Area2D
 onready var _field_of_view_area = $Area2D/CollisionShape2D
 onready var _audio = $AudioStreamPlayer2D
-onready var _rally_time = $rally_time
 
 var disposable_dead_body = null
 
@@ -168,14 +167,20 @@ func _make_troop_scatter():
 	
 	for child in _troop_holder.get_children():
 		rng.randomize()
-		var _scatter_x = global_position.x + rng.randf_range(rng.randf_range(-200,-100), rng.randf_range(200,300))
-		var _scatter_y = global_position.y + rng.randf_range(rng.randf_range(-200,-100), rng.randf_range(200,300))
+		var _scatter_x = global_position.x + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
+		var _scatter_y = global_position.y + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
 		child.rally_point = Vector2(_scatter_x,_scatter_y)
 		child.target = null
-		
+		child.data.max_speed += 20.0
+		child.data.side = "DESERTER"
+
 	is_scatter = true
-	emit_signal("on_squad_scatter",is_scatter)
-	_rally_time.start()
+	is_move = false
+	_banner.visible = false
+	is_disbanded = true
+	
+	emit_signal("on_squad_scatter", is_scatter)
+	emit_signal("on_squad_dead", self)
 
 func _update_troop_facing_direction():
 	for child in _troop_holder.get_children():
@@ -220,20 +225,16 @@ func _on_timer_reset_target_timeout():
 	_check_is_squad_need_to_disbanded()
 
 
-func _on_rally_time_timeout():
-	is_scatter = false
-	emit_signal("on_squad_scatter",is_scatter)
-	morale_point = rng.randf_range(1, data.morale_point)
-	
 func _on_troop_dead(troop):
 	_relocate_troop_deadbody(troop)
 	_notify_troop_dead()
-	_check_is_squad_need_to_disbanded()
 	_decrease_squad_morale()
-
+	_check_is_squad_need_to_disbanded()
 
 func _notify_troop_dead():
-	data.troop_amount = _troop_holder.get_children().size()
+	if is_disbanded || is_scatter:
+		return
+	data.troop_amount = get_troop_left()
 	emit_signal("on_squad_troop_dead", data.troop_amount)
 
 
@@ -253,7 +254,7 @@ func _decrease_squad_morale():
 		_make_troop_scatter()
 
 func _check_is_squad_need_to_disbanded():
-	if _troop_holder.get_children().empty():
+	if get_troop_left() <= 0:
 		emit_signal("on_squad_dead",self)
 		_banner.visible = false
 		is_disbanded = true
@@ -279,9 +280,7 @@ func _display_chatter(text):
 	add_child(chatter)
 	
 	
-func get_troop_left():
-	if _troop_holder.get_children().empty():
-		return data.troop_amount 
+func get_troop_left(): 
 	return _troop_holder.get_children().size()
 	
 
