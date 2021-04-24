@@ -23,7 +23,7 @@ const stabs_sound = [
 	preload("res://asset/sound/stab1.wav"),
 	preload("res://asset/sound/stab2.wav"),
 ]
-const MAXIMUM_ENGAGEMENT_RANGE = 250.0
+
 
 signal on_troop_dead(troop)
 
@@ -41,6 +41,7 @@ var is_alive = true
 var _last_position = Vector2.ZERO
 var target : KinematicBody2D = null
 var rally_point = null
+var maximum_engagement_range = 140.0
 
 var data = {}
 
@@ -85,20 +86,24 @@ func _process(delta):
 	elif target:
 		direction = (target.global_position - global_position).normalized()
 		distance_to_target = global_position.distance_to(target.global_position)
-		var distance_to_parent = global_position.distance_to(get_parent().get_parent().global_position)
+		var distance_target_to_parent = global_position.distance_to(get_parent().get_parent().global_position)
 		
-		if distance_to_target > data.range_attack and distance_to_parent < MAXIMUM_ENGAGEMENT_RANGE:
+		if distance_to_target > data.range_attack and distance_target_to_parent < maximum_engagement_range:
 			_weapon.make_ready()
 			_animation.play("troop_walking")
 			velocity = direction * _get_troop_data_mobility() * delta
 			set_facing_direction(direction)
 			
-		if _attack_delay.is_stopped() and distance_to_target <= data.range_attack and target.is_alive:
+		elif _attack_delay.is_stopped() and distance_to_target <= data.range_attack and target.is_alive:
 			set_facing_direction(direction)
 			_start_combat(target,direction,distance_to_target)
 			_attack_delay.wait_time = _get_troop_data_attack_delay()
 			_attack_delay.start()
-
+		
+		elif distance_target_to_parent > maximum_engagement_range || !target.is_alive:
+			_weapon.do_nothing()
+			_animation.play("troop_walking")
+			
 	else:
 		_weapon.do_nothing()
 		_animation.play("troop_walking")
@@ -218,3 +223,4 @@ func _play_dead_sound():
 	rng.randomize()
 	_audio.stream = dead_sound[rng.randf_range(0,dead_sound.size())]
 	_audio.play()
+

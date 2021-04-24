@@ -38,13 +38,13 @@ func _on_squad_troop_dead(troop_left):
 	_flicker_timer.start()
 	
 func _on_squad_panel_icon_pressed():
-	_on_squad_click()
+	_on_squad_click(squad)
  
-func _on_squad_click():
-	emit_signal("on_squad_icon_click", squad)
+func _on_squad_click(_squad):
+	emit_signal("on_squad_icon_click", _squad)
 	is_selected = !is_selected
 	_selected_indicator.visible = is_selected
-	squad.set_selected(is_selected)
+	_squad.set_selected(is_selected)
 
 func _on_squad_scatter(is_scatter):
 	_squad_scatter.visible = is_scatter

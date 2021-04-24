@@ -6,7 +6,7 @@ const SQUAD_FORMATION_SPREAD = 1
 const SQUAD_FORMATION_COMPACT = 2
 
 signal on_squad_ready(squad)
-signal on_squad_click()
+signal on_squad_click(squad)
 signal on_squad_dead(squad)
 signal on_squad_troop_dead(troop_left)
 signal on_squad_scatter(is_scatter)
@@ -23,7 +23,7 @@ onready var _audio = $AudioStreamPlayer2D
 
 var disposable_dead_body = null
 
-var morale_point = 0
+var is_on_attack_mode = false
 var is_scatter = false
 var is_disbanded = false
 var velocity = Vector2.ZERO
@@ -37,7 +37,6 @@ var current_formation = SQUAD_FORMATION_STANDAR
 var data = {}
 
 func _ready():
-	morale_point = data.morale_point
 	_banner.texture = load(data.banner_sprite)
 	_banner.self_modulate = data.color
 	
@@ -53,27 +52,46 @@ func _process(_delta):
 	if is_move:
 		var direction = (waypoint - global_position).normalized()
 		var distance_to_waypoint = global_position.distance_to(waypoint)
-		
+
 		if distance_to_waypoint > min_area_waypoint:
 			velocity = direction * _get_troop_data_mobility() * _delta
-		
+			
 		move_and_collide(velocity)
 		
-	if velocity != Vector2.ZERO:
+	if velocity != Vector2.ZERO and !is_on_attack_mode:
 		_update_troop_position()
 		
 		
+func move_and_attack_to(_squad):
+	if is_disbanded || is_scatter:
+		return
+	
+	rng.randomize()
+	_display_chatter(Formation.FORMATION_ASSAULT_CHATTER[rng.randf_range(0,Formation.FORMATION_ASSAULT_CHATTER.size())])
+	
+	is_on_attack_mode = true
+	
+	targets.clear()
+	for target in _squad.get_troops():
+		targets.append(target)
+		
+	_set_troop_max_enggangement_distance(INF)
+	_update_troop_facing_direction()
+	
 func move_squad_to(pos):
 	if is_disbanded || is_scatter:
 		return
-		
+	
+	is_on_attack_mode = false
 	is_move = true
 	waypoint = pos
 	waypoint.y += 100.0
 	waypoint.x += 50.0
 	_field_of_view_area.disabled = true
 	_field_of_view_area.disabled = false
+	
 	targets.clear()
+	_set_troop_max_enggangement_distance(140.0)
 	_update_troop_facing_direction()
 
 func set_selected(is_selected):
@@ -100,6 +118,11 @@ func change_banner_visual(_scale,_transparacy):
 	_banner.self_modulate.a = _transparacy
 	_banner.scale.x = _scale
 	_banner.scale.y = _scale
+
+func _set_troop_max_enggangement_distance(_value):
+	for troop in get_troops():
+		troop.maximum_engagement_range = _value
+		
 
 func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_between_units : int):
 	match current_formation:
@@ -133,15 +156,15 @@ func _update_troop_formation_bonus():
 	rng.randomize()
 	match current_formation:
 		SQUAD_FORMATION_STANDAR:
-			_display_chatter(Formation.FORMATION_BOX_CHATTER[rng.randf_range(0,Formation.FORMATION_BOX_CHATTER.size())])
+			#_display_chatter(Formation.FORMATION_BOX_CHATTER[rng.randf_range(0,Formation.FORMATION_BOX_CHATTER.size())])
 			data.troop_data.bonus = Formation.FORMATION_BOX_BONUS
 			
 		SQUAD_FORMATION_SPREAD:
-			_display_chatter(Formation.FORMATION_DELTA_CHATTER[rng.randf_range(0,Formation.FORMATION_DELTA_CHATTER.size())])
+			#_display_chatter(Formation.FORMATION_DELTA_CHATTER[rng.randf_range(0,Formation.FORMATION_DELTA_CHATTER.size())])
 			data.troop_data.bonus = Formation.FORMATION_DELTA_BONUS
 			
 		SQUAD_FORMATION_COMPACT:
-			_display_chatter(Formation.FORMATION_CIRCLE_CHATTER[rng.randf_range(0,Formation.FORMATION_CIRCLE_CHATTER.size())])
+			#_display_chatter(Formation.FORMATION_CIRCLE_CHATTER[rng.randf_range(0,Formation.FORMATION_CIRCLE_CHATTER.size())])
 			data.troop_data.bonus = Formation.FORMATION_CIRCLE_BONUS
 			
 	for child in _troop_holder.get_children():
@@ -171,13 +194,13 @@ func _make_troop_scatter():
 		var _scatter_y = global_position.y + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
 		child.rally_point = Vector2(_scatter_x,_scatter_y)
 		child.target = null
-		child.data.max_speed += 20.0
-		child.data.side = "DESERTER"
+		child.set_facing_direction((child.rally_point - global_position).normalized())
 
 	is_scatter = true
 	is_move = false
 	_banner.visible = false
 	is_disbanded = true
+	targets.clear()
 	
 	emit_signal("on_squad_scatter", is_scatter)
 	emit_signal("on_squad_dead", self)
@@ -187,10 +210,7 @@ func _update_troop_facing_direction():
 		child.set_facing_direction((waypoint - global_position).normalized())
 
 func _update_troop_target():
-	if is_disbanded || is_scatter:
-		return
-		
-	if targets.empty():
+	if targets.empty() || is_disbanded || is_scatter:
 		for child in _troop_holder.get_children():
 			child.target = null
 		return
@@ -248,9 +268,9 @@ func _relocate_troop_deadbody(_troop):
 func _decrease_squad_morale():
 	rng.randomize()
 	if rng.randf() < 0.5:
-		morale_point -= 1
+		data.morale_point -= 1
 		
-	if morale_point <= 0:
+	if data.morale_point <= 0:
 		_make_troop_scatter()
 
 func _check_is_squad_need_to_disbanded():
@@ -258,15 +278,18 @@ func _check_is_squad_need_to_disbanded():
 		emit_signal("on_squad_dead",self)
 		_banner.visible = false
 		is_disbanded = true
+		targets.clear()
 		#queue_free()
 
 
 func _on_area_click_input_event(_viewport, event,_shape_idx):
 	if (event is InputEventScreenTouch and event.is_pressed()) or (event is InputEventMouseButton and event.is_action_pressed("left_click")):
 		if _banner.self_modulate.a > 0.3:
-			emit_signal("on_squad_click")
+			emit_signal("on_squad_click", self)
 
-
+func _get_troop_data_attack_range():
+	return data.troop_data.attack_range
+	
 func _get_troop_data_mobility():
 	var speed = data.troop_data.max_speed + data.troop_data.bonus.mobility
 	if speed < 0.0:
@@ -278,6 +301,10 @@ func _display_chatter(text):
 	chatter.text = text
 	chatter.position = _banner.position
 	add_child(chatter)
+	
+	
+func get_troops(): 
+	return _troop_holder.get_children()
 	
 	
 func get_troop_left(): 

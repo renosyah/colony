@@ -10,9 +10,7 @@
 [ext_resource path="res://asset/military/weapon/animation_weapon_throwing.tres" type="Animation" id=9]
 [ext_resource path="res://asset/military/weapon/animation_weapon_sword_slashing.tres" type="Animation" id=10]
 
-[sub_resource type="Animation" id=1]
-resource_name = "weapon_ready"
-loop = true
+[sub_resource type="Animation" id=2]
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:position")
 tracks/0/interp = 1
@@ -23,7 +21,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 11.2961, -7.9679 ), Vector2( 7.79294, -9.96358 ), Vector2( 9.29155, -9.08153 ) ]
+"values": [ Vector2( -10, -10 ), Vector2( 7.79294, -9.96358 ), Vector2( 9.29155, -9.08153 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:rotation_degrees")
@@ -35,7 +33,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.5, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ -47.7321, -47.7321, -47.7321 ]
+"values": [ -90.0, -47.7321, -47.7321 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("sprite/ammo:visible")
@@ -50,9 +48,7 @@ tracks/2/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "weapon_ready_2"
-loop = true
+[sub_resource type="Animation" id=3]
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite:position")
 tracks/0/interp = 1
@@ -60,10 +56,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 11.2961, -7.9679 ), Vector2( 7.79294, -9.96358 ), Vector2( 9.29155, -9.08153 ) ]
+"values": [ Vector2( -10, -10 ), Vector2( 13.5232, -8.30922 ), Vector2( 15.7505, -0.513859 ), Vector2( 14.4142, 0.822487 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:rotation_degrees")
@@ -72,10 +68,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.9 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.3, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ -13.6861, -13.6861 ]
+"values": [ -90.0, -13.6861, -13.6861 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("sprite/ammo:visible")
@@ -94,14 +90,12 @@ tracks/2/keys = {
 script = ExtResource( 4 )
 
 [node name="sprite" type="Sprite" parent="."]
-position = Vector2( 10.042, -8.66462 )
-rotation = -0.238867
+position = Vector2( 26.6314, -8.8431 )
+rotation = 0.205076
 texture = ExtResource( 3 )
 
 [node name="ammo" type="Sprite" parent="sprite"]
 visible = false
-position = Vector2( -0.668173, 19.8225 )
-rotation = 1.5708
 texture = ExtResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -111,8 +105,8 @@ anims/weapon_crossbow_firing = ExtResource( 2 )
 anims/weapon_iddle = ExtResource( 5 )
 anims/weapon_musket_firing = ExtResource( 8 )
 anims/weapon_polearm_trusting = ExtResource( 7 )
-anims/weapon_ready = SubResource( 1 )
-anims/weapon_ready_2 = SubResource( 2 )
+anims/weapon_ready = SubResource( 2 )
+anims/weapon_ready_2 = SubResource( 3 )
 anims/weapon_sword_slashing = ExtResource( 10 )
 anims/weapon_throwing = ExtResource( 9 )
 

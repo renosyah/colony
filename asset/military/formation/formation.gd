@@ -36,6 +36,17 @@ const FORMATION_CIRCLE_CHATTER = [
 	"Hold the line!!"
 ]
 
+const FORMATION_ASSAULT_CHATTER = [
+	"Get them!!",
+	"Huraaaa!!",
+	"Aaaaa!!",
+	"Attaaaack!!",
+	"Go get them, lads!!",
+	"No mercy!!",
+	"Eat steel!!",
+	"Here we goo!!",
+	"Cut them down!!"
+]
 
 const FORMATION_SCATTER_CHATTER = [
 	"We're doomed!!",

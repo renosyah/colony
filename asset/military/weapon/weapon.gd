@@ -9,6 +9,7 @@ onready var _animation = $AnimationPlayer
 onready var _audio = $AudioStreamPlayer2D
 
 var damage = 0.0
+var _ready_animation = "weapon_ready"
 var _is_ready = false
 
 var data = {}
@@ -19,6 +20,7 @@ func _ready():
 	
 func set_data(_data):
 	data = _data
+	_ready_animation = data.ready_animation[rng.randf_range(0,data.ready_animation.size())]
 	_sprite.texture = load(data.weapon_sprite)
 	_ammo.texture = load(data.weapon_projectile_sprite)
 
@@ -30,8 +32,8 @@ func make_ready():
 	if _is_ready:
 		return
 	_is_ready = true
-	var _anim = data.ready_animation[rng.randf_range(0,data.ready_animation.size())]
-	_animation.play(_anim)
+	_ready_animation = data.ready_animation[rng.randf_range(0,data.ready_animation.size())]
+	_animation.play(_ready_animation)
 
 func perform_attack():
 	var _anim = data.attack_animation[rng.randf_range(0,data.attack_animation.size())]

@@ -14,7 +14,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0.2, 0.4, 0.6, 0.7, 1, 1.2, 1.5, 1.7, 1.8, 2, 2.4, 2.6, 2.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 13.5739, -5 ), Vector2( 0.539974, 0.2556 ), Vector2( -21.023, -3.06294 ), Vector2( 15, -1.666 ), Vector2( 8, -12.08 ), Vector2( -4.50122, -12.7442 ), Vector2( -19.4786, -12.1096 ), Vector2( -3.708, -24 ), Vector2( 13, -7.665 ), Vector2( 9, -2.475 ), Vector2( 5, 0.578 ), Vector2( 12, -27 ), Vector2( 10.2797, 6.99791 ) ]
+"values": [ Vector2( 13.5739, -5 ), Vector2( 0.539974, 0.2556 ), Vector2( -21.023, -3.06294 ), Vector2( 15, -1.666 ), Vector2( 8, -12.08 ), Vector2( -4.50122, -12.7442 ), Vector2( -19.4786, -12.1096 ), Vector2( -3.708, -35 ), Vector2( 33.2685, -11.2403 ), Vector2( 9, -2.475 ), Vector2( 5, 0.578 ), Vector2( 12, -27 ), Vector2( 10.2797, 6.99791 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("sprite:rotation_degrees")
@@ -26,7 +26,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0.2, 0.4, 0.6, 0.7, 1, 1.2, 1.5, 1.7, 1.8, 2, 2.4, 2.6, 2.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0, 0.0, -6.7, -2.14429, 7.28333, 6.58968, -0.831276, 6.58968, 7.28333, -3.11064, 1.23623, -10.115, 5.50791 ]
+"values": [ 0.0, 0.0, -6.7, -2.14429, 7.28333, 6.58968, -0.831276, 6.58968, 17.3441, -3.11064, 1.23623, -10.115, 5.50791 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("sprite/ammo:visible")

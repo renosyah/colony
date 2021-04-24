@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
+onready var _waypoint = $waypoint
 
 onready var _squad_panel = $CanvasLayer/HBoxContainer3/HBoxContainer2/HBoxContainer
 onready var _squad_detail_panel = $CanvasLayer/squad_panel_detail
@@ -89,33 +90,58 @@ func _on_Button_fromation_compact_pressed():
 	for squad in _selected_squad:
 		squad.change_formation(Squad.SQUAD_FORMATION_COMPACT)
 	
-
-# input touch or click
-func _on_Control_gui_input( event):
 	
-	if !_selected_squad.empty() and (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_pressed():
+# input touch or click
+func _on_Control_gui_input(event):
+
+	if (event is InputEventScreenTouch and event.is_pressed()) or (event is InputEventMouseButton and event.is_action_pressed("left_click")):
 		move_all_selected_squad(get_global_mouse_position())
-		return
+		#return
 		
 	get_viewport().unhandled_input(event)
 
-func move_all_selected_squad(pos):
-	if !_selected_squad.empty():
-		var waypoint = preload("res://asset/ui/waypoint/waypoint.tscn").instance()
-		waypoint.position = pos
-		add_child(waypoint)
+
+func _on_enemy_squad_click(_enemy_squad):
+	if _selected_squad.empty():
+		return
+		
+	if !_enemy_squad:
+		return
+		
+	_waypoint.show_waypoint(Color.red,_enemy_squad.global_position)
 	
+	var formations = _formation.get_formation_box(_enemy_squad.global_position,_selected_squad.size(),100)
+	var idx = 0
+	for squad in _selected_squad:
+		squad.move_squad_to(formations[idx].position)
+		squad.move_and_attack_to(_enemy_squad)
+		idx += 1
+		
+		
+#	for child in _squad_panel.get_children():
+#		child.select_current_squad(false)
+#
+#	_selected_squad.clear()
+#	_squad_detail_panel.visible = false
+	
+
+func move_all_selected_squad(pos):
+	if _selected_squad.empty():
+		return
+		
+	_waypoint.show_waypoint(Color.white,pos)
+		
 	var formations = _formation.get_formation_box(pos,_selected_squad.size(),100)
 	var idx = 0
 	for squad in _selected_squad:
 		squad.move_squad_to(formations[idx].position)
 		idx += 1
-	
-	for child in _squad_panel.get_children():
-		child.select_current_squad(false)
 		
-	_selected_squad.clear()
-	_squad_detail_panel.visible = false
+#	for child in _squad_panel.get_children():
+#		child.select_current_squad(false)
+#
+#	_selected_squad.clear()
+#	_squad_detail_panel.visible = false
 	
 	
 func _on_all_squad_on_squad_ready(squad):

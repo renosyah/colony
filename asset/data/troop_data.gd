@@ -10,7 +10,7 @@ const MAX_STATS = {
 	"armor" : 15.0,
 	"range_attack" : 500.0,
 	"max_speed" : 500.0,
-	"morale_point" : 10
+	"morale_point" : 15
 }
 
 const CLASS_MELEE = 0
@@ -124,11 +124,11 @@ const TROOP_TYPE_SWORDMAN = {
 }
 const TROOP_TYPE_HALBERDIER = {
 	"class" : CLASS_MELEE,
-	"attack_damage" : 7.0,
-	"hit_point" : 90.0,
-	"armor" : 8.0,
+	"attack_damage" : 8.5,
+	"hit_point" : 80.0,
+	"armor" : 7.5,
 	"range_attack" : 100.0,
-	"attack_delay" : 2.5,
+	"attack_delay" : 2.8,
 	"max_speed" : 25.0,
 	"side" : "",
 	"color" : Color(Color.white),

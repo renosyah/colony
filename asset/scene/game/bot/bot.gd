@@ -44,29 +44,14 @@ func _set_selected_squad():
 
 func _attack_enemy_squad():
 	rng.randomize()
-	var _pos_target = []
-	while _pos_target.size() < data.maximum_squad_target:
+	var _squad_targets = []
+	while _squad_targets.size() < data.maximum_squad_target:
 		var enemy_squad = _enemy_squad[rng.randf_range(0,_enemy_squad.size())]
-		var own_squad = _squad_in_command[rng.randf_range(0,_squad_in_command.size())]
+		if is_instance_valid(enemy_squad) and !enemy_squad.is_disbanded:
+			_squad_targets.append(enemy_squad)
 		
-		if is_instance_valid(enemy_squad):
-			var _rand_pos = enemy_squad.global_position
-			_rand_pos.x += rng.randf_range(-100,100)
-			_rand_pos.y += rng.randf_range(-100,100)
-			_pos_target.append(_rand_pos)
-			
-		elif is_instance_valid(own_squad):
-			var _rand_pos = own_squad.global_position
-			_rand_pos.x += rng.randf_range(-100,100)
-			_rand_pos.y += rng.randf_range(-100,100)
-			_pos_target.append(_rand_pos)
-			
-		else:
-			_pos_target.append(Vector2.ZERO)
-		
-	for target in _pos_target:
-		if target != Vector2.ZERO:
-			_move_all_selected_squad(target)
+	for target in _squad_targets:
+		_set_all_selected_squad_to_attack(target)
 	
 func _to_fromation_standar():
 	for squad in _selected_squad:
@@ -87,14 +72,11 @@ func _to_fromation_compact():
 				squad.change_formation(Squad.SQUAD_FORMATION_COMPACT)
 	
 
-func _move_all_selected_squad(pos):
-	var formations = _formation.get_formation_box(pos,_selected_squad.size(),100)
- 
-	var idx = 0
+func _set_all_selected_squad_to_attack(_squad_target):
 	for squad in _selected_squad:
 		if is_instance_valid(squad):
-			squad.move_squad_to(formations[idx].position)
-			idx += 1
+			squad.move_squad_to(_squad_target.global_position)
+			squad.move_and_attack_to(_squad_target)
 
 func _on_thinker_time_timeout():
 	if _squad_in_command.size() <= 0 || _enemy_squad.size() <= 0:
@@ -113,7 +95,7 @@ func _on_thinker_time_timeout():
 	var percent = rng.randf()
 	if (percent > 0.8):
 		_to_fromation_standar()
-	elif(percent < 0.8 and percent > 0.4):
+	elif(percent < 0.6):
 		_to_fromation_spread()
 	else:
 		_to_fromation_compact()

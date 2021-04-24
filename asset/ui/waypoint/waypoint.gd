@@ -2,6 +2,7 @@ extends Node2D
 
 onready var _sprite = $Sprite
 onready var _animation = $AnimationPlayer
+onready var _timer = $life_time
 
 var color = Color(Color.white)
 
@@ -9,6 +10,13 @@ var color = Color(Color.white)
 func _ready():
 	_animation.play("waypoint_change_size")
 	_sprite.modulate = color
- 
+	_sprite.visible = false
+
+func show_waypoint(_color,_at):
+	global_position = _at
+	_sprite.modulate = _color
+	_sprite.visible = true
+	_timer.start()
+
 func _on_life_time_timeout():
-	queue_free()
+	_sprite.visible = false

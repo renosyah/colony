@@ -4,14 +4,14 @@ class_name BotSetting
 
 const EASY_SETTING = {
 	"maximum_squad_control" : 1,
-	"maximum_squad_target" : 5,
+	"maximum_squad_target" : 1,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 20,
 	"surrender_chance" : 0.4,
 }
 const MEDIUM_SETTING = {
 	"maximum_squad_control" : 2,
-	"maximum_squad_target" : 2,
+	"maximum_squad_target" : 1,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 30,
 	"surrender_chance" : 0.2,

@@ -6,7 +6,7 @@ var velocity = Vector2.ZERO
 var text = ""
 var color = Color(Color.white)
 
-onready var label = $Label
+onready var label = $Control/Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
