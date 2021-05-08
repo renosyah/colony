@@ -37,8 +37,9 @@ onready var _attack_delay = $attack_delay
 onready var _animation = $AnimationPlayer
 onready var _audio = $AudioStreamPlayer2D
 
-var is_alive = true
 var _last_position = Vector2.ZERO
+
+var is_alive = true
 var target : KinematicBody2D = null
 var rally_point = null
 var maximum_engagement_range = 140.0
@@ -53,6 +54,10 @@ func _ready():
 	_animation.play("troop_walking")
 	_weapon.set_data(data.weapon)
 	set_physics_process(false)
+	
+func set_as_bannerman(_banner_weapon):
+	data["class"] = TroopData.CLASS_UNARMS
+	data.weapon = _banner_weapon
 	
 	
 func set_bonus(bon):
@@ -81,17 +86,17 @@ func _process(delta):
 		if distance_to_target > 5.0:
 			_weapon.do_nothing()
 			_animation.play("troop_walking")
-			velocity = direction * _get_troop_data_mobility() * delta
+			velocity = Steering.arrive_to(velocity,global_position,rally_point,_get_troop_data_mobility())
 			
 	elif target:
 		direction = (target.global_position - global_position).normalized()
 		distance_to_target = global_position.distance_to(target.global_position)
-		var distance_target_to_parent = global_position.distance_to(get_parent().get_parent().global_position)
+		var distance_target_to_parent = global_position.distance_to(get_parent().get_parent().get_position())
 		
-		if distance_to_target > data.range_attack and distance_target_to_parent < maximum_engagement_range:
+		if distance_to_target > data.range_attack and target.is_alive and distance_target_to_parent < maximum_engagement_range:
 			_weapon.make_ready()
 			_animation.play("troop_walking")
-			velocity = direction * _get_troop_data_mobility() * delta
+			velocity = Steering.arrive_to(velocity,global_position,target.global_position,_get_troop_data_mobility())
 			set_facing_direction(direction)
 			
 		elif _attack_delay.is_stopped() and distance_to_target <= data.range_attack and target.is_alive:
@@ -101,6 +106,7 @@ func _process(delta):
 			_attack_delay.start()
 		
 		elif distance_target_to_parent > maximum_engagement_range || !target.is_alive:
+			target = null
 			_weapon.do_nothing()
 			_animation.play("troop_walking")
 			
@@ -108,19 +114,19 @@ func _process(delta):
 		_weapon.do_nothing()
 		_animation.play("troop_walking")
 		
-	move_and_collide(velocity)
+	move_and_slide(velocity)
 
 func _start_combat(_target, _direction, _distance):
 	
 	if data["class"] == TroopData.CLASS_MELEE:
 		_weapon.perform_attack()
-		_target.take_damage(_get_troop_data_attack_damage())
+		_target.take_melee_damage(_get_troop_data_attack_damage())
 		_play_fighting_sound()
 		
 	elif data["class"] == TroopData.CLASS_RANGE:
 		_weapon.perform_attack()
 		yield(_weapon,"on_animation_attack_performed")
-		if is_instance_valid(_target):
+		if is_instance_valid(_target) and _target.is_alive:
 			_play_weapon_firing()
 			_shoot_at(_target)
 			
@@ -150,9 +156,15 @@ func _attach_projectile(_projectile_sprite):
 	_projectile_attach.offset = Vector2(rand_range(8.0, 10.0),rand_range(-4, -10))
 	_projectile_attach.show_behind_parent = true
 	_body.add_child(_projectile_attach)
-
-func take_damage(dmg):
-	var _dmg = _get_damage_receive(dmg)
+	
+func take_projectile_damage(dmg):
+	var _dmg = _get_damage_receive_by_projectile(dmg)
+	data.hit_point -= _dmg
+	if data.hit_point <= 0 and is_alive:
+		_set_dead()
+		
+func take_melee_damage(dmg):
+	var _dmg = _get_damage_receive_by_melee(dmg)
 	data.hit_point -= _dmg
 	if data.hit_point <= 0 and is_alive:
 		_set_dead()
@@ -196,12 +208,18 @@ func _get_troop_data_mobility():
 		speed = 10.0
 	return speed
 	
-func _get_damage_receive(dmg):
-	var _dmg = (dmg - (data.armor + data.bonus.defence))
+func _get_damage_receive_by_melee(dmg):
+	var _dmg = (dmg - (data.melee_armor + data.bonus.defence))
 	if _dmg < 0.0:
-		_dmg =0.5
+		_dmg = 0.5
 	return _dmg
 	
+func _get_damage_receive_by_projectile(dmg):
+	var _dmg = (dmg - (data.pierce_armor + data.bonus.defence))
+	if _dmg < 0.0:
+		_dmg = 0.5
+	return _dmg
+		
 func _play_weapon_firing():
 	if data.weapon.weapon_firing_sound == "":
 		return

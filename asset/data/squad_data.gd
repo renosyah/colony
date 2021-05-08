@@ -17,7 +17,7 @@ const SQUAD_LIST = [
 	"troop_data" : TroopData.TROOP_TYPE_PEASANT
 },{
 	"name" : "Spearman",
-	"description" : "Basic infantry unit arm with spear, has weak armor, and not effective again other class, but they are cheap",
+	"description" : "Basic infantry unit arm with spear, has weak armor",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_spearman.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_spearman.png",
 	"morale_point" : 6,
@@ -28,8 +28,8 @@ const SQUAD_LIST = [
 	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_SPEARMAN
 },{
-	"name" : "Man At Arms",
-	"description" : "Ligth infantry arm with sword with weak armor and attack, efective for hoarde",
+	"name" : "Swordman",
+	"description" : "Ligth infantry arm with sword with weak armor and attack",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_man_at_arms.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_man_at_arms.png",
 	"morale_point" : 6,
@@ -39,7 +39,7 @@ const SQUAD_LIST = [
 	"color" : Color(Color.white),
 	"max_speed" : 40.0,
 	"attack_delay" : 2.0,
-	"troop_data" : TroopData.TROOP_TYPE_MAN_AT_ARMS
+	"troop_data" : TroopData.TROOP_TYPE_SWORDMAN
 },{
 	"name" : "Pikeman",
 	"description" : "infantry arm with pike, unlike spearman, this unit have armor and deadly pike",
@@ -53,7 +53,7 @@ const SQUAD_LIST = [
 	"max_speed" : 40.0,
 	"troop_data" : TroopData.TROOP_TYPE_PIKEMAN
 },{
-	"name" : "Swordman",
+	"name" : "Knight",
 	"description" : "Heavy infantry arm with two-handded sword with good armor and attack, efective for holding line, but with slow movement speed",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_swordman.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_swordman.png",
@@ -63,7 +63,7 @@ const SQUAD_LIST = [
 	"side" : "",
 	"color" : Color(Color.white),
 	"max_speed" : 40.0,
-	"troop_data" : TroopData.TROOP_TYPE_SWORDMAN
+	"troop_data" : TroopData.TROOP_TYPE_KNIGHT
 },{
 	"name" : "Halberdier",
 	"description" : "Heavy infantry arm with pike with good armor and attack, efective for holding line, but with slow movement speed",
@@ -149,8 +149,8 @@ const SQUAD_LIST = [
 	"max_speed" : 80.0,
 	"troop_data" : TroopData.TROOP_TYPE_LIGHT_CAVALRY
 },{
-	"name" : "Heavy Cavalry",
-	"description" : "Heavy Cavalry its basically swordman on horse, not as fast as light cavalry, but have armor and good attack",
+	"name" : "Paladin",
+	"description" : "Heavy Cavalry is cavalry unit arm with sword and wear heavy armor, not as fast as light cavalry, but have armor and good attack",
 	"squad_icon" : "res://asset/ui/icons/squad_icon/icon_squad_heavy_cavalry.png",
 	"banner_sprite" : "res://asset/ui/banners/squad_banners/banner_heavy_cavalry.png",
 	"morale_point" : 8,

@@ -23,11 +23,11 @@ __meta__ = {
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 311.0
-margin_bottom = 371.0
+margin_bottom = 390.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 304.0
-margin_bottom = 266.0
+margin_bottom = 285.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -36,7 +36,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 100.0
-margin_bottom = 266.0
+margin_bottom = 285.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -44,7 +44,7 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 show_behind_parent = true
 margin_right = 100.0
-margin_bottom = 266.0
+margin_bottom = 285.0
 rect_min_size = Vector2( 100, 150 )
 size_flags_vertical = 3
 texture = ExtResource( 1 )
@@ -56,7 +56,7 @@ __meta__ = {
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 104.0
 margin_right = 304.0
-margin_bottom = 266.0
+margin_bottom = 285.0
 grow_vertical = 0
 size_flags_horizontal = 3
 __meta__ = {
@@ -92,39 +92,46 @@ scroll_active = false
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
 margin_top = 156.0
 margin_right = 200.0
-margin_bottom = 266.0
+margin_bottom = 285.0
 rect_min_size = Vector2( 200, 0 )
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
-margin_right = 56.0
-margin_bottom = 110.0
+margin_right = 92.0
+margin_bottom = 129.0
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
-margin_right = 56.0
+margin_right = 92.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 0, 15 )
 text = "Attack  "
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
 margin_top = 19.0
-margin_right = 56.0
+margin_right = 92.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 0, 15 )
-text = "Armor  "
+text = "Melee Armor  "
+
+[node name="Label7" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
+margin_top = 38.0
+margin_right = 92.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 0, 15 )
+text = "Pierce Armor  "
 
 [node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
-margin_top = 38.0
-margin_right = 56.0
-margin_bottom = 53.0
+margin_top = 57.0
+margin_right = 92.0
+margin_bottom = 72.0
 rect_min_size = Vector2( 0, 15 )
 text = "Hit Point"
 
 [node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
-margin_top = 57.0
-margin_right = 56.0
-margin_bottom = 72.0
+margin_top = 76.0
+margin_right = 92.0
+margin_bottom = 91.0
 rect_min_size = Vector2( 0, 15 )
 text = "Range  "
 __meta__ = {
@@ -132,28 +139,28 @@ __meta__ = {
 }
 
 [node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
-margin_top = 76.0
-margin_right = 56.0
-margin_bottom = 91.0
+margin_top = 95.0
+margin_right = 92.0
+margin_bottom = 110.0
 rect_min_size = Vector2( 0, 15 )
 text = "Speed  "
 
 [node name="Label6" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
-margin_top = 95.0
-margin_right = 56.0
-margin_bottom = 110.0
+margin_top = 114.0
+margin_right = 92.0
+margin_bottom = 129.0
 rect_min_size = Vector2( 0, 15 )
 text = "Morale "
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
-margin_left = 60.0
+margin_left = 96.0
 margin_right = 200.0
-margin_bottom = 110.0
+margin_bottom = 129.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TextureProgress" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
-margin_right = 140.0
+margin_right = 104.0
 margin_bottom = 15.0
 rect_min_size = Vector2( 0, 15 )
 size_flags_horizontal = 3
@@ -164,7 +171,7 @@ nine_patch_stretch = true
 
 [node name="TextureProgress2" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 19.0
-margin_right = 140.0
+margin_right = 104.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 0, 15 )
 size_flags_horizontal = 3
@@ -176,9 +183,9 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="TextureProgress3" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+[node name="TextureProgress7" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 38.0
-margin_right = 140.0
+margin_right = 104.0
 margin_bottom = 53.0
 rect_min_size = Vector2( 0, 15 )
 size_flags_horizontal = 3
@@ -186,10 +193,13 @@ value = 100.0
 texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 3 )
 nine_patch_stretch = true
+__meta__ = {
+"_editor_description_": ""
+}
 
-[node name="TextureProgress4" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+[node name="TextureProgress3" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 57.0
-margin_right = 140.0
+margin_right = 104.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 15 )
 size_flags_horizontal = 3
@@ -198,9 +208,9 @@ texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 3 )
 nine_patch_stretch = true
 
-[node name="TextureProgress5" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+[node name="TextureProgress4" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 76.0
-margin_right = 140.0
+margin_right = 104.0
 margin_bottom = 91.0
 rect_min_size = Vector2( 0, 15 )
 size_flags_horizontal = 3
@@ -209,9 +219,9 @@ texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 3 )
 nine_patch_stretch = true
 
-[node name="TextureProgress6" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+[node name="TextureProgress5" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
 margin_top = 95.0
-margin_right = 140.0
+margin_right = 104.0
 margin_bottom = 110.0
 rect_min_size = Vector2( 0, 15 )
 size_flags_horizontal = 3
@@ -220,16 +230,27 @@ texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 3 )
 nine_patch_stretch = true
 
+[node name="TextureProgress6" type="TextureProgress" parent="VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+margin_top = 114.0
+margin_right = 104.0
+margin_bottom = 129.0
+rect_min_size = Vector2( 0, 15 )
+size_flags_horizontal = 3
+value = 100.0
+texture_under = ExtResource( 5 )
+texture_progress = ExtResource( 3 )
+nine_patch_stretch = true
+
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 270.0
+margin_top = 289.0
 margin_right = 304.0
-margin_bottom = 280.0
+margin_bottom = 299.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Button" type="Button" parent="VBoxContainer"]
-margin_top = 284.0
+margin_top = 303.0
 margin_right = 304.0
-margin_bottom = 364.0
+margin_bottom = 383.0
 rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 6 )

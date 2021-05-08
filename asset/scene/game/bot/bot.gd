@@ -14,7 +14,6 @@ var _selected_squad = []
 # default data prevent null pointer
 var data = {
 	"maximum_squad_control" : 1,
-	"maximum_squad_target" : 1,
 	"min_tinker_time" : 10,
 	"max_tinker_time" : 50,
 	"surrender_chance" : 0.5,
@@ -45,10 +44,13 @@ func _set_selected_squad():
 func _attack_enemy_squad():
 	rng.randomize()
 	var _squad_targets = []
-	while _squad_targets.size() < data.maximum_squad_target:
-		var enemy_squad = _enemy_squad[rng.randf_range(0,_enemy_squad.size())]
-		if is_instance_valid(enemy_squad) and !enemy_squad.is_disbanded:
-			_squad_targets.append(enemy_squad)
+
+	if _enemy_squad.empty():
+		return
+
+	var enemy_squad = _enemy_squad[rng.randf_range(0,_enemy_squad.size())]
+	if is_instance_valid(enemy_squad) and !enemy_squad.is_disbanded:
+		_squad_targets.append(enemy_squad)
 		
 	for target in _squad_targets:
 		_set_all_selected_squad_to_attack(target)
@@ -73,10 +75,16 @@ func _to_fromation_compact():
 	
 
 func _set_all_selected_squad_to_attack(_squad_target):
+	rng.randomize()
 	for squad in _selected_squad:
 		if is_instance_valid(squad):
-			squad.move_squad_to(_squad_target.global_position)
-			squad.move_and_attack_to(_squad_target)
+			if rng.randf() < 0.5:
+				var _x = squad.get_position().x + rng.randf_range(rng.randf_range(-520,-490), rng.randf_range(320,430))
+				var _y = squad.get_position().y + rng.randf_range(rng.randf_range(-520,-490), rng.randf_range(320,430))
+				squad.move_squad_to(Vector2(_x,_y))
+			else:
+				squad.move_squad_to(_squad_target.get_position())
+				squad.move_and_attack_to(_squad_target)
 
 func _on_thinker_time_timeout():
 	if _squad_in_command.size() <= 0 || _enemy_squad.size() <= 0:
@@ -93,11 +101,11 @@ func _on_thinker_time_timeout():
 	
 	rng.randomize()
 	var percent = rng.randf()
-	if (percent > 0.8):
+	if (percent < 0.2):
 		_to_fromation_standar()
-	elif(percent < 0.6):
+	elif(percent < 0.3):
 		_to_fromation_spread()
-	else:
+	elif(percent < 0.2):
 		_to_fromation_compact()
 		
 	_attack_enemy_squad()

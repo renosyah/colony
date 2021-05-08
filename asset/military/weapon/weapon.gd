@@ -23,6 +23,8 @@ func set_data(_data):
 	_ready_animation = data.ready_animation[rng.randf_range(0,data.ready_animation.size())]
 	_sprite.texture = load(data.weapon_sprite)
 	_ammo.texture = load(data.weapon_projectile_sprite)
+	if data.color:
+		_sprite.self_modulate = data.color
 
 func do_nothing():
 	_is_ready = false

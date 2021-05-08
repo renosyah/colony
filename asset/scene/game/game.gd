@@ -58,7 +58,7 @@ func spawn_armies():
 
 func spawn_squad(pos, squad_data, color):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()
-	squad.position = pos
+	squad.set_squad_position(pos)
 	squad.connect("on_squad_ready",_game_ui,"_on_all_squad_on_squad_ready")
 	squad.connect("on_squad_ready",_game_ui,"_on_squad_on_squad_ready")
 	squad.connect("on_squad_dead",_game_ui,"_on_squad_on_squad_dead")
@@ -73,7 +73,7 @@ func spawn_squad(pos, squad_data, color):
 	
 func spawn_enemy_squad(pos, squad_data, color):
 	var squad = preload("res://asset/military/squad/squad.tscn").instance()
-	squad.position = pos
+	squad.set_squad_position(pos)
 	squad.connect("on_squad_ready",_game_ui,"_on_all_squad_on_squad_ready")
 	squad.connect("on_squad_click",_game_ui,"_on_enemy_squad_click")
 	squad.connect("on_squad_troop_dead",self,"_on_squad_troop_dead")

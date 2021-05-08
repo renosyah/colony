@@ -5,21 +5,89 @@
 [ext_resource path="res://asset/scene/game_ui/battle_result/battle_result.gd" type="Script" id=3]
 [ext_resource path="res://asset/ui/ilustration/loss.png" type="Texture" id=4]
 
-[node name="battle_result" type="PanelContainer"]
+[node name="battle_result" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -241.0
+margin_top = -177.0
+margin_right = 241.0
+margin_bottom = 177.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 475.0
+margin_bottom = 347.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="PanelContainer2/VBoxContainer"]
+margin_right = 468.0
+margin_bottom = 52.0
+size_flags_vertical = 7
+custom_fonts/font = ExtResource( 2 )
+text = "Battle is over!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="PanelContainer2/VBoxContainer"]
+margin_top = 56.0
+margin_right = 468.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 400, 200 )
+size_flags_horizontal = 7
+size_flags_vertical = 7
+texture = ExtResource( 4 )
+expand = true
+
+[node name="Button2" type="Button" parent="PanelContainer2/VBoxContainer"]
+margin_top = 260.0
+margin_right = 468.0
+margin_bottom = 340.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 5
+custom_fonts/font = ExtResource( 2 )
+text = "   Result   "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1017.0
 margin_bottom = 593.0
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
 margin_right = 1010.0
 margin_bottom = 52.0
 size_flags_vertical = 0
@@ -28,17 +96,17 @@ text = "Battle is over!"
 align = 1
 valign = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 margin_top = 56.0
 margin_right = 1010.0
 margin_bottom = 502.0
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 282.0
 margin_bottom = 446.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 275.0
@@ -46,14 +114,14 @@ margin_bottom = 439.0
 rect_min_size = Vector2( 200, 0 )
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
 margin_right = 268.0
 margin_bottom = 28.0
 custom_fonts/font = ExtResource( 1 )
 text = "Player"
 align = 1
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer"]
 margin_top = 32.0
 margin_right = 268.0
 margin_bottom = 432.0
@@ -62,18 +130,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 4
 
-[node name="MarginContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+[node name="MarginContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 286.0
 margin_right = 724.0
 margin_bottom = 446.0
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer2/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
 margin_right = 438.0
 margin_bottom = 42.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer"]
 margin_left = 190.0
 margin_top = 7.0
 margin_right = 248.0
@@ -83,14 +151,14 @@ custom_fonts/font = ExtResource( 1 )
 text = "Loss"
 align = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
 margin_top = 46.0
 margin_right = 438.0
 margin_bottom = 446.0
 size_flags_horizontal = 7
 size_flags_vertical = 7
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
 margin_right = 438.0
 margin_bottom = 306.0
 size_flags_horizontal = 7
@@ -98,7 +166,7 @@ size_flags_vertical = 7
 texture = ExtResource( 4 )
 expand = true
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
 margin_top = 310.0
 margin_right = 438.0
 margin_bottom = 400.0
@@ -109,27 +177,27 @@ align = 1
 valign = 1
 autowrap = true
 
-[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/HBoxContainer2"]
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 728.0
 margin_right = 1010.0
 margin_bottom = 446.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer2"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer2"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 275.0
 margin_bottom = 439.0
 alignment = 1
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
 margin_right = 268.0
 margin_bottom = 28.0
 custom_fonts/font = ExtResource( 1 )
 text = "Bot"
 align = 1
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2"]
 margin_top = 32.0
 margin_right = 268.0
 margin_bottom = 432.0
@@ -138,7 +206,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 4
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer"]
 margin_top = 506.0
 margin_right = 1010.0
 margin_bottom = 586.0
@@ -146,4 +214,5 @@ rect_min_size = Vector2( 80, 80 )
 size_flags_vertical = 8
 custom_fonts/font = ExtResource( 2 )
 text = "Exit Battle"
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="PanelContainer2/VBoxContainer/Button2" to="." method="_on_Button2_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Button" to="." method="_on_Button_pressed"]

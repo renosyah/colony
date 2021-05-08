@@ -1,18 +1,22 @@
-extends PanelContainer
+extends Control
 
 signal on_exit_button_press()
 
-onready var _title_label = $VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer/Label
-onready var _image_ilustration = $VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/TextureRect
-onready var _quote_label = $VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/Label
+onready var _pre_title_label = $PanelContainer2/VBoxContainer/Label2
+onready var _pre_image_ilustration = $PanelContainer2/VBoxContainer/TextureRect2
 
-onready var _player_name_label = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/Label
-onready var _player_list_squad_container = $VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/GridContainer
+onready var _result_container = $PanelContainer
+onready var _title_label = $PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer/PanelContainer/Label
+onready var _image_ilustration = $PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/TextureRect
+onready var _quote_label = $PanelContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/Label
 
-onready var _bot_name_label = $VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/Label2
-onready var _bot_list_squad_container = $VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/GridContainer
+onready var _player_name_label = $PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/Label
+onready var _player_list_squad_container = $PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer/VBoxContainer/GridContainer
 
-onready var _button_exit = $VBoxContainer/Button
+onready var _bot_name_label = $PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/Label2
+onready var _bot_list_squad_container = $PanelContainer/VBoxContainer/HBoxContainer2/PanelContainer2/VBoxContainer2/GridContainer
+
+onready var _button_exit = $PanelContainer/VBoxContainer/Button
 
 onready var rng = RandomNumberGenerator.new()
 
@@ -28,7 +32,9 @@ func set_battle_data(text_result, battle_data, _image_ilustration_sprite):
 	
 	rng.randomize()
 	_image_ilustration.texture = load(_image_ilustration_sprite)
+	_pre_image_ilustration.texture = load(_image_ilustration_sprite)
 	_title_label.text = text_result
+	_pre_title_label.text = text_result
 	_quote_label.text = QuoteData.LIST_QUOTE[rng.randf_range(0,QuoteData.LIST_QUOTE.size())]
 	_battle_data = battle_data
 	_player_name_label.text = battle_data.battle[BattleData.PLAYER_SIDE_TAG].name
@@ -54,3 +60,7 @@ func _show_remaining_troop():
 		
 func _on_Button_pressed():
 	emit_signal("on_exit_button_press")
+
+
+func _on_Button2_pressed():
+	_result_container.visible = true

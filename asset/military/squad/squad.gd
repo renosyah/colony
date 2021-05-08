@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Control
 class_name Squad
 
 const SQUAD_FORMATION_STANDAR = 0
@@ -13,53 +13,46 @@ signal on_squad_scatter(is_scatter)
 
 onready var rng = RandomNumberGenerator.new()
 onready var _formation = preload("res://asset/military/formation/formation.gd").new()
-onready var _animation = $AnimationPlayer
+onready var _squad_body = $KinematicBody2D
+onready var _field_of_view = $KinematicBody2D/Area2D
+onready var _field_of_view_area = $KinematicBody2D/Area2D/CollisionShape2D
+
 onready var _troop_holder = $troop_holder
 onready var _dead_troop_holder = $dead_troop_holder
-onready var _banner = $banner
-onready var _field_of_view = $Area2D
-onready var _field_of_view_area = $Area2D/CollisionShape2D
-onready var _audio = $AudioStreamPlayer2D
 
 var disposable_dead_body = null
 
-var is_on_attack_mode = false
 var is_scatter = false
 var is_disbanded = false
-var velocity = Vector2.ZERO
+
 var targets = []
-var is_move = false
-var waypoint = Vector2.ZERO
+var squad_body_position = Vector2.ZERO
+
 var formations
-var min_area_waypoint = 5.0
 var current_formation = SQUAD_FORMATION_STANDAR
 
 var data = {}
 
 func _ready():
-	_banner.texture = load(data.banner_sprite)
-	_banner.self_modulate = data.color
-	
+	_squad_body.position = squad_body_position
+	_squad_body.set_status_mode(false,false)
+	_squad_body.set_banner(data)
+	_squad_body.set_troop_attack_range(_get_troop_data_attack_range())
+	_squad_body.set_troop_mobility(_get_troop_data_mobility())
+	_squad_body.connect("on_move",self,"_on_squad_on_move")
+	_squad_body.connect("on_squad_click",self,"_on_squad_click")
 	if data.troop_data["class"] == TroopData.CLASS_RANGE:
 		_field_of_view_area.scale.x = 2.3
 		_field_of_view_area.scale.y = 2.3
 		
 	_spawn_full_squad()
-	set_physics_process(false)
-	
-func _process(_delta):
-	velocity = Vector2.ZERO
-	if is_move:
-		var direction = (waypoint - global_position).normalized()
-		var distance_to_waypoint = global_position.distance_to(waypoint)
 
-		if distance_to_waypoint > min_area_waypoint:
-			velocity = direction * _get_troop_data_mobility() * _delta
-			
-		move_and_collide(velocity)
-		
-	if velocity != Vector2.ZERO and !is_on_attack_mode:
-		_update_troop_position()
+func set_squad_position(_pos):
+	squad_body_position = _pos
+	
+	
+func _on_squad_on_move(_pos):
+	_update_troop_position(_pos)
 		
 		
 func move_and_attack_to(_squad):
@@ -69,55 +62,56 @@ func move_and_attack_to(_squad):
 	rng.randomize()
 	_display_chatter(Formation.FORMATION_ASSAULT_CHATTER[rng.randf_range(0,Formation.FORMATION_ASSAULT_CHATTER.size())])
 	
-	is_on_attack_mode = true
+	_squad_body.set_status_mode(true,true)
+	_squad_body.set_squad_target(_squad)
 	
 	targets.clear()
+	_clear_troop_target()
+	
+	_field_of_view_area.disabled = true
+	_field_of_view_area.disabled = false
+	
 	for target in _squad.get_troops():
 		targets.append(target)
 		
 	_set_troop_max_enggangement_distance(INF)
-	_update_troop_facing_direction()
+	_update_troop_facing_direction(_squad_body.waypoint)
+	
 	
 func move_squad_to(pos):
 	if is_disbanded || is_scatter:
 		return
 	
-	is_on_attack_mode = false
-	is_move = true
-	waypoint = pos
-	waypoint.y += 100.0
-	waypoint.x += 50.0
+	_squad_body.set_status_mode(true, false)
+	_squad_body.set_waypoint(pos)
+	
+	targets.clear()
+	_clear_troop_target()
+	
 	_field_of_view_area.disabled = true
 	_field_of_view_area.disabled = false
 	
-	targets.clear()
 	_set_troop_max_enggangement_distance(140.0)
-	_update_troop_facing_direction()
+	_update_troop_facing_direction(_squad_body.waypoint)
 
 func set_selected(is_selected):
 	if is_disbanded || is_scatter:
 		return
 		
-	if is_selected:
-		_animation.play("squad_selected")
-	else:
-		_animation.play("squad_selected")
-		_animation.seek(0.0)
-		_animation.stop()
+	_squad_body.set_selected(is_selected)
+		
 		
 func change_formation(formation):
 	if is_disbanded || is_scatter:
 		return
 		
 	current_formation = formation
-	_update_troop_position()
+	_update_troop_position(get_position())
 	_update_troop_formation_bonus()
 
 
 func change_banner_visual(_scale,_transparacy):
-	_banner.self_modulate.a = _transparacy
-	_banner.scale.x = _scale
-	_banner.scale.y = _scale
+	_squad_body.change_banner_visual(_scale,_transparacy)
 
 func _set_troop_max_enggangement_distance(_value):
 	for troop in get_troops():
@@ -129,7 +123,7 @@ func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_betw
 		SQUAD_FORMATION_STANDAR:
 			return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units)
 		SQUAD_FORMATION_SPREAD:
-			return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units + 10)
+			return _formation.get_formation_box(waypoint_position,number_of_unit,space_between_units + 15)
 		SQUAD_FORMATION_COMPACT:
 			return _formation.get_formation_box(waypoint_position,number_of_unit, space_between_units - 5)
 			
@@ -137,8 +131,9 @@ func _get_formation(waypoint_position :Vector2 ,number_of_unit : int, space_betw
 
 
 func _spawn_full_squad():
-	var cur_formation = _formation.get_formation_box(Vector2.ZERO ,data.troop_amount ,data.formation_space)
+	var cur_formation = _formation.get_formation_box(get_position() ,data.troop_amount ,data.formation_space)
 	var idx = 0
+	var _troop_instances = []
 	for i in data.troop_amount:
 		var troop = preload("res://asset/military/troop/troop.tscn").instance()
 		troop.data = data.troop_data.duplicate(true)
@@ -146,9 +141,18 @@ func _spawn_full_squad():
 		troop.data.color = data.color
 		troop.connect("on_troop_dead", self , "_on_troop_dead")
 		troop.position = cur_formation[idx].position
-		_troop_holder.add_child(troop)
+		_troop_instances.append(troop)
 		idx += 1
-		
+	
+	if (_troop_instances.size() % 2 == 1):
+		var _bannerman = _troop_instances[(_troop_instances.size()+1)/2-1]
+		var _banner = WeaponData.BANNER.duplicate()
+		_banner.color = data.color
+		_bannerman.set_as_bannerman(_banner)
+	
+	for troop_instance in _troop_instances:
+		_troop_holder.add_child(troop_instance)
+	
 	emit_signal("on_squad_ready", self)
 
 
@@ -171,11 +175,11 @@ func _update_troop_formation_bonus():
 		child.set_bonus(data.troop_data.bonus)
 		
 		
-func _update_troop_position():
+func _update_troop_position(_pos):
 	if is_disbanded || is_scatter:
 		return
 		
-	var cur_formation = _get_formation(global_position,data.troop_amount,data.formation_space)
+	var cur_formation = _get_formation(_pos ,data.troop_amount,data.formation_space)
 	var idx = 0
 	for child in _troop_holder.get_children():
 		child.rally_point = cur_formation[idx].position
@@ -190,29 +194,32 @@ func _make_troop_scatter():
 	
 	for child in _troop_holder.get_children():
 		rng.randomize()
-		var _scatter_x = global_position.x + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
-		var _scatter_y = global_position.y + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
+		var _scatter_x = _squad_body.global_position.x + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
+		var _scatter_y = _squad_body.global_position.y + rng.randf_range(rng.randf_range(-1200,-900), rng.randf_range(1200,1300))
 		child.rally_point = Vector2(_scatter_x,_scatter_y)
 		child.target = null
-		child.set_facing_direction((child.rally_point - global_position).normalized())
-
+		child.set_facing_direction((child.rally_point - _squad_body.global_position).normalized())
+		
+	_squad_body.set_status_mode(false,false)
+	_squad_body.hide_banner()
 	is_scatter = true
-	is_move = false
-	_banner.visible = false
 	is_disbanded = true
 	targets.clear()
 	
 	emit_signal("on_squad_scatter", is_scatter)
 	emit_signal("on_squad_dead", self)
 
-func _update_troop_facing_direction():
+func _update_troop_facing_direction(_waypoint):
 	for child in _troop_holder.get_children():
-		child.set_facing_direction((waypoint - global_position).normalized())
+		child.set_facing_direction((_waypoint - _squad_body.global_position).normalized())
+
+func _clear_troop_target():
+	for child in _troop_holder.get_children():
+		child.target = null
 
 func _update_troop_target():
 	if targets.empty() || is_disbanded || is_scatter:
-		for child in _troop_holder.get_children():
-			child.target = null
+		_clear_troop_target()
 		return
 		
 	for child in _troop_holder.get_children():
@@ -276,19 +283,18 @@ func _decrease_squad_morale():
 func _check_is_squad_need_to_disbanded():
 	if get_troop_left() <= 0:
 		emit_signal("on_squad_dead",self)
-		_banner.visible = false
+		_squad_body.hide_banner()
 		is_disbanded = true
 		targets.clear()
 		#queue_free()
-
-
-func _on_area_click_input_event(_viewport, event,_shape_idx):
-	if (event is InputEventScreenTouch and event.is_pressed()) or (event is InputEventMouseButton and event.is_action_pressed("left_click")):
-		if _banner.self_modulate.a > 0.3:
-			emit_signal("on_squad_click", self)
-
+		
+		
+func _on_squad_click():
+	emit_signal("on_squad_click", self)
+	
+	
 func _get_troop_data_attack_range():
-	return data.troop_data.attack_range
+	return data.troop_data.range_attack
 	
 func _get_troop_data_mobility():
 	var speed = data.troop_data.max_speed + data.troop_data.bonus.mobility
@@ -299,7 +305,7 @@ func _get_troop_data_mobility():
 func _display_chatter(text):
 	var chatter = preload("res://asset/ui/squad_chatter/squad_chatter.tscn").instance()
 	chatter.text = text
-	chatter.position = _banner.position
+	chatter.position = _squad_body.global_position
 	add_child(chatter)
 	
 	
@@ -310,4 +316,6 @@ func get_troops():
 func get_troop_left(): 
 	return _troop_holder.get_children().size()
 	
-
+	
+func get_position():
+	return _squad_body.global_position

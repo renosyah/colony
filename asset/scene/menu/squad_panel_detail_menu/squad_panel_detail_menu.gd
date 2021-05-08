@@ -7,7 +7,8 @@ onready var _squad_icon = $VBoxContainer/HBoxContainer/VBoxContainer/TextureRect
 onready var _squad_name = $VBoxContainer/HBoxContainer/VBoxContainer2/Label
 onready var _squad_description = $VBoxContainer/HBoxContainer/VBoxContainer2/Label2
 onready var _squad_attack_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress
-onready var _squad_armor_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress2
+onready var _squad_melee_armor_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress2
+onready var _squad_pierce_armor_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress7
 onready var _squad_hp_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress3
 onready var _squad_range_bar = $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress4
 onready var _squad_speed_bar= $VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/VBoxContainer2/TextureProgress5
@@ -36,14 +37,16 @@ func _ready():
 	
 	_squad_attack_bar.max_value = TroopData.MAX_STATS.attack_damage
 	_squad_hp_bar.max_value = TroopData.MAX_STATS.hit_point 
-	_squad_armor_bar.max_value = TroopData.MAX_STATS.armor 
+	_squad_melee_armor_bar.max_value = TroopData.MAX_STATS.melee_armor
+	_squad_pierce_armor_bar.max_value = TroopData.MAX_STATS.pierce_armor 
 	_squad_range_bar.max_value = TroopData.MAX_STATS.range_attack 
 	_squad_speed_bar.max_value = TroopData.MAX_STATS.max_speed
 	_squad_morale_bar.max_value = TroopData.MAX_STATS.morale_point
 	
 	_squad_attack_bar.value = data.attack_damage
 	_squad_hp_bar.value = data.hit_point 
-	_squad_armor_bar.value = data.armor 
+	_squad_melee_armor_bar.value = data.melee_armor 
+	_squad_pierce_armor_bar.value = data.pierce_armor 
 	_squad_range_bar.value = data.range_attack 
 	_squad_speed_bar.value = data.max_speed
 	_squad_morale_bar.value = data.morale_point
@@ -58,7 +61,8 @@ func show_stats(squad):
 	template.squad_icon = squad.squad_icon
 	template.attack_damage = squad.troop_data.attack_damage
 	template.hit_point = squad.troop_data.hit_point
-	template.armor = squad.troop_data.armor
+	template.melee_armor = squad.troop_data.melee_armor
+	template.pierce_armor = squad.troop_data.pierce_armor
 	template.range_attack = squad.troop_data.range_attack
 	template.max_speed = squad.troop_data.max_speed
 	template.morale_point = squad.morale_point

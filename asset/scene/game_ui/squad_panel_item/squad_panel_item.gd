@@ -8,6 +8,7 @@ onready var _squad_scatter = $TextureRect3
 onready var _label = $VBoxContainer/Label
 onready var _flicker_timer = $flicker_time
 onready var _flicker = $TextureRect2
+onready var _audio = $AudioStreamPlayer2D
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -45,6 +46,8 @@ func _on_squad_click(_squad):
 	is_selected = !is_selected
 	_selected_indicator.visible = is_selected
 	_squad.set_selected(is_selected)
+	_audio.stream = preload("res://asset/sound/click.wav")
+	_audio.play()
 
 func _on_squad_scatter(is_scatter):
 	_squad_scatter.visible = is_scatter

@@ -49,7 +49,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://asset/resources/resource.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "Control",
 "class": "Squad",
 "language": "GDScript",
 "path": "res://asset/military/squad/squad.gd"
@@ -58,11 +58,6 @@ _global_script_classes=[ {
 "class": "SquadData",
 "language": "GDScript",
 "path": "res://asset/data/squad_data.gd"
-}, {
-"base": "PanelContainer",
-"class": "SquadPanelDetail",
-"language": "GDScript",
-"path": "res://asset/scene/game_ui/squad_panel_detail/squad_panel_detail.gd"
 }, {
 "base": "PanelContainer",
 "class": "SquadPanelDetailMenu",
@@ -100,7 +95,6 @@ _global_script_class_icons={
 "Resources": "",
 "Squad": "",
 "SquadData": "",
-"SquadPanelDetail": "",
 "SquadPanelDetailMenu": "",
 "Troop": "",
 "TroopData": "",
@@ -113,6 +107,10 @@ _global_script_class_icons={
 config/name="colony"
 run/main_scene="res://asset/scene/menu/menu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Steering="*res://asset/util/Steering.gd"
 
 [input]
 
@@ -143,7 +141,7 @@ right_click={
 }
 left_click={
 "deadzone": 0.5,
-"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
 scroll_up={
